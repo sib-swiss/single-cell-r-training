@@ -1,0 +1,143 @@
+---
+title: "deepak"
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(Seurat)  # If using Seurat objects
+
+# Simulated example data: Unnormalized counts for 3 genes across 3 cell types
+set.seed(42)
+sc_data <- data.frame(
+  Gene = rep(c("Gene1", "Gene2", "Gene3"), each = 30),
+  Expression = c(rpois(30, lambda = 10), rpois(30, lambda = 20), rpois(30, lambda = 5)),
+  CellType = rep(c("A", "B", "C"), times = 30)
+)
+
+# Violin + Jitter Plot
+ggplot(sc_data, aes(x = CellType, y = Expression, fill = CellType)) +
+  geom_violin(trim = FALSE, alpha = 0.6) +  # Show expression distribution
+  geom_jitter(width = 0.2, alpha = 0.5, color = "black") +  # Add individual points
+  facet_wrap(~ Gene) +  # Separate plots for each gene
+  theme_minimal() +
+  labs(title = "Unnormalized Single-Cell RNA-seq Data", 
+       x = "Cell Type", 
+       y = "Raw Expression Counts") +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(Seurat)
+
+# Simulated example data: Log-normalized expression for 3 genes across 3 cell types
+set.seed(42)
+sc_data_norm <- data.frame(
+  Gene = rep(c("Gene1", "Gene2", "Gene3"), each = 30),
+  Expression = log1p(c(rpois(30, lambda = 10), rpois(30, lambda = 20), rpois(30, lambda = 5))),
+  CellType = rep(c("A", "B", "C"), times = 30)
+)
+
+# Violin + Jitter Plot for Normalized Data
+ggplot(sc_data_norm, aes(x = CellType, y = Expression, fill = CellType)) +
+  geom_violin(trim = FALSE, alpha = 0.6) +  # Show distribution
+  geom_jitter(width = 0.2, alpha = 0.5, color = "black") +  # Add individual points
+  facet_wrap(~ Gene) +  # Separate plots for each gene
+  theme_minimal() +
+  labs(title = "Normalized Single-Cell RNA-seq Data", 
+       x = "Cell Type", 
+       y = "Log1p Normalized Expression") +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(R6)
+
+# Define scRNASeqVisualizer class
+scRNASeqVisualizer <- R6Class("scRNASeqVisualizer",
+  public = list(
+    data = NULL,
+
+    initialize = function(data) {
+      self$data <- data
+    },
+
+    plot_raw_counts = function() {
+      ggplot(self$data, aes(x = CellType, y = RawCounts, fill = CellType)) +
+        geom_violin() +
+        geom_jitter(width = 0.2, alpha = 0.6) +
+        facet_wrap(~ Gene) +
+        labs(title = "Unnormalized Single-Cell RNA-seq Data",
+             y = "Raw Expression Counts",
+             x = "Cell Type") +
+        theme_minimal()
+    },
+
+    plot_log_normalized = function() {
+      ggplot(self$data, aes(x = CellType, y = LogNormalized, fill = CellType)) +
+        geom_violin() +
+        geom_jitter(width = 0.2, alpha = 0.6) +
+        facet_wrap(~ Gene) +
+        labs(title = "Normalized Single-Cell RNA-seq Data",
+             y = "Log1p Normalized Expression",
+             x = "Cell Type") +
+        theme_minimal()
+    },
+
+    plot_scaling_effect = function() {
+      ggplot(self$data, aes(x = CellIndex, y = TotalTranscripts, fill = "blue")) +
+        geom_bar(stat = "identity") +
+        facet_wrap(~ ScalingStage, scales = "free_y") +
+        labs(title = "Scaling Normalization: Before and After",
+             y = "# Transcripts Detected",
+             x = "Cell Index") +
+        theme_minimal() +
+        theme(legend.position = "none")
+    }
+  )
+)
+
+# Simulate scRNA-seq data
+set.seed(42)
+df <- data.frame(
+  CellIndex = rep(1:3000, 2),
+  TotalTranscripts = c(rpois(3000, lambda = 8000), rep(8000, 3000)),
+  ScalingStage = rep(c("Before Scaling", "After Scaling"), each = 3000)
+)
+
+df_violin <- expand.grid(
+  CellType = c("A", "B", "C"),
+  Gene = c("Gene1", "Gene2", "Gene3"),
+  CellIndex = 1:20
+) %>%
+  mutate(RawCounts = rpois(n(), lambda = 15),
+         LogNormalized = log1p(RawCounts))
+
+# Create an instance of the class
+visualizer <- scRNASeqVisualizer$new(df_violin)
+
+# Plot each figure
+plot1 <- visualizer$plot_raw_counts()
+plot2 <- visualizer$plot_log_normalized()
+
+# Create an instance for scaling visualization
+visualizer_scaling <- scRNASeqVisualizer$new(df)
+plot3 <- visualizer_scaling$plot_scaling_effect()
+
+# Display plots
+print(plot1) # Unnormalized data
+print(plot2) # Log normalized data
+print(plot3) # Scaling effect
+
+```
