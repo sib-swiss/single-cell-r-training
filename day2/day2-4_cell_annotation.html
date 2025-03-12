@@ -189,14 +189,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../day3/day3-2_enrichment_analysis.html" rel="" target="">
  <span class="dropdown-text">Enrichment analysis</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../day3/day3-3_trajectory_analysis.html" rel="" target="">
- <span class="dropdown-text">Trajectory analysis</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../day3/day3-4_advanced_analyses.html" rel="" target="">
- <span class="dropdown-text">Advanced analyses</span></a>
-  </li>  
     </ul>
 </li>
   <li class="nav-item dropdown ">
@@ -542,13 +534,15 @@ PBMMC-1_AAAGCAACATCAGTCA-1  0.1057135 Erythroid cells</code></pre>
 <div class="cell" data-hash="day2-4_cell_annotation_cache/html/unnamed-chunk-21_0201c452a2070bd5d20548f31c9271a0">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">SingleR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SingleR/man/plotDeltaDistribution.html">plotDeltaDistribution</a></span><span class="op">(</span><span class="va">seu_SingleR</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Groups with fewer than two datapoints have been dropped.
+ℹ Set `drop = FALSE` to consider such groups for position adjustment purposes.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning in max(data$density, na.rm = TRUE): no non-missing arguments to max;
+returning -Inf</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Computation failed in `stat_ydensity()`
+<pre><code>Warning: Computation failed in `stat_ydensity()`.
 Caused by error in `$&lt;-.data.frame`:
 ! replacement has 1 row, data has 0</code></pre>
 </div>

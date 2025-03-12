@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
 <title>Single cell transcriptomics - Project 2</title>
 <style>
 code{white-space: pre-wrap;}
@@ -20,8 +17,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -39,8 +69,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -59,10 +88,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
-<!-- Matomo -->
-<script>
+}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+<!-- Matomo --><script>
   var _paq = window._paq = window._paq || [];
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   _paq.push(['trackPageView']);
@@ -74,18 +101,12 @@ ul.task-list li input[type="checkbox"] {
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
   })();
-</script>
-<!-- End Matomo Code -->
-
-
+</script><!-- End Matomo Code -->
 </head>
-
 <body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Single cell transcriptomics</span>
@@ -97,7 +118,7 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link active" href="../index.html" rel="" target="" aria-current="page">
  <span class="menu-text">Home</span></a>
   </li>  
@@ -113,8 +134,8 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-1" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">day 1</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">    
-        <li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">
+<li>
     <a class="dropdown-item" href="../day1/day1-1_setup.html" rel="" target="">
  <span class="dropdown-text">Setup</span></a>
   </li>  
@@ -131,13 +152,13 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Normalization and scaling</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">day 2</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">    
-        <li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">
+<li>
     <a class="dropdown-item" href="../day2/day2-1_dimensionality_reduction.html" rel="" target="">
  <span class="dropdown-text">Dimensionality reduction</span></a>
   </li>  
@@ -154,13 +175,13 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Cell annotation</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">day 3</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">    
-        <li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">
+<li>
     <a class="dropdown-item" href="../day3/day3-1_differential_gene_expression.html" rel="" target="">
  <span class="dropdown-text">Differential gene expression</span></a>
   </li>  
@@ -168,22 +189,14 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../day3/day3-2_enrichment_analysis.html" rel="" target="">
  <span class="dropdown-text">Enrichment analysis</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../day3/day3-3_trajectory_analysis.html" rel="" target="">
- <span class="dropdown-text">Trajectory analysis</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../day3/day3-4_advanced_analyses.html" rel="" target="">
- <span class="dropdown-text">Advanced analyses</span></a>
-  </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">projects</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
-        <li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">
+<li>
     <a class="dropdown-item" href="../projects/project1.html" rel="" target="">
  <span class="dropdown-text">Project 1</span></a>
   </li>  
@@ -196,22 +209,20 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Project 3</span></a>
   </li>  
     </ul>
-  </li>
+</li>
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/sib-swiss/single-cell-r-training/" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
+<div class="quarto-navbar-tools">
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -219,28 +230,24 @@ ul.task-list li input[type="checkbox"] {
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
-      </a>
+      <img src="../assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
       </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#available-data" id="toc-available-data" class="nav-link active" data-scroll-target="#available-data">Available data</a></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Project 2</h1>
 </div>
 
@@ -254,13 +261,141 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header>
+</header><p>Project 2 focuses on a single-cell sequencing study of the Drosophila brain following acute cocaine exposure. Flies were exposed to cocaine, which impaired locomotor activity and increased the incidence of seizures and compulsive grooming. To investigate the specific cell populations responding to cocaine, single-cell transcriptional responses were analyzed in duplicate samples of flies that consumed sucrose or sucrose supplemented with cocaine. The study utilized the 10x Genomics Chromium platform for single-cell RNA sequencing.</p>
+<p>Unsupervised clustering of transcriptional profiles from 86,224 cells revealed 36 distinct clusters, representing all major cell types (neuronal and glial) and neurotransmitter types from most brain regions. Differential expression analysis within individual clusters indicated cluster-specific responses to cocaine, with Kenyon cells of the mushroom bodies and glia showing particularly large transcriptional changes. The study highlighted profound sexual dimorphism in brain transcriptional responses to cocaine, with males exhibiting more pronounced changes than females.</p>
+<p>Cluster-specific coexpression networks and global interaction networks revealed diverse cellular processes affected by acute cocaine exposure, providing an atlas of sexually dimorphic cocaine-modulated gene expression in the Drosophila brain.</p>
+<section id="available-data" class="level2"><h2 class="anchored" data-anchor-id="available-data">Available data</h2>
+<p>Data has been downloaded and prepared for you from <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE152495">GEO GSE152495</a>.</p>
+<p>In order to download the data, run:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project2.tar.gz</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzcvf</span> project2.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After extracting, you would see the following format:</p>
+<pre><code>GSE152495/
+├── data
+│&nbsp;&nbsp; ├── Female_Cocaine_1
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
+│&nbsp;&nbsp; ├── Female_Cocaine_2
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
+│&nbsp;&nbsp; ├── Female_Sucrose_1
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
+│&nbsp;&nbsp; ├── Female_Sucrose_2
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
+│&nbsp;&nbsp; ├── Male_Cocaine_1
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
+│&nbsp;&nbsp; ├── Male_Cocaine_2
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
+│&nbsp;&nbsp; ├── Male_Sucrose_1
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
+│&nbsp;&nbsp; └── Male_Sucrose_2
+│&nbsp;&nbsp;     ├── barcodes.tsv.gz
+│&nbsp;&nbsp;     ├── features.tsv.gz
+│&nbsp;&nbsp;     └── matrix.mtx.gz
+└── paper.pdf</code></pre>
+<p>Showing us that we have two replicates per treatment, and two treatments:</p>
+<ul>
+<li>Male_Sucrose: controls</li>
+<li>Female_Sucrose: controls</li>
+<li>Male_Cocaine: treatments</li>
+<li>Female_Cocaine: treatments</li>
+</ul>
+<p>Use the following code to read the data files in R, and create a combined Seurat object:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Function to read the data from the files and create a Seurat object</span></span>
+<span><span class="va">read_10x_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">sample_path</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Read data</span></span>
+<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/Read10X.html">Read10X</a></span><span class="op">(</span><span class="va">sample_path</span><span class="op">)</span></span>
+<span>  <span class="va">barcodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">sample_path</span>, <span class="st">"/barcodes.tsv.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">sample_path</span>, <span class="st">"/features.tsv.gz"</span><span class="op">)</span>, header <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Create Seurat object</span></span>
+<span>  <span class="va">seurat_object</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/CreateSeuratObject.html">CreateSeuratObject</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span>  <span class="va">seurat_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/AddMetaData.html">AddMetaData</a></span><span class="op">(</span><span class="va">seurat_object</span>, metadata <span class="op">=</span> <span class="va">barcodes</span>, </span>
+<span>                               col.name <span class="op">=</span> <span class="st">"barcodes"</span><span class="op">)</span></span>
+<span>  <span class="va">seurat_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/AddMetaData.html">AddMetaData</a></span><span class="op">(</span><span class="va">seurat_object</span>, metadata <span class="op">=</span> <span class="va">features</span><span class="op">$</span><span class="va">V2</span>,</span>
+<span>                               col.name <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">seurat_object</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Data directory</span></span>
+<span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="st">"data/project2/GSE152495/data"</span></span>
+<span></span>
+<span><span class="co"># Read data for each sample and combine into a single Seurat object</span></span>
+<span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.dirs</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">data_dir</span>, full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">seurat_objects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">samples</span>, <span class="kw">function</span><span class="op">(</span><span class="va">sample</span><span class="op">)</span> </span>
+<span>  <span class="fu">read_10x_data</span><span class="op">(</span>sample_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="va">sample</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">combined_seurat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">seurat_objects</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">seurat_objects</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  add.cell.ids <span class="op">=</span> <span class="va">samples</span>, project <span class="op">=</span> <span class="st">"CocaineStudy"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">combined_seurat</span><span class="op">@</span><span class="va">meta.data</span><span class="op">$</span><span class="va">orig.ident</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">combined_seurat</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span>,</span>
+<span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, split <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, collapse <span class="op">=</span> <span class="st">"_"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Project exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>with this dataset, go through the steps we have performed during the course, and try to reproduce the results provided in the paper. Pay specific attention to quality control, clustering and annotation.</p>
+</div>
+</div>
+</section><section id="tips" class="level2"><h2 class="anchored" data-anchor-id="tips">Tips</h2>
+<ul>
+<li>For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following table:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">biomaRt</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Connect to Ensembl's FlyBase dataset</span></span>
+<span><span class="va">ensembl</span> <span class="op">&lt;-</span> <span class="fu">useMart</span><span class="op">(</span><span class="st">"ensembl"</span>, dataset <span class="op">=</span> <span class="st">"dmelanogaster_gene_ensembl"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Define attributes to fetch</span></span>
+<span><span class="va">attributes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"flybase_annot_id"</span>, <span class="st">"ensembl_gene_id"</span>, <span class="st">"flybase_gene_id"</span>,</span>
+<span>                <span class="st">"external_gene_name"</span>, <span class="st">"flybasename_gene"</span>, <span class="st">"description"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get data</span></span>
+<span><span class="va">gene_table</span> <span class="op">&lt;-</span> <span class="fu">getBM</span><span class="op">(</span>attributes <span class="op">=</span> <span class="va">attributes</span>, mart <span class="op">=</span> <span class="va">ensembl</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Print the first few rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">gene_table</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</li>
+</ul>
 
 
-
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
