@@ -4,4 +4,4 @@ docker run \
 --name rstudio_admin \
 -e PASSWORD=test123 \
 -v $PWD:/home/rstudio \
-geertvangeest/ngs-longreads-vscode:latest
+sibswiss/training-singlecell-rstudio:latest
