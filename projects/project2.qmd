@@ -27,44 +27,46 @@ tar -xzcvf project2.tar.gz
 ```
 
 
-After extracting, you would see the following format:
+After extracting, a directory `project2` appears with the following format:
 
 ```
-GSE152495/
+.
 ├── data
-│   ├── Female_Cocaine_1
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── Female_Cocaine_2
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── Female_Sucrose_1
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── Female_Sucrose_2
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── Male_Cocaine_1
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── Male_Cocaine_2
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── Male_Sucrose_1
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   └── Male_Sucrose_2
-│       ├── barcodes.tsv.gz
-│       ├── features.tsv.gz
-│       └── matrix.mtx.gz
+│   ├── Female_Cocaine_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── Female_Cocaine_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── Female_Sucrose_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── Female_Sucrose_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── Male_Cocaine_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── Male_Cocaine_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── Male_Sucrose_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   └── Male_Sucrose_2
+│       ├── barcodes.tsv.gz
+│       ├── features.tsv.gz
+│       └── matrix.mtx.gz
 └── paper.pdf
+
+9 directories, 25 files
 ```
 
 Showing us that we have two replicates per treatment, and two treatments:
@@ -74,49 +76,25 @@ Showing us that we have two replicates per treatment, and two treatments:
 - Male_Cocaine: treatments
 - Female_Cocaine: treatments
 
-Use the following code to read the data files in R, and create a combined Seurat object:
+Now create a new project in the `project2` directory (Project (None) > New Project ...), and create Seurat object from the count matrices:
+
 
 ```{r}
 library(Seurat)
 
-# Function to read the data from the files and create a Seurat object
-read_10x_data <- function(sample_path) {
-  # Read data
-  data <- Read10X(sample_path)
-  barcodes <- readLines(paste0(sample_path, "/barcodes.tsv.gz"))
-  features <- read.delim(paste0(sample_path, "/features.tsv.gz"), header = FALSE)
+# vector of paths to all sample directories
+datadirs <- list.files(path = "data", full.names = TRUE)
 
-  # Create Seurat object
-  seurat_object <- Seurat::CreateSeuratObject(data)
-  seurat_object <- AddMetaData(seurat_object, metadata = barcodes, 
-                               col.name = "barcodes")
-  seurat_object <- AddMetaData(seurat_object, metadata = features$V2,
-                               col.name = "features")
+# get the sample names
+# replace underscores with hyphen to correctly extract sample names later on
+names(datadirs) <- basename(datadirs) |> gsub("_", "-", x = _)
 
-  return(seurat_object)
-}
+# create a large sparse matrix from all count data
+sparse_matrix <- Seurat::Read10X(data.dir = datadirs)
 
-# Data directory
-data_dir <- "data/project2/GSE152495/data"
-
-# Read data for each sample and combine into a single Seurat object
-samples <- basename(list.dirs(path = data_dir, full.names = T)[-1])
-
-seurat_objects <- lapply(samples, function(sample) 
-  read_10x_data(sample_path = file.path(data_dir, sample)))
-
-combined_seurat <- merge(seurat_objects[[1]],
-  y = seurat_objects[-1],
-  add.cell.ids = samples, project = "CocaineStudy"
-)
-
-combined_seurat@meta.data$orig.ident <- sapply(
-  rownames(combined_seurat@meta.data),
-  function(x) {
-    paste(strsplit(x = x, split = "_")[[1]][1:3], collapse = "_"
-    )
-  }
-)
+# create a seurat object from sparse matrix
+seu <- Seurat::CreateSeuratObject(counts = sparse_matrix,
+                                  project = "CocaineStudy")
 ```
 
 
