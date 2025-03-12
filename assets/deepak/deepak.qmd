@@ -1,0 +1,459 @@
+---
+title: "deepak"
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+# Normalized example
+
+## Raw counts
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(Seurat)
+
+# Simulated example data: Log-normalized expression for 3 genes across 3 cell types
+set.seed(42)
+sc_data_norm <- data.frame(
+  Gene = rep(c("Gene1", "Gene2", "Gene3"), each = 30),
+  Expression = log1p(c(rpois(30, lambda = 10), rpois(30, lambda = 20), rpois(30, lambda = 5))),
+  CellType = rep(c("A", "B", "C"), times = 30)
+)
+
+# Violin + Jitter Plot for Normalized Data
+ggplot(sc_data_norm, aes(x = CellType, y = Expression, fill = CellType)) +
+  geom_violin(trim = FALSE, alpha = 0.6) +  # Show distribution
+  geom_jitter(width = 0.2, alpha = 0.5, color = "black") +  # Add individual points
+  facet_wrap(~ Gene) +  # Separate plots for each gene
+  theme_bw() +
+  labs(title = "Normalized Single-Cell RNA-seq Data", 
+       x = "Cell Type", 
+       y = "Log1p Normalized Expression") +
+  theme(legend.position = "none")
+```
+
+## Log1p
+```{r}
+library(ggplot2)
+library(dplyr)
+library(Seurat)  # If using Seurat objects
+
+# Simulated example data: Unnormalized counts for 3 genes across 3 cell types
+set.seed(42)
+sc_data <- data.frame(
+  Gene = rep(c("Gene1", "Gene2", "Gene3"), each = 30),
+  Expression = c(rpois(30, lambda = 10), rpois(30, lambda = 20), rpois(30, lambda = 5)),
+  CellType = rep(c("A", "B", "C"), times = 30)
+)
+
+# Violin + Jitter Plot
+ggplot(sc_data, aes(x = CellType, y = Expression, fill = CellType)) +
+  geom_violin(trim = FALSE, alpha = 0.6) +  # Show expression distribution
+  geom_jitter(width = 0.2, alpha = 0.5, color = "black") +  # Add individual points
+  facet_wrap(~ Gene) +  # Separate plots for each gene
+  theme_minimal() +
+  labs(title = "Unnormalized Single-Cell RNA-seq Data", 
+       x = "Cell Type", 
+       y = "Raw Expression Counts") +
+  theme(legend.position = "none")
+```
+
+
+# Raw vs scaled
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Simulating data
+set.seed(42)
+cells <- 1:3000
+transcripts_raw <- sample(5000:15000, 3000, replace = TRUE)
+
+# Scaling (e.g., normalizing each cell to a fixed total count)
+scaling_factor <- mean(transcripts_raw)
+transcripts_scaled <- transcripts_raw / transcripts_raw * scaling_factor
+
+# Creating dataframe
+df <- data.frame(
+  Cell_Index = rep(cells, 2),
+  Transcripts = c(transcripts_raw, transcripts_scaled),
+  Condition = rep(c("Raw", "Scaled"), each = 3000)
+)
+
+# Plot
+ggplot(df, aes(x = Cell_Index, y = Transcripts)) +
+  geom_bar(stat = "identity", width = 0.7, fill = "blue") +
+  facet_wrap(~Condition, scales = "free_y") +
+  labs(x = "Cell index", y = "# Transcripts detected") +
+  theme_bw()
+```
+
+
+# Technical vs biological difference
+
+## Scatter plot
+```{r}
+library(ggplot2)
+library(dplyr)
+
+set.seed(42)
+
+# Simulating single-cell gene expression data
+cells <- 1:300
+true_expression <- rnorm(300, mean = 10, sd = 2)  # Biological variation
+technical_noise <- rnorm(300, mean = 0, sd = 1)   # Technical noise
+observed_expression <- true_expression + technical_noise  # Total observed expression
+
+# Creating a dataframe
+df <- data.frame(
+  CellIndex = cells,
+  ObservedExpression = observed_expression,
+  TrueExpression = true_expression,
+  TechnicalNoise = technical_noise
+)
+
+# Plot
+ggplot(df, aes(x = CellIndex)) +
+  geom_point(aes(y = ObservedExpression, color = "Observed Expression"), size = 2, alpha = 0.7) +
+  geom_point(aes(y = TrueExpression, color = "True Expression"), size = 2, alpha = 0.7) +
+  geom_point(aes(y = TechnicalNoise + min(ObservedExpression), color = "Technical Noise"), size = 2, alpha = 0.7) +
+  scale_color_manual(values = c("Observed Expression" = "#1f78b4",  # Dark blue
+                                "True Expression" = "#33a02c",      # Teal
+                                "Technical Noise" = "#e66101")) +   # Dark orange
+  labs(x = "Cell index", y = "Gene expression level", color = "Legend") +
+  theme_minimal()
+
+```
+
+
+## Density plot
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+set.seed(42)
+
+# Simulating single-cell gene expression data
+cells <- 1:300
+true_expression <- rnorm(300, mean = 10, sd = 2)  # Biological variation
+technical_noise <- rnorm(300, mean = 0, sd = 1)   # Technical noise
+observed_expression <- true_expression + technical_noise  # Total observed expression
+
+# Creating a dataframe
+df <- data.frame(
+  CellIndex = cells,
+  ObservedExpression = observed_expression,
+  TrueExpression = true_expression,
+  TechnicalNoise = technical_noise
+)
+
+# Convert to long format for ggplot
+df_long <- df %>%
+  tidyr::pivot_longer(cols = c(ObservedExpression, TrueExpression, TechnicalNoise),
+                      names_to = "ExpressionType", values_to = "ExpressionValue")
+
+# Density Plot
+ggplot(df_long, aes(x = ExpressionValue, fill = ExpressionType)) +
+  geom_density(alpha = 0.6) +
+  scale_fill_manual(values = c("ObservedExpression" = "#1f78b4",  # Dark blue
+                               "TrueExpression" = "#33a02c",      # Teal
+                               "TechnicalNoise" = "#e66101")) +   # Dark orange
+  labs(x = "Gene expression level", y = "Density", fill = "Legend") +
+  theme_minimal()
+```
+
+
+# Transformations
+```{r}
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+
+# Create the expanded dataset with more genes
+genes <- c("Gene 1", "Gene 1", "Gene 2", "Gene 2", "Gene 3", "Gene 3", "Gene 4", "Gene 4", "Gene 5", "Gene 5")
+cell_types <- c(rep(c("Cell Type A", "Cell Type B"), 5))
+raw_values <- c(1, 2, 100, 200, 5, 25, 400, 800, 10, 60)
+
+# Create a data frame
+data <- data.frame(
+  Gene = genes,
+  CellType = cell_types,
+  RawValue = raw_values
+)
+
+# Add the transformations
+data <- data %>%
+  mutate(
+    LogValue = log2(RawValue),
+    SqrtValue = sqrt(RawValue)
+  )
+
+# Calculate the differences for each transformation type
+raw_diff <- data %>%
+  group_by(Gene) %>%
+  summarize(Delta = diff(RawValue))
+
+log_diff <- data %>%
+  group_by(Gene) %>%
+  summarize(Delta = diff(LogValue))
+
+sqrt_diff <- data %>%
+  group_by(Gene) %>%
+  summarize(Delta = diff(SqrtValue))
+
+# Create tables for visualization
+# Raw data table
+raw_table <- data %>%
+  select(Gene, CellType, RawValue) %>%
+  pivot_wider(names_from = CellType, values_from = RawValue) %>%
+  left_join(raw_diff, by = "Gene") %>%
+  rename(`Cell Type A` = `Cell Type A`, `Cell Type B` = `Cell Type B`, `Δ` = Delta)
+
+# Log transform table
+log_table <- data %>%
+  select(Gene, CellType, LogValue) %>%
+  pivot_wider(names_from = CellType, values_from = LogValue) %>%
+  left_join(log_diff, by = "Gene") %>%
+  rename(`Cell Type A` = `Cell Type A`, `Cell Type B` = `Cell Type B`, `Δ` = Delta)
+
+# Square root transform table
+sqrt_table <- data %>%
+  select(Gene, CellType, SqrtValue) %>%
+  pivot_wider(names_from = CellType, values_from = SqrtValue) %>%
+  left_join(sqrt_diff, by = "Gene") %>%
+  rename(`Cell Type A` = `Cell Type A`, `Cell Type B` = `Cell Type B`, `Δ` = Delta)
+
+# Format the tables for display
+format_table <- function(tbl) {
+  tbl_fmt <- tbl
+  for (col in c("Cell Type A", "Cell Type B", "Δ")) {
+    if (is.numeric(tbl[[col]])) {
+      # Format to 2 decimal places
+      tbl_fmt[[col]] <- format(round(tbl[[col]], 2), nsmall = 2)
+      # For raw data table, remove decimal places for integer values
+      if (all(tbl[[col]] == round(tbl[[col]]))) {
+        tbl_fmt[[col]] <- as.character(round(tbl[[col]]))
+      }
+    }
+  }
+  return(tbl_fmt)
+}
+
+raw_table_fmt <- format_table(raw_table)
+log_table_fmt <- format_table(log_table)
+sqrt_table_fmt <- format_table(sqrt_table)
+
+# Function to create table visualization using ggplot2
+create_ggplot_table <- function(data_table, title, fill_color) {
+  # Add a row number column for y-position
+  data_table$row_num <- nrow(data_table):1
+  
+  # Create data frames for different parts of the visualization
+  # Cell values data
+  plot_data <- data_table %>%
+    tidyr::pivot_longer(cols = c(`Cell Type A`, `Cell Type B`, `Δ`),
+                  names_to = "column", values_to = "value") %>%
+    mutate(x_pos = case_when(
+      column == "Cell Type A" ~ 1,
+      column == "Cell Type B" ~ 2,
+      column == "Δ" ~ 3
+    ))
+  
+  # Column headers data
+  header_data <- data.frame(
+    x_pos = 1:3,
+    y_pos = nrow(data_table) + 1,
+    label = c("Cell Type A", "Cell Type B", "Δ")
+  )
+  
+  # Row labels (gene names)
+  row_labels <- data.frame(
+    x_pos = 0.6,
+    y_pos = data_table$row_num,
+    label = data_table$Gene
+  )
+  
+  # Create the plot
+  p <- ggplot() +
+    # Cell backgrounds
+    geom_tile(data = plot_data, aes(x = x_pos, y = row_num), 
+              fill = "#E6F3FF", color = "white", width = 0.95, height = 0.95) +
+    # Header backgrounds
+    geom_tile(data = header_data, aes(x = x_pos, y = y_pos), 
+              fill = fill_color, color = "white", width = 0.95, height = 0.95) +
+    # Cell values
+    geom_text(data = plot_data, aes(x = x_pos, y = row_num, label = value), 
+              size = 4.5) +
+    # Header labels
+    geom_text(data = header_data, aes(x = x_pos, y = y_pos, label = label), 
+              size = 4.5, fontface = "bold", color = "white") +
+    # Row labels (gene names)
+    geom_text(data = row_labels, aes(x = x_pos, y = y_pos, label = label), 
+              size = 4.5, hjust = 1, nudge_x = -0.1) +
+    # Formatting
+    scale_x_continuous(limits = c(-0.5, 3.5), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0.5, nrow(data_table) + 1.5), expand = c(0, 0)) +
+    labs(title = title) +
+    theme_void() +
+    theme(
+      plot.title = element_text(size = 15, color = "black", hjust = 0.5),
+      plot.margin = margin(10, 10, 10, 30)
+    )
+  
+  return(p)
+}
+
+# Create the ggplots
+gg_raw <- create_ggplot_table(data_table = raw_table_fmt, title = "Raw data", fill_color = "#6BAED6")
+gg_log <- create_ggplot_table(log_table_fmt, expression(paste("Log"[2], " transform")), "#FFC857")
+gg_sqrt <- create_ggplot_table(sqrt_table_fmt, "Square root transform", "#8BBF74")
+
+# Combine the plots using patchwork
+combined_plot <- gg_raw + gg_log + gg_sqrt + 
+  plot_layout(widths = c(1, 1, 1)) +
+  plot_annotation(
+    title = "How do different transformations affect true biological differences?",
+    theme = theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5))
+  )
+
+# Display the plot when running in an interactive session
+print(combined_plot)
+```
+
+
+# How scTransform work??
+
+```{r}
+library(gt)
+```
+
+
+## Example Dataset with Percentages
+- **Cell Type A (50%)**
+- **Cell Type B (50%)**
+  - **Subtype A (48%)**
+  - **Subtype B (2%)**
+
+
+## Create Raw Counts Table
+Create a table for the raw counts, including subtypes.
+
+```{r}
+raw_counts <- data.frame(
+  Gene = c("Gene1", "Gene2", "Gene3", "Gene4", "Gene5"),
+  Cell_Type_A = c(20, 10, 5, 12, 18),
+  Cell_Type_B_Subtype_A = c(15, 8, 3, 9, 14),
+  Cell_Type_B_Subtype_B = c(5, 2, 1, 3, 4)
+)
+
+gt(raw_counts) %>%
+  tab_header(
+    title = "Raw Counts"
+  ) %>%
+  data_color(
+    columns = c(Cell_Type_A, Cell_Type_B_Subtype_A, Cell_Type_B_Subtype_B),
+    colors = scales::col_numeric(
+      palette = c("lightblue", "darkblue"),
+      domain = NULL
+    )
+  )
+```
+
+## Create Library Size Table
+Calculate and create a table for the library size with color.
+
+```{r}
+library_size <- data.frame(
+  Cell_Type = c("Cell_Type_A", "Cell_Type_B_Subtype_A", "Cell_Type_B_Subtype_B"),
+  Library_Size = c(sum(raw_counts$Cell_Type_A), sum(raw_counts$Cell_Type_B_Subtype_A), sum(raw_counts$Cell_Type_B_Subtype_B))
+)
+
+gt(library_size) %>%
+  tab_header(
+    title = "Library Size"
+  ) %>%
+  data_color(
+    columns = vars(Library_Size),
+    colors = scales::col_numeric(
+      palette = c("lightgreen", "darkgreen"),
+      domain = NULL
+    )
+  )
+```
+
+## Create Gene Means and Variances Table
+Calculate and create a table for gene means and variances with color.
+
+```{r}
+gene_stats <- data.frame(
+  Gene = raw_counts$Gene,
+  Mean = rowMeans(raw_counts[, -1]),
+  Variance = apply(raw_counts[, -1], 1, var)
+)
+
+gt(gene_stats) %>%
+  tab_header(
+    title = "Gene Means and Variances"
+  ) %>%
+  data_color(
+    columns = vars(Mean, Variance),
+    colors = scales::col_numeric(
+      palette = c("lightcoral", "darkred"),
+      domain = NULL
+    )
+  )
+```
+
+## Create Log-Transformed and Centered Data Table
+Log-transform and center the data, then create a table with color.
+
+```{r}
+log_transformed <- data.frame(
+  Gene = raw_counts$Gene,
+  Cell_Type_A_log = log1p(raw_counts$Cell_Type_A),
+  Cell_Type_B_Subtype_A_log = log1p(raw_counts$Cell_Type_B_Subtype_A),
+  Cell_Type_B_Subtype_B_log = log1p(raw_counts$Cell_Type_B_Subtype_B)
+)
+
+gt(log_transformed) %>%
+  tab_header(
+    title = "Log-Transformed and Centered Data"
+  ) %>%
+  data_color(
+    columns = vars(Cell_Type_A_log, Cell_Type_B_Subtype_A_log, Cell_Type_B_Subtype_B_log),
+    colors = scales::col_numeric(
+      palette = c("lightyellow", "darkorange"),
+      domain = NULL
+    )
+  )
+```
+
+## Create Variance Stabilized Data Table
+Apply variance stabilization and create a table with color.
+
+```{r}
+normalized_data <- data.frame(
+  Gene = raw_counts$Gene,
+  Cell_Type_A_normalized = scale(log_transformed$Cell_Type_A_log),
+  Cell_Type_B_Subtype_A_normalized = scale(log_transformed$Cell_Type_B_Subtype_A_log),
+  Cell_Type_B_Subtype_B_normalized = scale(log_transformed$Cell_Type_B_Subtype_B_log)
+)
+
+gt(normalized_data) %>%
+  tab_header(
+    title = "Variance Stabilized Data"
+  ) %>%
+  data_color(
+    columns = vars(Cell_Type_A_normalized, Cell_Type_B_Subtype_A_normalized, Cell_Type_B_Subtype_B_normalized),
+    colors = scales::col_numeric(
+      palette = c("lightpurple", "darkpurple"),
+      domain = NULL
+    )
+  )
+```
