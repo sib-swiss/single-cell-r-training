@@ -66,7 +66,7 @@ Returning:
 
 ```{r}
 #| echo: false
-Seurat::GetAssayData(seu)[1:10,1:10]  
+Seurat::GetAssayData(object = seu, slot = "counts")[1:10,1:10]  
 ```
 
 ## After normalization
@@ -76,7 +76,7 @@ Seurat::GetAssayData(seu)[1:10,1:10]
 seu <- Seurat::NormalizeData(seu,
                      normalization.method = "LogNormalize",
                      scale.factor = 10000)
-Seurat::GetAssayData(seu)[1:10,1:10]  
+Seurat::GetAssayData(object = seu, slot = "data")[1:10,1:10]  
 ```
 
 :::

@@ -8,6 +8,33 @@ editor_options:
 # Normalized example
 
 ## Raw counts
+```{r}
+library(ggplot2)
+library(dplyr)
+library(Seurat)  # If using Seurat objects
+
+# Simulated example data: Unnormalized counts for 3 genes across 3 cell types
+set.seed(42)
+sc_data <- data.frame(
+  Gene = rep(c("Gene1", "Gene2", "Gene3"), each = 30),
+  Expression = c(rpois(30, lambda = 10), rpois(30, lambda = 20), rpois(30, lambda = 5)),
+  CellType = rep(c("A", "B", "C"), times = 30)
+)
+
+# Violin + Jitter Plot
+ggplot(sc_data, aes(x = CellType, y = Expression, fill = CellType)) +
+  geom_violin(trim = FALSE, alpha = 0.6) +  # Show expression distribution
+  geom_jitter(width = 0.2, alpha = 0.5, color = "black") +  # Add individual points
+  facet_wrap(~ Gene) +  # Separate plots for each gene
+  theme_bw() +
+  labs(title = "Unnormalized Single-Cell RNA-seq Data", 
+       x = "Cell Type", 
+       y = "Raw Expression Counts") +
+  theme(legend.position = "none")
+```
+
+
+## Log1p
 
 ```{r}
 library(ggplot2)
@@ -31,32 +58,6 @@ ggplot(sc_data_norm, aes(x = CellType, y = Expression, fill = CellType)) +
   labs(title = "Normalized Single-Cell RNA-seq Data", 
        x = "Cell Type", 
        y = "Log1p Normalized Expression") +
-  theme(legend.position = "none")
-```
-
-## Log1p
-```{r}
-library(ggplot2)
-library(dplyr)
-library(Seurat)  # If using Seurat objects
-
-# Simulated example data: Unnormalized counts for 3 genes across 3 cell types
-set.seed(42)
-sc_data <- data.frame(
-  Gene = rep(c("Gene1", "Gene2", "Gene3"), each = 30),
-  Expression = c(rpois(30, lambda = 10), rpois(30, lambda = 20), rpois(30, lambda = 5)),
-  CellType = rep(c("A", "B", "C"), times = 30)
-)
-
-# Violin + Jitter Plot
-ggplot(sc_data, aes(x = CellType, y = Expression, fill = CellType)) +
-  geom_violin(trim = FALSE, alpha = 0.6) +  # Show expression distribution
-  geom_jitter(width = 0.2, alpha = 0.5, color = "black") +  # Add individual points
-  facet_wrap(~ Gene) +  # Separate plots for each gene
-  theme_minimal() +
-  labs(title = "Unnormalized Single-Cell RNA-seq Data", 
-       x = "Cell Type", 
-       y = "Raw Expression Counts") +
   theme(legend.position = "none")
 ```
 
@@ -325,6 +326,124 @@ combined_plot <- gg_raw + gg_log + gg_sqrt +
 # Display the plot when running in an interactive session
 print(combined_plot)
 ```
+
+## Pearson
+```{r}
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+
+# Create the expanded dataset with more genes
+genes <- c("Gene 1", "Gene 1", "Gene 2", "Gene 2", "Gene 3", "Gene 3", "Gene 4", "Gene 4", "Gene 5", "Gene 5")
+cell_types <- c(rep(c("Cell Type A", "Cell Type B"), 5))
+raw_values <- c(1, 2, 100, 200, 5, 25, 400, 800, 10, 60)
+
+# Create a data frame
+data <- data.frame(
+  Gene = genes,
+  CellType = cell_types,
+  RawValue = raw_values
+)
+
+# Add transformations
+data <- data %>%
+  mutate(
+    LogValue = log2(RawValue),
+    SqrtValue = sqrt(RawValue)
+  )
+
+# Compute expected values based on 75%-25% weightage
+expected_values <- data %>%
+  group_by(Gene) %>%
+  summarise(Expected_A = 0.75 * sum(RawValue),
+            Expected_B = 0.25 * sum(RawValue))
+
+# Merge expected values
+data <- data %>%
+  left_join(expected_values, by = "Gene") %>%
+  mutate(Expected = ifelse(CellType == "Cell Type A", Expected_A, Expected_B)) %>%
+  mutate(PearsonResidual = (RawValue - Expected) / sqrt(Expected))
+
+# Compute differences
+raw_diff <- data %>%
+  group_by(Gene) %>%
+  summarize(Delta_Raw = diff(RawValue))
+
+log_diff <- data %>%
+  group_by(Gene) %>%
+  summarize(Delta_Log = diff(LogValue))
+
+sqrt_diff <- data %>%
+  group_by(Gene) %>%
+  summarize(Delta_Sqrt = diff(SqrtValue))
+
+pearson_diff <- data %>%
+  group_by(Gene) %>%
+  summarize(Delta_Pearson = diff(PearsonResidual))
+
+# Function to create ggplot tables with percentages
+create_ggplot_table <- function(data_table, title, fill_color, percentage) {
+  data_table$row_num <- nrow(data_table):1
+  plot_data <- data_table %>%
+    tidyr::pivot_longer(cols = c(`Cell Type A`, `Cell Type B`, `Δ`),
+                  names_to = "column", values_to = "value") %>%
+    mutate(x_pos = case_when(
+      column == "Cell Type A" ~ 1,
+      column == "Cell Type B" ~ 2,
+      column == "Δ" ~ 3
+    ))
+  
+  header_data <- data.frame(
+    x_pos = 1:3,
+    y_pos = nrow(data_table) + 1,
+    label = c("Cell Type A", "Cell Type B", "Δ")
+  )
+  
+  row_labels <- data.frame(
+    x_pos = 0.6,
+    y_pos = data_table$row_num,
+    label = data_table$Gene
+  )
+  
+  ggplot() +
+    geom_tile(data = plot_data, aes(x = x_pos, y = row_num), 
+              fill = "#E6F3FF", color = "white", width = 0.95, height = 0.95) +
+    geom_tile(data = header_data, aes(x = x_pos, y = y_pos), 
+              fill = fill_color, color = "white", width = 0.95, height = 0.95) +
+    geom_text(data = plot_data, aes(x = x_pos, y = row_num, label = value), size = 4.5) +
+    geom_text(data = header_data, aes(x = x_pos, y = y_pos, label = label),
+              size = 4.5, fontface = "bold", color = "white") +
+    geom_text(data = row_labels, aes(x = x_pos, y = y_pos, label = label),
+              size = 4.5, hjust = 1, nudge_x = -0.1) +
+    annotate("text", x = 2, y = nrow(data_table) + 2, label = percentage, size = 5, fontface = "bold") +
+    scale_x_continuous(limits = c(-0.5, 3.5), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0.5, nrow(data_table) + 2.5), expand = c(0, 0)) +
+    labs(title = title) +
+    theme_void() +
+    theme(plot.title = element_text(size = 15, color = "black", hjust = 0.5))
+}
+
+# Create the ggplots with percentage annotation
+gg_raw <- create_ggplot_table(raw_table_fmt, "Raw data", "#6BAED6", "Cell A: 75%, Cell B: 25%")
+gg_log <- create_ggplot_table(log_table_fmt, "Log transform", "#FFC857", "Cell A: 75%, Cell B: 25%")
+gg_sqrt <- create_ggplot_table(sqrt_table_fmt, "Square root transform", "#8BBF74", "Cell A: 75%, Cell B: 25%")
+gg_pearson <- create_ggplot_table(pearson_table_fmt, "Pearson Residuals", "#D95F02", "Cell A: 75%, Cell B: 25%")
+
+# Combine the plots
+combined_plot <- gg_raw + gg_log + gg_sqrt + gg_pearson +
+  plot_layout(widths = c(1, 1, 1, 1)) +
+  plot_annotation(
+    title = "Comparison of Transformations",
+    theme = theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5))
+  )
+
+# Display the plot
+print(combined_plot)
+
+```
+
 
 
 # How scTransform work??
