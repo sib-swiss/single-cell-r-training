@@ -208,6 +208,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../projects/project3.html" rel="" target="">
  <span class="dropdown-text">Project 3</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/project4.html" rel="" target="">
+ <span class="dropdown-text">Project 4</span></a>
+  </li>  
     </ul>
 </li>
 </ul>
@@ -297,91 +301,70 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Data has been downloaded and prepared for you from <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE208653">GEO GSE208653</a>.</p>
 <p>In order to download the data, run:</p>
-<div class="cell">
+<div class="cell" data-hash="project4_cache/html/unnamed-chunk-1_504325e72b7153f6a8da009d81b1a875">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project4.tar.gz</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzcvf</span> project4.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<pre><code>GSE208653/
+<p>After extracting, a directory <code>project4</code> appears with the following content:</p>
+<pre><code>.
 ├── data
-│&nbsp;&nbsp; ├── ADC_6
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
-│&nbsp;&nbsp; ├── HSIL_1
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
-│&nbsp;&nbsp; ├── HSIL_2
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
-│&nbsp;&nbsp; ├── N_1
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
-│&nbsp;&nbsp; ├── N_2
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
-│&nbsp;&nbsp; ├── N_HPV_NEG_1
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
-│&nbsp;&nbsp; ├── N_HPV_NEG_2
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
-│&nbsp;&nbsp; ├── SCC_4
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── barcodes.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── features.tsv.gz
-│&nbsp;&nbsp; │&nbsp;&nbsp; └── matrix.mtx.gz
-│&nbsp;&nbsp; └── SCC_5
-│&nbsp;&nbsp;     ├── barcodes.tsv.gz
-│&nbsp;&nbsp;     ├── features.tsv.gz
-│&nbsp;&nbsp;     └── matrix.mtx.gz
+│   ├── ADC_6
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── HSIL_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── HSIL_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── N_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── N_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── N_HPV_NEG_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── N_HPV_NEG_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── SCC_4
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   └── SCC_5
+│       ├── barcodes.tsv.gz
+│       ├── features.tsv.gz
+│       └── matrix.mtx.gz
 ├── paper1.pdf
-└── paper2.pdf</code></pre>
-<p>Use the following code to read the data files in R, and create a combined Seurat object:</p>
-<div class="cell">
+└── paper2.pdf
+
+10 directories, 29 files</code></pre>
+<p>Now create a new project in the <code>project1</code> directory (Project (None) &gt; New Project …), and create Seurat object from the count matrices:</p>
+<div class="cell" data-hash="project4_cache/html/unnamed-chunk-2_69bae4c6741f8f6260d940728f4c809b">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Function to read the data from the files and create a Seurat object</span></span>
-<span><span class="va">read_10x_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">sample_path</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># Read data</span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/Read10X.html">Read10X</a></span><span class="op">(</span><span class="va">sample_path</span><span class="op">)</span></span>
-<span>  <span class="va">barcodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">sample_path</span>, <span class="st">"/barcodes.tsv.gz"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">sample_path</span>, <span class="st">"/features.tsv.gz"</span><span class="op">)</span>, header <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co"># vector of paths to all sample directories</span></span>
+<span><span class="va">datadirs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"data"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="co"># Create Seurat object</span></span>
-<span>  <span class="va">seurat_object</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/CreateSeuratObject.html">CreateSeuratObject</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span>  <span class="va">seurat_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/AddMetaData.html">AddMetaData</a></span><span class="op">(</span><span class="va">seurat_object</span>, metadata <span class="op">=</span> <span class="va">barcodes</span>, </span>
-<span>                               col.name <span class="op">=</span> <span class="st">"barcodes"</span><span class="op">)</span></span>
-<span>  <span class="va">seurat_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/AddMetaData.html">AddMetaData</a></span><span class="op">(</span><span class="va">seurat_object</span>, metadata <span class="op">=</span> <span class="va">features</span><span class="op">$</span><span class="va">V2</span>,</span>
-<span>                               col.name <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span></span>
+<span><span class="co"># get the sample names</span></span>
+<span><span class="co"># replace underscores with hyphen to correctly extract sample names later on</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_"</span>, <span class="st">"-"</span>, x <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">seurat_object</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
+<span><span class="co"># create a large sparse matrix from all count data</span></span>
+<span><span class="va">sparse_matrix</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/Read10X.html">Read10X</a></span><span class="op">(</span>data.dir <span class="op">=</span> <span class="va">datadirs</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Data directory</span></span>
-<span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="st">"data/project4/GSE208653/data"</span></span>
-<span></span>
-<span><span class="co"># Read data for each sample and combine into a single Seurat object</span></span>
-<span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.dirs</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">data_dir</span>, full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">seurat_objects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">samples</span>, <span class="kw">function</span><span class="op">(</span><span class="va">sample</span><span class="op">)</span> </span>
-<span>  <span class="fu">read_10x_data</span><span class="op">(</span>sample_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="va">sample</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">combined_seurat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">seurat_objects</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  y <span class="op">=</span> <span class="va">seurat_objects</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>,</span>
-<span>  add.cell.ids <span class="op">=</span> <span class="va">samples</span>, project <span class="op">=</span> <span class="st">"CervicalCancerStudy"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">combined_seurat</span><span class="op">@</span><span class="va">meta.data</span><span class="op">$</span><span class="va">orig.ident</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">combined_seurat</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span>,</span>
-<span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, split <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, collapse <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co"># create a seurat object from sparse matrix</span></span>
+<span><span class="va">seu</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/CreateSeuratObject.html">CreateSeuratObject</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">sparse_matrix</span>,</span>
+<span>                                  project <span class="op">=</span> <span class="st">"CervicalCancerStudy"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
