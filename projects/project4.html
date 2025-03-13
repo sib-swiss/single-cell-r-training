@@ -349,15 +349,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 10 directories, 29 files</code></pre>
 <p>Now create a new project in the <code>project1</code> directory (Project (None) &gt; New Project …), and create Seurat object from the count matrices:</p>
-<div class="cell" data-hash="project4_cache/html/unnamed-chunk-2_69bae4c6741f8f6260d940728f4c809b">
+<div class="cell" data-hash="project4_cache/html/unnamed-chunk-2_5f1247d3269d70b711b5fbbbd017f082">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># vector of paths to all sample directories</span></span>
 <span><span class="va">datadirs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"data"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># get the sample names</span></span>
 <span><span class="co"># replace underscores with hyphen to correctly extract sample names later on</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_"</span>, <span class="st">"-"</span>, x <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_"</span>, <span class="st">"-"</span>, x <span class="op">=</span> <span class="va">_</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># for now, we only take the HPV negative and cervical cancer samples</span></span>
+<span><span class="va">datadirs</span> <span class="op">&lt;-</span> <span class="va">datadirs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"N-HPV-NEG-1"</span>, <span class="st">"N-HPV-NEG-2"</span>, <span class="st">"SCC-4"</span>, <span class="st">"SCC-5"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># create a large sparse matrix from all count data</span></span>
 <span><span class="va">sparse_matrix</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/Read10X.html">Read10X</a></span><span class="op">(</span>data.dir <span class="op">=</span> <span class="va">datadirs</span><span class="op">)</span></span>

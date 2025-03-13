@@ -248,6 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#available-data" id="toc-available-data" class="nav-link active" data-scroll-target="#available-data">Available data</a></li>
   <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  <li><a href="#tips-1" id="toc-tips-1" class="nav-link" data-scroll-target="#tips-1">Tips</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -321,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Female_Cocaine: treatments</li>
 </ul>
 <p>Now create a new project in the <code>project2</code> directory (Project (None) &gt; New Project …), and create Seurat object from the count matrices:</p>
-<div class="cell" data-hash="project2_cache/html/unnamed-chunk-2_d1a13db95e653853d88ad16299760fb0">
+<div class="cell" data-hash="project2_cache/html/unnamed-chunk-2_0c95cda781c22c19a4e141aa6f9bd4b2">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># vector of paths to all sample directories</span></span>
@@ -330,6 +331,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co"># get the sample names</span></span>
 <span><span class="co"># replace underscores with hyphen to correctly extract sample names later on</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_"</span>, <span class="st">"-"</span>, x <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># for now, we take only one sample per treatment</span></span>
+<span><span class="va">datadirs</span> <span class="op">&lt;-</span> <span class="va">datadirs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Female-Cocaine-1"</span>, <span class="st">"Female-Sucrose-1"</span>,</span>
+<span>                       <span class="st">"Male-Cocaine-1"</span>, <span class="st">"Male-Sucrose-1"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># create a large sparse matrix from all count data</span></span>
 <span><span class="va">sparse_matrix</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/Read10X.html">Read10X</a></span><span class="op">(</span>data.dir <span class="op">=</span> <span class="va">datadirs</span><span class="op">)</span></span>
@@ -352,26 +357,9 @@ Project exercise
 </div>
 </div>
 </section><section id="tips" class="level2"><h2 class="anchored" data-anchor-id="tips">Tips</h2>
+</section><section id="tips-1" class="level2"><h2 class="anchored" data-anchor-id="tips-1">Tips</h2>
 <ul>
-<li>For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following table:</li>
-</ul>
-<div class="cell" data-hash="project2_cache/html/unnamed-chunk-3_d17a62f14459e6c470a97a92d07db9d1">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">biomaRt</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Connect to Ensembl's FlyBase dataset</span></span>
-<span><span class="va">ensembl</span> <span class="op">&lt;-</span> <span class="fu">useMart</span><span class="op">(</span><span class="st">"ensembl"</span>, dataset <span class="op">=</span> <span class="st">"dmelanogaster_gene_ensembl"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Define attributes to fetch</span></span>
-<span><span class="va">attributes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"flybase_annot_id"</span>, <span class="st">"ensembl_gene_id"</span>, <span class="st">"flybase_gene_id"</span>,</span>
-<span>                <span class="st">"external_gene_name"</span>, <span class="st">"flybasename_gene"</span>, <span class="st">"description"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Get data</span></span>
-<span><span class="va">gene_table</span> <span class="op">&lt;-</span> <span class="fu">getBM</span><span class="op">(</span>attributes <span class="op">=</span> <span class="va">attributes</span>, mart <span class="op">=</span> <span class="va">ensembl</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Print the first few rows</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">gene_table</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<ul>
+<li>For mitochondrial genes and ribosomol genes you can use the following patterns: <code>"^mt:"</code> and <code>"^Rp[SL]"</code>.</li>
 <li>Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</li>
 </ul>
 
