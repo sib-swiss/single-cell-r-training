@@ -19,7 +19,7 @@ title: "Differential gene expression"
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
-seu <- readRDS("seu_day2-4.rds")
+seu <- readRDS("day3/seu_day3-1.rds")
 ```
 
 And load the following packages (install them if they are missing):
@@ -350,7 +350,7 @@ Keep the `tum_vs_norm` and `limma_de` objects because we will use this output la
 ```{r}
 #| echo: false
 
-saveRDS(tum_vs_norm, "tum_vs_norm_day3-1.rds")
-saveRDS(limma_de, "limma_de_day3-1.rds")
-saveRDS(proB, "proB_day3-1.rds")
+saveRDS(tum_vs_norm, "day3/tum_vs_norm_day3-2.rds")
+saveRDS(limma_de, "day3/limma_de_day3-2.rds")
+saveRDS(proB, "day3/proB_day3-2.rds")
 ```

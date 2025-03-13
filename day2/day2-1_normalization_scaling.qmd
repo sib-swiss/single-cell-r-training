@@ -21,7 +21,7 @@ title: "Normalization and scaling"
 #| echo: false
 #| output: false
 library(Seurat)
-seu <- readRDS("seu_day1-2.rds")
+seu <- readRDS("day1/seu_day1-2.rds")
 ```
 
 ### Normalization
@@ -184,7 +184,7 @@ DefaultAssay(seu) <- "RNA"
 Now, save the dataset so you can use it tomorrow:
 
 ```{r}
-saveRDS(seu, "seu_day1-3.rds")
+saveRDS(seu, "day2/seu_day2-1.rds")
 ```
 
 Clear your environment:

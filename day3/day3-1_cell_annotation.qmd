@@ -18,7 +18,7 @@ title: "Cell annotation"
 ```{r}
 #| echo: false
 #| output: false
-seu <- readRDS("seu_day2-3.rds")
+seu <- readRDS("day2/seu_day2-4.rds")
 library(Seurat)
 ```
 
@@ -269,7 +269,7 @@ Here, you can see that cluster 0 and 8 contain cells annotated as T cells (CD4+ 
 Now, save the dataset so you can use it tomorrow:
 
 ```{r}
-saveRDS(seu, "seu_day2-4.rds")
+saveRDS(seu, "day3/seu_day3-1.rds")
 ```
 
 Clear your environment:

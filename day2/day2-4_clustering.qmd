@@ -1,5 +1,7 @@
 ---
 title: "Clustering"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Material
@@ -19,7 +21,7 @@ title: "Clustering"
 Load the `seu` dataset you have created earlier today:
 
 ```{r}
-seu <- readRDS("seu_day2-2.rds")
+seu <- readRDS("day2/seu_day2-3.rds")
 ```
 
 The method implemented in Seurat first constructs a SNN graph based on the euclidean distance in PCA space, and refine the edge weights between any two cells based on the shared overlap in their local neighborhoods (Jaccard similarity). This step is performed using the `FindNeighbors()` function, and takes as input the previously defined dimensionality of the dataset.
@@ -86,6 +88,6 @@ The method can be changed with algorithm = 2,3 or 4
 ```{r}
 #| echo: false
 
-saveRDS(seu, "seu_day2-3.rds")
+saveRDS(seu, "day2/seu_day2-4.rds")
 ```
 
