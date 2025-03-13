@@ -294,7 +294,7 @@ most_expressed_boxplot <- function(object, ngenes = 20){
   
   # get percentage/cell
   cts <- t(cts)/colSums(cts)*100
-  medians <- apply(cts, 2, median)
+  medians <- SparseArray::colMedians(cts)
   
   # get top n genes
   most_expressed <- order(medians, decreasing = T)[ngenes:1]
