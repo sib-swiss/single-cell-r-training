@@ -1,54 +1,52 @@
 library(Seurat)
-library(stringr)
-library(ggplot2)
 library(Matrix)
-library(dittoSeq)
-
-
-
-# download from:
-# https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE202212&format=file
+library(ggplot2)
 
 # vector of paths to all sample directories
 datadirs <- list.files(path = "data", full.names = TRUE)
 
 # get the sample names
 # replace underscores with hyphen to correctly extract sample names later on
-names(datadirs) <- basename(datadirs) |> gsub("_", "-", x = _)
+names(datadirs) <- basename(datadirs) |> gsub("_", "-", x = _) 
 
-# for now, we take only one sample per treatment
-datadirs <- datadirs[c("Female-Cocaine-1", "Female-Sucrose-1",
-                       "Male-Cocaine-1", "Male-Sucrose-1")]
+# for now, we only take the HPV negative and cervical cancer samples
+datadirs <- datadirs[c("N-HPV-NEG-1", "N-HPV-NEG-2", "SCC-4", "SCC-5")]
 
 # create a large sparse matrix from all count data
 sparse_matrix <- Seurat::Read10X(data.dir = datadirs)
 
 # create a seurat object from sparse matrix
 seu <- Seurat::CreateSeuratObject(counts = sparse_matrix,
-                                  project = "CocaineStudy")
+                                  project = "CervicalCancerStudy")
 
 Seurat::FeatureScatter(seu, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 
 Seurat::VlnPlot(seu, features = c("nCount_RNA",
                                   "nFeature_RNA"))
 
-# mitochondrial geseu# mitochondrial genes
+# mitochondrial genes
 seu <- Seurat::PercentageFeatureSet(seu, 
-                                    pattern = "mt:", 
+                                    pattern = "^MT-", 
                                     col.name = "percent.mito")
 
 # ribosomal genes
 seu <- Seurat::PercentageFeatureSet(seu, 
-                                    pattern = "^Rp[SL]",
+                                    pattern = "^RP[SL]",
                                     col.name = "percent.ribo")
+
+# hemoglobin genes (but not HBP)
+seu <- Seurat::PercentageFeatureSet(seu,
+                                    pattern = "^HB[^(P)]",
+                                    col.name = "percent.globin")
 
 
 
 Seurat::VlnPlot(seu, features = c("percent.mito",
-                                  "percent.ribo"))
+                                  "percent.ribo",
+                                  "percent.globin"))
 
 Seurat::FeatureScatter(seu, 
-                       feature1 = "percent.mito", 
+                       feature1 = "percent.globin", 
                        feature2 = "percent.ribo")
 
 
