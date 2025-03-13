@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Single cell transcriptomics - Differential gene expression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../assets/SIB_logo.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+<!-- Matomo --><script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://matomo.sib.swiss/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '220']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script><!-- End Matomo Code -->
+</head>
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Single cell transcriptomics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+<li class="nav-item">
+    <a class="nav-link active" href="../index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../precourse_preparations.html" rel="" target="">
+ <span class="menu-text">Precourse preparations</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../course_schedule.html" rel="" target="">
+ <span class="menu-text">Course schedule</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-1" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">day 1</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">
+<li>
+    <a class="dropdown-item" href="../day1/day1-1_setup.html" rel="" target="">
+ <span class="dropdown-text">Setup</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../day1/day1-1a_cellranger.html" rel="" target="">
+ <span class="dropdown-text">Introduction &amp; cellranger</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../day1/day1-2_analysis_tools_qc.html" rel="" target="">
+ <span class="dropdown-text">Analysis tools and QC</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">day 2</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">
+<li>
+    <a class="dropdown-item" href="../day2/day2-1_normalization_scaling.html" rel="" target="">
+ <span class="dropdown-text">Normalization and scaling</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../day2/day2-2_dimensionality_reduction.html" rel="" target="">
+ <span class="dropdown-text">Dimensionality reduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../day2/day2-3_integration.html" rel="" target="">
+ <span class="dropdown-text">Integration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../day2/day2-4_clustering.html" rel="" target="">
+ <span class="dropdown-text">Clustering</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">day 3</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">
+<li>
+    <a class="dropdown-item" href="../day3/day3-1_cell_annotation.html" rel="" target="">
+ <span class="dropdown-text">Cell annotation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../day3/day3-2_differential_gene_expression.html" rel="" target="">
+ <span class="dropdown-text">Differential gene expression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../day3/day3-3_enrichment_analysis.html" rel="" target="">
+ <span class="dropdown-text">Enrichment analysis</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">
+<li>
+    <a class="dropdown-item" href="../projects/project1.html" rel="" target="">
+ <span class="dropdown-text">Project 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/project2.html" rel="" target="">
+ <span class="dropdown-text">Project 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/project3.html" rel="" target="">
+ <span class="dropdown-text">Project 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../projects/project4.html" rel="" target="">
+ <span class="dropdown-text">Project 4</span></a>
+  </li>  
+    </ul>
+</li>
+</ul>
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/sib-swiss/single-cell-r-training/" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+<div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Differential gene expression</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      </div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#material" id="toc-material" class="nav-link active" data-scroll-target="#material">Material</a></li>
+  <li>
+<a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
+  <ul class="collapse">
+<li><a href="#find-all-markers-for-each-cluster" id="toc-find-all-markers-for-each-cluster" class="nav-link" data-scroll-target="#find-all-markers-for-each-cluster">Find all markers for each cluster</a></li>
+  <li><a href="#differential-expression-between-groups-of-cells" id="toc-differential-expression-between-groups-of-cells" class="nav-link" data-scroll-target="#differential-expression-between-groups-of-cells">Differential expression between groups of cells</a></li>
+  <li><a href="#differential-expression-using-limma" id="toc-differential-expression-using-limma" class="nav-link" data-scroll-target="#differential-expression-using-limma">Differential expression using <code>limma</code></a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Differential gene expression</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="material" class="level2"><h2 class="anchored" data-anchor-id="material">Material</h2>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/6Y5uCQWRRbg?si=mcV9qJUap1qvFjy3" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<ul>
+<li>More information on <a href="https://bioconductor.org/books/3.17/OSCA.multisample/multi-sample-comparisons.html">pseudobulk analysis</a>
+</li>
+<li>
+<a href="https://bioconductor.org/packages/release/bioc/html/muscat.html">Muscat</a> for pseudobulk DGE.</li>
+<li>
+<a href="https://www.nature.com/articles/nmeth.4612">Paper</a> on the robustness of different differential expression analysis methods</li>
+</ul></section><section id="exercises" class="level2"><h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="find-all-markers-for-each-cluster" class="level3"><h3 class="anchored" data-anchor-id="find-all-markers-for-each-cluster">Find all markers for each cluster</h3>
+<p>Load the <code>seu</code> dataset you have created yesterday:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-1_5fbde8a95c580c611969d43bd1f46ae3">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"day3/seu_day3-1.rds"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And load the following packages (install them if they are missing):</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-2_bd30a379fbec52aefb7e20039033d71a">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioinf.wehi.edu.au/edgeR/">edgeR</a></span><span class="op">)</span> <span class="co"># BiocManager::install("edgeR")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioinf.wehi.edu.au/limma/">limma</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">scuttle</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The function <code>FindAllMarkers</code> performs a Wilcoxon plot to determine the genes differentially expressed between each cluster and the rest of the cells. Other types of tests than the Wilcoxon test are available. Check it out by running <code><a href="https://satijalab.org/seurat/reference/FindAllMarkers.html">?Seurat::FindAllMarkers</a></code>.</p>
+<p>Now run analysis:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-3_7d14c6558892d186e4073c90a199cd1b">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">de_genes</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/FindAllMarkers.html">FindAllMarkers</a></span><span class="op">(</span><span class="va">seu</span>,  min.pct <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>                                   only.pos <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Subset the table to only keep the significant genes, and you can save it as a csv file if you wish to explore it further. Then extract the top 3 markers per cluster:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-4_fc81ee40c4a2f5e66f965718d49b4e92">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">de_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">de_genes</span>, <span class="va">de_genes</span><span class="op">$</span><span class="va">p_val_adj</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">de_genes</span>,</span>
+<span>          <span class="st">"de_genes_FindAllMarkers.csv"</span>,</span>
+<span>          row.names <span class="op">=</span> <span class="cn">F</span>, quote <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">top_specific_markers</span> <span class="op">&lt;-</span> <span class="va">de_genes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cluster</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/top_n.html">top_n</a></span><span class="op">(</span><span class="fl">3</span>, <span class="va">avg_log2FC</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And generate e.g.&nbsp;a dotplot:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-5_730693b6769ca0e7a43f0dd83c15b786">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">dittoSeq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/dittoSeq/man/dittoDotPlot.html">dittoDotPlot</a></span><span class="op">(</span><span class="va">seu</span>,</span>
+<span>                       vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">top_specific_markers</span><span class="op">$</span><span class="va">gene</span><span class="op">)</span>, </span>
+<span>                       group.by <span class="op">=</span> <span class="st">"RNA_snn_res.0.3"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="day3-2_differential_gene_expression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What are significant marker genes in cluster 0 and 8? Are the T cell genes in there?</p>
+</div>
+</div>
+<div class="callout-hint">
+<p>You can re-load the vector with immune genes with:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-6_2813c068b97dbb4dfaa0086549b102ff">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tcell_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IL7R"</span>, <span class="st">"LTB"</span>, <span class="st">"TRAC"</span>, <span class="st">"CD3D"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-7_550f0fdfc96ce6e53c71cf1d8090ea32">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">de_genes</span><span class="op">[</span><span class="va">de_genes</span><span class="op">$</span><span class="va">gene</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">tcell_genes</span>,<span class="op">]</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">p_val</th>
+<th style="text-align: right;">avg_log2FC</th>
+<th style="text-align: right;">pct.1</th>
+<th style="text-align: right;">pct.2</th>
+<th style="text-align: right;">p_val_adj</th>
+<th style="text-align: left;">cluster</th>
+<th style="text-align: left;">gene</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CD3D</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.9050191</td>
+<td style="text-align: right;">0.770</td>
+<td style="text-align: right;">0.227</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">CD3D</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TRAC</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.5859745</td>
+<td style="text-align: right;">0.627</td>
+<td style="text-align: right;">0.202</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">TRAC</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LTB</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.8698016</td>
+<td style="text-align: right;">0.759</td>
+<td style="text-align: right;">0.395</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">LTB</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IL7R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.8974760</td>
+<td style="text-align: right;">0.438</td>
+<td style="text-align: right;">0.114</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">IL7R</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LTB1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.3878665</td>
+<td style="text-align: right;">0.678</td>
+<td style="text-align: right;">0.465</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">LTB</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TRAC1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.3761801</td>
+<td style="text-align: right;">0.744</td>
+<td style="text-align: right;">0.274</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">TRAC</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CD3D1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.1009702</td>
+<td style="text-align: right;">0.799</td>
+<td style="text-align: right;">0.325</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">CD3D</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LTB2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.8673679</td>
+<td style="text-align: right;">0.761</td>
+<td style="text-align: right;">0.461</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">LTB</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL7R1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.8831338</td>
+<td style="text-align: right;">0.460</td>
+<td style="text-align: right;">0.172</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">IL7R</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LTB3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.9176413</td>
+<td style="text-align: right;">0.749</td>
+<td style="text-align: right;">0.466</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">LTB</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>So, yes, the T-cell genes are highly significant markers for cluster 0 and 8.</p>
+</div>
+</div>
+</div>
+</section><section id="differential-expression-between-groups-of-cells" class="level3"><h3 class="anchored" data-anchor-id="differential-expression-between-groups-of-cells">Differential expression between groups of cells</h3>
+<p>The <code>FindMarkers</code> function allows to test for differential gene expression analysis specifically between 2 groups of cells, i.e.&nbsp;perform pairwise comparisons, eg between cells of cluster 0 vs cluster 2, or between cells annotated as T-cells and B-cells.</p>
+<p>First we can set the default cell identity to the cell types defined by <code>SingleR</code>:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-8_25ef9061c1c88ff548ba3f9dd0605a23">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seu</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/Idents.html">SetIdent</a></span><span class="op">(</span><span class="va">seu</span>, value <span class="op">=</span> <span class="st">"SingleR_annot"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Run the differential gene expression analysis and subset the table to keep the significant genes:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-9_251c40b48e965c80df40e1941f1fa903">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">deg_cd8_cd4</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/FindMarkers.html">FindMarkers</a></span><span class="op">(</span><span class="va">seu</span>,</span>
+<span>                                   ident.1 <span class="op">=</span> <span class="st">"CD8+ T cells"</span>,</span>
+<span>                                   ident.2 <span class="op">=</span> <span class="st">"CD4+ T cells"</span>,</span>
+<span>                                   group.by <span class="op">=</span> <span class="va">seu</span><span class="op">$</span><span class="va">SingleR_annot</span>,</span>
+<span>                                   test.use <span class="op">=</span> <span class="st">"wilcox"</span><span class="op">)</span></span>
+<span><span class="va">deg_cd8_cd4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">deg_cd8_cd4</span>, <span class="va">deg_cd8_cd4</span><span class="op">$</span><span class="va">p_val_adj</span><span class="op">&lt;</span><span class="fl">0.05</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Are CD8A, CD8B and CD4 in there? What does the sign (i.e.&nbsp;positive or negative) mean in the log fold change values? Are they according to the CD8+ and CD4+ annotations? Check your answer by generating a violin plot of a top differentially expressed gene.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You can check out the results with:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-10_2b21aba1d94a295e009983fe9c476669">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/View.html">View</a></span><span class="op">(</span><span class="va">deg_cd8_cd4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-11_cf612cf11b754622f7a2115f5743b49f">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">p_val</th>
+<th style="text-align: right;">avg_log2FC</th>
+<th style="text-align: right;">pct.1</th>
+<th style="text-align: right;">pct.2</th>
+<th style="text-align: right;">p_val_adj</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CD8A</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">5.8036617</td>
+<td style="text-align: right;">0.336</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTSW</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.4118773</td>
+<td style="text-align: right;">0.276</td>
+<td style="text-align: right;">0.030</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CCL5</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">4.2922622</td>
+<td style="text-align: right;">0.285</td>
+<td style="text-align: right;">0.062</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CD8B</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.3123538</td>
+<td style="text-align: right;">0.470</td>
+<td style="text-align: right;">0.178</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NKG7</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">4.5376500</td>
+<td style="text-align: right;">0.225</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CST7</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">4.4123574</td>
+<td style="text-align: right;">0.143</td>
+<td style="text-align: right;">0.012</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GZMA</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.8501654</td>
+<td style="text-align: right;">0.169</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TRGC2</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.4931638</td>
+<td style="text-align: right;">0.144</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPS27</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1820605</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KLRD1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">4.3589947</td>
+<td style="text-align: right;">0.108</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ID2</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.8632969</td>
+<td style="text-align: right;">0.565</td>
+<td style="text-align: right;">0.353</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GZMK</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.0113231</td>
+<td style="text-align: right;">0.130</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HCST</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.7949700</td>
+<td style="text-align: right;">0.681</td>
+<td style="text-align: right;">0.495</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MT-CO1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.3243268</td>
+<td style="text-align: right;">0.989</td>
+<td style="text-align: right;">0.979</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TRGC1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.6853476</td>
+<td style="text-align: right;">0.110</td>
+<td style="text-align: right;">0.013</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FHIT</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-1.6706990</td>
+<td style="text-align: right;">0.110</td>
+<td style="text-align: right;">0.273</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RP11-291B21.2</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.3507107</td>
+<td style="text-align: right;">0.222</td>
+<td style="text-align: right;">0.077</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MT-ND4</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.3226206</td>
+<td style="text-align: right;">0.963</td>
+<td style="text-align: right;">0.932</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CD4</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-3.3247772</td>
+<td style="text-align: right;">0.011</td>
+<td style="text-align: right;">0.105</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MT-CO2</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.2401784</td>
+<td style="text-align: right;">0.993</td>
+<td style="text-align: right;">0.995</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TRDC</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">2.6894608</td>
+<td style="text-align: right;">0.105</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRTAM</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.7124154</td>
+<td style="text-align: right;">0.068</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PECAM1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">2.6701767</td>
+<td style="text-align: right;">0.096</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LYAR</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.6580580</td>
+<td style="text-align: right;">0.198</td>
+<td style="text-align: right;">0.076</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GZMH</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">4.8543018</td>
+<td style="text-align: right;">0.067</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PRF1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">2.8596139</td>
+<td style="text-align: right;">0.099</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ACTB</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.3093718</td>
+<td style="text-align: right;">0.965</td>
+<td style="text-align: right;">0.925</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AC092580.4</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.3359936</td>
+<td style="text-align: right;">0.173</td>
+<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CCL4</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.7724347</td>
+<td style="text-align: right;">0.118</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">0.0000001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPS27A</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1605123</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0000001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPL11</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1685948</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0000002</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KLRC1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">8.3089065</td>
+<td style="text-align: right;">0.048</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.0000004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MT-CO3</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.2753652</td>
+<td style="text-align: right;">0.966</td>
+<td style="text-align: right;">0.954</td>
+<td style="text-align: right;">0.0000005</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TPST2</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.8352805</td>
+<td style="text-align: right;">0.137</td>
+<td style="text-align: right;">0.045</td>
+<td style="text-align: right;">0.0000009</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RUNX3</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.0535174</td>
+<td style="text-align: right;">0.180</td>
+<td style="text-align: right;">0.071</td>
+<td style="text-align: right;">0.0000009</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HLA-B</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.3203112</td>
+<td style="text-align: right;">0.970</td>
+<td style="text-align: right;">0.934</td>
+<td style="text-align: right;">0.0000012</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPL21</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1713527</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0000012</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MT-ND2</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.2971960</td>
+<td style="text-align: right;">0.958</td>
+<td style="text-align: right;">0.918</td>
+<td style="text-align: right;">0.0000013</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPS29</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1172011</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0000032</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GNLY</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.8610459</td>
+<td style="text-align: right;">0.132</td>
+<td style="text-align: right;">0.046</td>
+<td style="text-align: right;">0.0000038</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL32</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.5401192</td>
+<td style="text-align: right;">0.739</td>
+<td style="text-align: right;">0.624</td>
+<td style="text-align: right;">0.0000060</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FAM173A</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.1506784</td>
+<td style="text-align: right;">0.194</td>
+<td style="text-align: right;">0.087</td>
+<td style="text-align: right;">0.0000076</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NR4A2</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.8415276</td>
+<td style="text-align: right;">0.341</td>
+<td style="text-align: right;">0.203</td>
+<td style="text-align: right;">0.0000094</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IL2RB</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">2.2000968</td>
+<td style="text-align: right;">0.078</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.0000148</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOPX</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">2.3701004</td>
+<td style="text-align: right;">0.089</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">0.0000197</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CXCR3</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">2.4269612</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">0.013</td>
+<td style="text-align: right;">0.0000234</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPL30</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1749260</td>
+<td style="text-align: right;">0.992</td>
+<td style="text-align: right;">0.998</td>
+<td style="text-align: right;">0.0000259</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PLEK</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">2.7963063</td>
+<td style="text-align: right;">0.059</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.0000327</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CBLB</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.2237121</td>
+<td style="text-align: right;">0.127</td>
+<td style="text-align: right;">0.045</td>
+<td style="text-align: right;">0.0000494</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPS25</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1727553</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0000532</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BZW1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.7778875</td>
+<td style="text-align: right;">0.354</td>
+<td style="text-align: right;">0.223</td>
+<td style="text-align: right;">0.0000597</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPL34</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1552375</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0000684</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MT-ND3</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.2539291</td>
+<td style="text-align: right;">0.955</td>
+<td style="text-align: right;">0.930</td>
+<td style="text-align: right;">0.0000920</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ACTG1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.4120757</td>
+<td style="text-align: right;">0.744</td>
+<td style="text-align: right;">0.622</td>
+<td style="text-align: right;">0.0001017</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPL31</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1426997</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.998</td>
+<td style="text-align: right;">0.0001340</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CD160</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">4.6296720</td>
+<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.0001448</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NT5E</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">4.1692640</td>
+<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.0001452</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TRAT1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-1.2378085</td>
+<td style="text-align: right;">0.135</td>
+<td style="text-align: right;">0.242</td>
+<td style="text-align: right;">0.0001694</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPL35A</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1498209</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.0001911</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPL32</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1349986</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0001959</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MAL</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-1.0983742</td>
+<td style="text-align: right;">0.149</td>
+<td style="text-align: right;">0.257</td>
+<td style="text-align: right;">0.0001977</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MATK</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">1.5714195</td>
+<td style="text-align: right;">0.092</td>
+<td style="text-align: right;">0.026</td>
+<td style="text-align: right;">0.0002149</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CD40LG</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-1.9356543</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">0.087</td>
+<td style="text-align: right;">0.0002240</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TGFBR3</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.2149127</td>
+<td style="text-align: right;">0.047</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.0003054</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CLIC3</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">2.7202513</td>
+<td style="text-align: right;">0.054</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.0004215</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">JUN</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.5742398</td>
+<td style="text-align: right;">0.681</td>
+<td style="text-align: right;">0.588</td>
+<td style="text-align: right;">0.0004373</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KLRC4</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">3.3549690</td>
+<td style="text-align: right;">0.048</td>
+<td style="text-align: right;">0.005</td>
+<td style="text-align: right;">0.0005192</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPS23</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1485187</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0005639</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TMSB10</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">-0.1783588</td>
+<td style="text-align: right;">0.996</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.0006274</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IFRD1</td>
+<td style="text-align: right;">0.0e+00</td>
+<td style="text-align: right;">0.7876254</td>
+<td style="text-align: right;">0.303</td>
+<td style="text-align: right;">0.182</td>
+<td style="text-align: right;">0.0006301</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ICOS</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">-1.8295856</td>
+<td style="text-align: right;">0.035</td>
+<td style="text-align: right;">0.107</td>
+<td style="text-align: right;">0.0009510</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MT-ATP6</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">0.2791020</td>
+<td style="text-align: right;">0.932</td>
+<td style="text-align: right;">0.902</td>
+<td style="text-align: right;">0.0009630</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">XCL2</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">5.1473347</td>
+<td style="text-align: right;">0.035</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.0009734</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LITAF</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">0.6455639</td>
+<td style="text-align: right;">0.407</td>
+<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">0.0010564</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KLRC2</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">4.5769235</td>
+<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.0011382</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LAG3</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">2.6152771</td>
+<td style="text-align: right;">0.054</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0.0012129</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KLRG1</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">1.8532056</td>
+<td style="text-align: right;">0.103</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">0.0013752</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IFNG</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">3.4727589</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.0013816</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPS15A</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">-0.1390132</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0014859</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MT1F</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">1.8145433</td>
+<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">0.026</td>
+<td style="text-align: right;">0.0015767</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S100B</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">2.0010809</td>
+<td style="text-align: right;">0.105</td>
+<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">0.0018264</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LCP1</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">0.7192442</td>
+<td style="text-align: right;">0.312</td>
+<td style="text-align: right;">0.198</td>
+<td style="text-align: right;">0.0021165</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MT-CYB</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">0.2155921</td>
+<td style="text-align: right;">0.959</td>
+<td style="text-align: right;">0.958</td>
+<td style="text-align: right;">0.0021248</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GZMB</td>
+<td style="text-align: right;">1.0e-07</td>
+<td style="text-align: right;">4.7551476</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.0021433</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HLA-DPB1</td>
+<td style="text-align: right;">2.0e-07</td>
+<td style="text-align: right;">0.9458630</td>
+<td style="text-align: right;">0.210</td>
+<td style="text-align: right;">0.113</td>
+<td style="text-align: right;">0.0028339</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MAP3K8</td>
+<td style="text-align: right;">2.0e-07</td>
+<td style="text-align: right;">2.3308513</td>
+<td style="text-align: right;">0.058</td>
+<td style="text-align: right;">0.012</td>
+<td style="text-align: right;">0.0037843</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STK17A</td>
+<td style="text-align: right;">3.0e-07</td>
+<td style="text-align: right;">0.6044699</td>
+<td style="text-align: right;">0.426</td>
+<td style="text-align: right;">0.306</td>
+<td style="text-align: right;">0.0049752</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ZFP36</td>
+<td style="text-align: right;">3.0e-07</td>
+<td style="text-align: right;">0.6981065</td>
+<td style="text-align: right;">0.394</td>
+<td style="text-align: right;">0.276</td>
+<td style="text-align: right;">0.0052431</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A1BG</td>
+<td style="text-align: right;">3.0e-07</td>
+<td style="text-align: right;">0.9879067</td>
+<td style="text-align: right;">0.147</td>
+<td style="text-align: right;">0.068</td>
+<td style="text-align: right;">0.0052530</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ACTN4</td>
+<td style="text-align: right;">3.0e-07</td>
+<td style="text-align: right;">1.6884121</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">0.0057168</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GZMM</td>
+<td style="text-align: right;">3.0e-07</td>
+<td style="text-align: right;">0.5590226</td>
+<td style="text-align: right;">0.354</td>
+<td style="text-align: right;">0.231</td>
+<td style="text-align: right;">0.0057598</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPL13A</td>
+<td style="text-align: right;">3.0e-07</td>
+<td style="text-align: right;">-0.1027637</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0062383</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ABCB1</td>
+<td style="text-align: right;">4.0e-07</td>
+<td style="text-align: right;">2.0901339</td>
+<td style="text-align: right;">0.057</td>
+<td style="text-align: right;">0.012</td>
+<td style="text-align: right;">0.0067877</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DUSP2</td>
+<td style="text-align: right;">4.0e-07</td>
+<td style="text-align: right;">1.0251535</td>
+<td style="text-align: right;">0.319</td>
+<td style="text-align: right;">0.213</td>
+<td style="text-align: right;">0.0069206</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARPC5L</td>
+<td style="text-align: right;">4.0e-07</td>
+<td style="text-align: right;">0.8444989</td>
+<td style="text-align: right;">0.173</td>
+<td style="text-align: right;">0.087</td>
+<td style="text-align: right;">0.0071525</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CORO1B</td>
+<td style="text-align: right;">4.0e-07</td>
+<td style="text-align: right;">-1.2457970</td>
+<td style="text-align: right;">0.122</td>
+<td style="text-align: right;">0.209</td>
+<td style="text-align: right;">0.0072482</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C12orf75</td>
+<td style="text-align: right;">5.0e-07</td>
+<td style="text-align: right;">0.9457620</td>
+<td style="text-align: right;">0.200</td>
+<td style="text-align: right;">0.111</td>
+<td style="text-align: right;">0.0086192</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPL18</td>
+<td style="text-align: right;">5.0e-07</td>
+<td style="text-align: right;">-0.1498451</td>
+<td style="text-align: right;">0.982</td>
+<td style="text-align: right;">0.988</td>
+<td style="text-align: right;">0.0088652</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPS8</td>
+<td style="text-align: right;">5.0e-07</td>
+<td style="text-align: right;">-0.1596945</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.0091967</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B2M</td>
+<td style="text-align: right;">5.0e-07</td>
+<td style="text-align: right;">0.1532571</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.0095932</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MT-ND1</td>
+<td style="text-align: right;">5.0e-07</td>
+<td style="text-align: right;">0.2998300</td>
+<td style="text-align: right;">0.843</td>
+<td style="text-align: right;">0.791</td>
+<td style="text-align: right;">0.0098249</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPL37</td>
+<td style="text-align: right;">6.0e-07</td>
+<td style="text-align: right;">-0.1315823</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.0103264</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TSPAN32</td>
+<td style="text-align: right;">6.0e-07</td>
+<td style="text-align: right;">1.2568587</td>
+<td style="text-align: right;">0.123</td>
+<td style="text-align: right;">0.054</td>
+<td style="text-align: right;">0.0103422</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GPR183</td>
+<td style="text-align: right;">6.0e-07</td>
+<td style="text-align: right;">-0.9248264</td>
+<td style="text-align: right;">0.116</td>
+<td style="text-align: right;">0.209</td>
+<td style="text-align: right;">0.0103973</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CCR7</td>
+<td style="text-align: right;">6.0e-07</td>
+<td style="text-align: right;">-0.8769143</td>
+<td style="text-align: right;">0.244</td>
+<td style="text-align: right;">0.343</td>
+<td style="text-align: right;">0.0113471</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SRGN</td>
+<td style="text-align: right;">6.0e-07</td>
+<td style="text-align: right;">0.7042011</td>
+<td style="text-align: right;">0.467</td>
+<td style="text-align: right;">0.360</td>
+<td style="text-align: right;">0.0117323</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPL5</td>
+<td style="text-align: right;">7.0e-07</td>
+<td style="text-align: right;">-0.1568235</td>
+<td style="text-align: right;">0.983</td>
+<td style="text-align: right;">0.989</td>
+<td style="text-align: right;">0.0121481</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPL38</td>
+<td style="text-align: right;">7.0e-07</td>
+<td style="text-align: right;">-0.1604085</td>
+<td style="text-align: right;">0.989</td>
+<td style="text-align: right;">0.993</td>
+<td style="text-align: right;">0.0123553</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CYBA</td>
+<td style="text-align: right;">7.0e-07</td>
+<td style="text-align: right;">0.4154226</td>
+<td style="text-align: right;">0.680</td>
+<td style="text-align: right;">0.582</td>
+<td style="text-align: right;">0.0136535</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DUSP1</td>
+<td style="text-align: right;">8.0e-07</td>
+<td style="text-align: right;">0.5137168</td>
+<td style="text-align: right;">0.688</td>
+<td style="text-align: right;">0.582</td>
+<td style="text-align: right;">0.0155765</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TBX21</td>
+<td style="text-align: right;">9.0e-07</td>
+<td style="text-align: right;">3.9258636</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.0168414</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">XCL1</td>
+<td style="text-align: right;">9.0e-07</td>
+<td style="text-align: right;">4.2021279</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.0169279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LINC00152</td>
+<td style="text-align: right;">1.1e-06</td>
+<td style="text-align: right;">1.4174424</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">0.041</td>
+<td style="text-align: right;">0.0197132</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HLA-A</td>
+<td style="text-align: right;">1.1e-06</td>
+<td style="text-align: right;">0.3019478</td>
+<td style="text-align: right;">0.891</td>
+<td style="text-align: right;">0.845</td>
+<td style="text-align: right;">0.0198546</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NSMAF</td>
+<td style="text-align: right;">1.1e-06</td>
+<td style="text-align: right;">1.5192786</td>
+<td style="text-align: right;">0.067</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">0.0207285</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SCCPDH</td>
+<td style="text-align: right;">1.2e-06</td>
+<td style="text-align: right;">1.6248603</td>
+<td style="text-align: right;">0.068</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">0.0218906</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPS17</td>
+<td style="text-align: right;">1.2e-06</td>
+<td style="text-align: right;">-0.1449256</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.999</td>
+<td style="text-align: right;">0.0226365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NCR3</td>
+<td style="text-align: right;">1.4e-06</td>
+<td style="text-align: right;">1.5189519</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: right;">0.023</td>
+<td style="text-align: right;">0.0254304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HLA-C</td>
+<td style="text-align: right;">1.8e-06</td>
+<td style="text-align: right;">0.2515121</td>
+<td style="text-align: right;">0.907</td>
+<td style="text-align: right;">0.859</td>
+<td style="text-align: right;">0.0341751</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TSPYL2</td>
+<td style="text-align: right;">1.9e-06</td>
+<td style="text-align: right;">0.5852828</td>
+<td style="text-align: right;">0.269</td>
+<td style="text-align: right;">0.168</td>
+<td style="text-align: right;">0.0349308</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AP3M2</td>
+<td style="text-align: right;">2.0e-06</td>
+<td style="text-align: right;">-1.6253908</td>
+<td style="text-align: right;">0.071</td>
+<td style="text-align: right;">0.143</td>
+<td style="text-align: right;">0.0370676</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PRR5</td>
+<td style="text-align: right;">2.1e-06</td>
+<td style="text-align: right;">1.9492113</td>
+<td style="text-align: right;">0.075</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">0.0399115</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPL36A</td>
+<td style="text-align: right;">2.3e-06</td>
+<td style="text-align: right;">-0.2223425</td>
+<td style="text-align: right;">0.989</td>
+<td style="text-align: right;">0.990</td>
+<td style="text-align: right;">0.0436935</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FCRL6</td>
+<td style="text-align: right;">2.5e-06</td>
+<td style="text-align: right;">6.1868906</td>
+<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.0464487</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ADTRP</td>
+<td style="text-align: right;">2.5e-06</td>
+<td style="text-align: right;">-2.8470196</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.053</td>
+<td style="text-align: right;">0.0466904</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIRC3</td>
+<td style="text-align: right;">2.6e-06</td>
+<td style="text-align: right;">-1.4864265</td>
+<td style="text-align: right;">0.071</td>
+<td style="text-align: right;">0.143</td>
+<td style="text-align: right;">0.0489079</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>For an explanation of the log fold change have a look at <code><a href="https://satijalab.org/seurat/reference/FindMarkers.html">?Seurat::FindMarkers</a></code>. At <strong>Value</strong> it says:</p>
+<blockquote class="blockquote">
+<p><code>avg_logFC</code>: log fold-chage of the average expression between the two groups. Positive values indicate that the gene is more highly expressed in the first group</p>
+</blockquote>
+<p>To view CD8A, CD8B and CD4:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-12_ad3143635ba97527b30cffc7bc1a3a97">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">deg_cd8_cd4</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD4"</span>, <span class="st">"CD8A"</span>, <span class="st">"CD8B"</span><span class="op">)</span>,<span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            p_val avg_log2FC pct.1 pct.2    p_val_adj
+CD4  2.290800e-14  -3.324777 0.011 0.105 4.277611e-10
+CD8A 2.889582e-74   5.803662 0.336 0.008 5.395717e-70
+CD8B 3.756143e-34   1.312354 0.470 0.178 7.013846e-30</code></pre>
+</div>
+</div>
+<p>Indeed, because we compared ident.1 = “CD8+ T cells” to ident.2 = “CD4+ T cells”, a negative log2FC for the CD4 gene indicates a lower expression in CD8+ T-cells than in CD4+ T-cells, while a positive log2FC for the CD8A and CD8B genes indicates a higher expression in CD8+ T-cells.</p>
+<p>Plotting the genes in these two T-cell groups only:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-13_93f5bc091b47d933364d3f676652e33e">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">seu</span>, </span>
+<span>            features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD4"</span>, <span class="st">"CD8A"</span>, <span class="st">"CD8B"</span><span class="op">)</span>,</span>
+<span>            idents <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD8+ T cells"</span>, <span class="st">"CD4+ T cells"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="day3-2_differential_gene_expression_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="differential-expression-using-limma" class="level3"><h3 class="anchored" data-anchor-id="differential-expression-using-limma">Differential expression using <code>limma</code>
+</h3>
+<p>The Wilcoxon test implemented in <code>FindMarkers</code> does not allow you to test for complex design (eg factorial experiments) or to include batch as a covariate. It doesn’t allow you to run paired-sample T tests for example.</p>
+<p>For more complex designs, we can use <code>edgeR</code> or <code>limma</code> which are designed for microarray or bulk RNA seq data and provide a design matrix that includes covariates for example, or sample IDs for paired analyses.</p>
+<p>We will load an object containing only pro B cells, both from healthy tissues (PBMMC), and malignant tissues (ETV6-RUNX1).</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Please NOTE that in the original design of this data set, the healthy and malignant tissues were not patient-matched, i.e.&nbsp;the real design was not the one of paired healthy and malignant tissues. However, for demonstration purposes, we will show you how to run a paired analysis, and do as if the PBMMC-1 and ETV6-RUNX1-1 samples both came from the same patient 1, the PBMMC-2 and ETV6-RUNX1-2 samples both came from the same patient 2, etc…</p>
+</div>
+</div>
+<p>We can load the object and explore its UMAP and meta.data like this:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-14_b71f21d8c7a2296b90e39e391d06bf4a">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">proB</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"course_data/proB.rds"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">proB</span>, group.by <span class="op">=</span> <span class="st">"orig.ident"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="day3-2_differential_gene_expression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">proB</span><span class="op">@</span><span class="va">meta.data</span><span class="op">$</span><span class="va">type</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ETV6-RUNX1      PBMMC 
+      2000       1021 </code></pre>
+</div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">proB</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                           orig.ident nCount_RNA nFeature_RNA    SingleR_annot
+PBMMC-1_AAATGCCAGACTGGGT-1    PBMMC-1       4886         1727 Pro-B_cell_CD34+
+PBMMC-1_AAATGCCTCCACTGGG-1    PBMMC-1       8397         2291 Pro-B_cell_CD34+
+PBMMC-1_AACACGTTCTTGACGA-1    PBMMC-1       3444         1204 Pro-B_cell_CD34+
+PBMMC-1_AACCATGAGAAGGTGA-1    PBMMC-1       8981         2437 Pro-B_cell_CD34+
+PBMMC-1_AACCGCGCATGGTCAT-1    PBMMC-1       3719         1368 Pro-B_cell_CD34+
+PBMMC-1_AAGCCGCCAGACGTAG-1    PBMMC-1       4573         1464 Pro-B_cell_CD34+
+                            type
+PBMMC-1_AAATGCCAGACTGGGT-1 PBMMC
+PBMMC-1_AAATGCCTCCACTGGG-1 PBMMC
+PBMMC-1_AACACGTTCTTGACGA-1 PBMMC
+PBMMC-1_AACCATGAGAAGGTGA-1 PBMMC
+PBMMC-1_AACCGCGCATGGTCAT-1 PBMMC
+PBMMC-1_AAGCCGCCAGACGTAG-1 PBMMC</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you want to know how this pro-B cell subset is generated, have a look at the script <a href="https://raw.githubusercontent.com/sib-swiss/single-cell-training/master/scripts/generate_object_proB.R">here</a>.</p>
+</div>
+</div>
+<p>Let’s have a look at the UMAP (again), coloured by celltype:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-15_38982535d6828d879d3117c2008ad8bd">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">proB</span>, group.by <span class="op">=</span> <span class="st">"type"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="day3-2_differential_gene_expression_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Let’s say we are specifically interested to test for differential gene expression between the tumor and normal samples.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Here we could also test for e.g.&nbsp;healthy versus diseased within a celltype/cluster.</p>
+</div>
+</div>
+<p>Now we will run differential expression analysis between tumor and healthy cells using the patient ID as a covariate by using <code>limma</code>.</p>
+<p>Prepare the pseudobulk count matrix:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-16_4665d68f5e147b7bbc828806c2e46456">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#taking the proB data </span></span>
+<span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/DefaultAssay.html">DefaultAssay</a></span><span class="op">(</span><span class="va">proB</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"RNA"</span></span>
+<span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/Idents.html">Idents</a></span><span class="op">(</span><span class="va">proB</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">proB</span><span class="op">$</span><span class="va">orig.ident</span></span>
+<span></span>
+<span><span class="co">## add the patient id also for paired DGE</span></span>
+<span><span class="va">proB</span><span class="op">$</span><span class="va">patient.id</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"ETV6-RUNX1"</span>, <span class="st">"ETV6_RUNX1"</span>, <span class="va">proB</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span></span>
+<span><span class="va">proB</span><span class="op">$</span><span class="va">patient.id</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">proB</span><span class="op">$</span><span class="va">patient.id</span>, <span class="st">"-"</span><span class="op">)</span>, <span class="st">'['</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Here we do perform pseudo-bulk:</span></span>
+<span><span class="co">##first a mandatory column of sample needs to be added to the meta data that is the grouping factor, should be the samples</span></span>
+<span><span class="va">proB</span><span class="op">$</span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">proB</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># aggergate the cells per sampple</span></span>
+<span><span class="va">bulk</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/AggregateExpression.html">AggregateExpression</a></span><span class="op">(</span><span class="va">proB</span>, group.by <span class="op">=</span> <span class="st">"sample"</span>,</span>
+<span>                                    return.seurat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                    assay <span class="op">=</span> <span class="st">"RNA"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create a metadata data frame based on the aggregated cells</span></span>
+<span><span class="va">meta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">proB</span><span class="op">@</span><span class="va">meta.data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"orig.ident"</span>,</span>
+<span>                                            <span class="st">"sample"</span>, <span class="st">"type"</span>,</span>
+<span>                                            <span class="st">"patient.id"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">meta_data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">meta_data</span><span class="op">$</span><span class="va">orig.ident</span></span>
+<span><span class="va">bulk</span><span class="op">@</span><span class="va">meta.data</span> <span class="op">&lt;-</span> <span class="va">meta_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">bulk</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-17_0b3290f7b0c9d1ea7fd5fe017c14716c">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">##have a look at the counts</span></span>
+<span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/AssayData.html">GetAssayData</a></span><span class="op">(</span><span class="va">bulk</span>, layer <span class="op">=</span> <span class="st">"counts"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">counts</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              ETV6-RUNX1-1 ETV6-RUNX1-2 ETV6-RUNX1-3 PBMMC-1 PBMMC-2 PBMMC-3
+RP11-34P13.7             0            0            0       2       0       0
+FO538757.3               0            0            0       0       0       0
+FO538757.2             138          275           74     129      40     112
+AP006222.2              63           43           17      38      19      26
+RP4-669L17.10            5           10            3       0       1       1
+RP5-857K21.4             0            0            0       0       0       2</code></pre>
+</div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#have a look at the colData of our new object summed, can you see type and </span></span>
+<span><span class="co">#patient.id are there</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">bulk</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               orig.ident       sample       type patient.id
+ETV6-RUNX1-1 ETV6-RUNX1-1 ETV6-RUNX1-1 ETV6-RUNX1          1
+ETV6-RUNX1-2 ETV6-RUNX1-2 ETV6-RUNX1-2 ETV6-RUNX1          2
+ETV6-RUNX1-3 ETV6-RUNX1-3 ETV6-RUNX1-3 ETV6-RUNX1          3
+PBMMC-1           PBMMC-1      PBMMC-1      PBMMC          1
+PBMMC-2           PBMMC-2      PBMMC-2      PBMMC          2
+PBMMC-3           PBMMC-3      PBMMC-3      PBMMC          3</code></pre>
+</div>
+</div>
+<p>Generate a <code>DGEList</code> object to use as input for <code>limma</code> and filter the genes to remove lowly expressed genes. How many are left?</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-18_a87e94a8f97b595f4bb15e92eeb62df8">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#As in the standard limma analysis generate a DGE object</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">edgeR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/DGEList.html">DGEList</a></span><span class="op">(</span><span class="va">counts</span>, samples <span class="op">=</span> <span class="va">bulk</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">##filter lowly expressed (recommanded for limma)</span></span>
+<span><span class="va">keep</span> <span class="op">&lt;-</span> <span class="fu">edgeR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/filterByExpr.html">filterByExpr</a></span><span class="op">(</span><span class="va">y</span>, group <span class="op">=</span> <span class="va">bulk</span><span class="op">$</span><span class="va">type</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">keep</span>,<span class="op">]</span></span>
+<span></span>
+<span><span class="co">##see how many genes were kept </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">keep</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Mode   FALSE    TRUE 
+logical   11086   10017 </code></pre>
+</div>
+</div>
+<p>Generate a design matrix, including patient ID to model for a paired analysis. If you need help to generate a design matrix, check out the very nice <a href="https://bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf">edgeR User Guide</a>, sections 3.3 and 3.4. Extract the sample ID from the meta.data, then create the design matrix:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-19_19f790cd73f45622a5283a497ebe6534">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Create the design matrix and include the technology as a covariate:</span></span>
+<span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="op">~</span><span class="fl">0</span> <span class="op">+</span> <span class="va">y</span><span class="op">$</span><span class="va">samples</span><span class="op">$</span><span class="va">type</span> <span class="op">+</span> <span class="va">y</span><span class="op">$</span><span class="va">samples</span><span class="op">$</span><span class="va">patient.id</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Have a look</span></span>
+<span><span class="va">design</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  y$samples$typeETV6-RUNX1 y$samples$typePBMMC y$samples$patient.id2
+1                        1                   0                     0
+2                        1                   0                     1
+3                        1                   0                     0
+4                        0                   1                     0
+5                        0                   1                     1
+6                        0                   1                     0
+  y$samples$patient.id3
+1                     0
+2                     0
+3                     1
+4                     0
+5                     0
+6                     1
+attr(,"assign")
+[1] 1 1 2 2
+attr(,"contrasts")
+attr(,"contrasts")$`y$samples$type`
+[1] "contr.treatment"
+
+attr(,"contrasts")$`y$samples$patient.id`
+[1] "contr.treatment"</code></pre>
+</div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># change column/rownames names to more simple group names: </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/make.names.html">make.names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ETV6-RUNX1"</span>, <span class="st">"PBMMC"</span>,<span class="st">"patient2"</span>,<span class="st">"patient3"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">y</span><span class="op">$</span><span class="va">samples</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Specify which contrast to analyse:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-20_6919ac4027443d3fc59fdc565e7d8feb">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">contrast.mat</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/makeContrasts.html">makeContrasts</a></span><span class="op">(</span><span class="va">ETV6.RUNX1</span> <span class="op">-</span> <span class="va">PBMMC</span>,</span>
+<span>                                     levels <span class="op">=</span> <span class="va">design</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Firt, we perform TMM normalization using edgeR, and then <code>limma</code> can perform the transformation with <code>voom</code>, fit the model, compute the contrasts and compute test statistics with <code>eBayes</code>:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-21_20ce8d5cf067c024b4193a52835ba886">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dge</span> <span class="op">&lt;-</span> <span class="fu">edgeR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/calcNormFactors.html">calcNormFactors</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="co">#Do limma</span></span>
+<span><span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/voom.html">voom</a></span><span class="op">(</span><span class="va">dge</span>, design <span class="op">=</span> <span class="va">design</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="day3-2_differential_gene_expression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/lmFit.html">lmFit</a></span><span class="op">(</span><span class="va">vm</span>, design <span class="op">=</span> <span class="va">design</span><span class="op">)</span></span>
+<span><span class="va">fit.contrasts</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/contrasts.fit.html">contrasts.fit</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">contrast.mat</span><span class="op">)</span></span>
+<span><span class="va">fit.contrasts</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html">eBayes</a></span><span class="op">(</span><span class="va">fit.contrasts</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can use <code>topTable</code> to get the most significantly differentially expressed genes, and save the full DE results to an object. How many genes are significant? Are you suprised by this number?</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-22_44031f5cbe4ba87ae8038c65e822d882">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Show the top differentially expressed genes:</span></span>
+<span><span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/toptable.html">topTable</a></span><span class="op">(</span><span class="va">fit.contrasts</span>, number <span class="op">=</span> <span class="fl">10</span>, sort.by <span class="op">=</span> <span class="st">"P"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               logFC  AveExpr         t      P.Value    adj.P.Val        B
+RPS4Y2      5.346800 6.347826  15.39674 3.361453e-08 0.0001152727 9.477129
+SDC2        9.070465 2.708711  15.33434 3.493119e-08 0.0001152727 7.681010
+IGLL1      -3.788160 9.287148 -15.19483 3.808426e-08 0.0001152727 9.465422
+CTGF        4.368363 6.029640  14.89301 4.603081e-08 0.0001152727 9.141505
+AP005530.2  8.770808 2.560369  14.27130 6.879238e-08 0.0001335825 7.294079
+GNG11       3.500250 6.457777  13.70183 1.008304e-07 0.0001335825 8.495288
+HLA-DQA1    2.982748 7.410939  13.39202 1.249067e-07 0.0001335825 8.287394
+PTP4A3      3.734865 5.449894  13.23439 1.395246e-07 0.0001335825 8.126807
+CD27        4.115561 5.843582  13.23011 1.399471e-07 0.0001335825 8.147433
+ALOX5       4.142010 5.682900  13.16658 1.463814e-07 0.0001335825 8.098199</code></pre>
+</div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">limma_de</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/toptable.html">topTable</a></span><span class="op">(</span><span class="va">fit.contrasts</span>, number <span class="op">=</span> <span class="cn">Inf</span>, sort.by <span class="op">=</span> <span class="st">"P"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">limma_de</span><span class="op">$</span><span class="va">adj.P.Val</span><span class="op">&lt;</span><span class="fl">0.05</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2738</code></pre>
+</div>
+</div>
+<p>And we can check whether this corresponds to the counts by generating a violin plot, or a gene downregulated in tumor, or a gene upregulated in tumor:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-23_a0450018f773ebf784686c5ba84d285d">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">proB</span>, <span class="st">"S100A9"</span>, split.by <span class="op">=</span> <span class="st">"type"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="day3-2_differential_gene_expression_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">proB</span>, <span class="st">"SOCS2"</span>, split.by <span class="op">=</span> <span class="st">"type"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="day3-2_differential_gene_expression_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can run a similar analysis with <code>Seurat</code>, but this will not take into account the paired design. Run the code below.</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-24_6821768ee853187913257ce5e0151370">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tum_vs_norm</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/FindMarkers.html">FindMarkers</a></span><span class="op">(</span><span class="va">proB</span>, </span>
+<span>                                   ident.1 <span class="op">=</span> <span class="st">"ETV6-RUNX1"</span>, </span>
+<span>                                   ident.2 <span class="op">=</span> <span class="st">"PBMMC"</span>, </span>
+<span>                                   group.by <span class="op">=</span> <span class="st">"type"</span><span class="op">)</span></span>
+<span><span class="va">tum_vs_norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">tum_vs_norm</span>, <span class="va">tum_vs_norm</span><span class="op">$</span><span class="va">p_val_adj</span><span class="op">&lt;</span><span class="fl">0.05</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise (extra)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>How many genes are significant? How does the fold change of these genes compare to the fold change of the top genes found by limma?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-25_54315668134b57dc2642a5393b00e578">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">tum_vs_norm</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3820    5</code></pre>
+</div>
+</div>
+<p>We find 3820 significant genes. If we merge the <code>FindMarkers</code> and the <code>limma</code> results, keep <code>limma</code>’s most significant genes and plot:</p>
+<div class="cell" data-hash="day3-2_differential_gene_expression_cache/html/unnamed-chunk-26_56196163ed902ffd81e87653ec6f0480">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">merge_limma_FindMarkers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">tum_vs_norm</span>, <span class="va">limma_de</span>, by<span class="op">=</span><span class="st">"row.names"</span>,</span>
+<span>                           all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">merge_limma_FindMarkers</span><span class="op">$</span><span class="va">avg_log2FC</span>,</span>
+<span>    <span class="va">merge_limma_FindMarkers</span><span class="op">$</span><span class="va">logFC</span>,</span>
+<span>    xlab<span class="op">=</span><span class="st">"log2FC Wilcoxon"</span>, ylab<span class="op">=</span><span class="st">"log2FC limma"</span>,</span>
+<span>    pch<span class="op">=</span><span class="fl">15</span>, cex<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">0</span>, b<span class="op">=</span><span class="fl">1</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="day3-2_differential_gene_expression_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Keep the object
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Keep the <code>tum_vs_norm</code> and <code>limma_de</code> objects because we will use this output later for the enrichment analysis in the next section.</p>
+</div>
+</div>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
