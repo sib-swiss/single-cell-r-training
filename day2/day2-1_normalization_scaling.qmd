@@ -21,7 +21,7 @@ title: "Normalization and scaling"
 #| echo: false
 #| output: false
 library(Seurat)
-seu <- readRDS("seu_day1-2.rds")
+seu <- readRDS("day1/seu_day1-2.rds")
 ```
 
 ### Normalization
@@ -66,7 +66,7 @@ Returning:
 
 ```{r}
 #| echo: false
-Seurat::GetAssayData(seu)[1:10,1:10]  
+Seurat::GetAssayData(object = seu, slot = "counts")[1:10,1:10]  
 ```
 
 ## After normalization
@@ -76,7 +76,7 @@ Seurat::GetAssayData(seu)[1:10,1:10]
 seu <- Seurat::NormalizeData(seu,
                      normalization.method = "LogNormalize",
                      scale.factor = 10000)
-Seurat::GetAssayData(seu)[1:10,1:10]  
+Seurat::GetAssayData(object = seu, slot = "data")[1:10,1:10]  
 ```
 
 :::
@@ -184,7 +184,7 @@ DefaultAssay(seu) <- "RNA"
 Now, save the dataset so you can use it tomorrow:
 
 ```{r}
-saveRDS(seu, "seu_day1-3.rds")
+saveRDS(seu, "day2/seu_day2-1.rds")
 ```
 
 Clear your environment:
