@@ -18,9 +18,9 @@ title: "Enrichment analysis"
 
 ```{r}
 #| echo: false
-tum_vs_norm <- readRDS("tum_vs_norm_day3-1.rds")
-limma_de <- readRDS("limma_de_day3-1.rds")
-proB <- readRDS("proB_day3-1.rds")
+tum_vs_norm <- readRDS("day3/tum_vs_norm_day3-2.rds")
+limma_de <- readRDS("day3/limma_de_day3-2.rds")
+proB <- readRDS("day3/proB_day3-2.rds")
 ```
 
 Load the following packages:

@@ -26,7 +26,7 @@ title: "Dimensionality reduction"
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
-seu <- readRDS("seu_day1-3.rds")
+seu <- readRDS("day2/seu_day2-1.rds")
 ```
 
 And load the following packages:
@@ -185,5 +185,5 @@ seu <- Seurat::RunUMAP(seu, dims = 1:25)
 
 ```{r}
 #| echo: false
-saveRDS(seu, "seu_day2-1.rds")
+saveRDS(seu, "day2/seu_day2-2.rds")
 ```
