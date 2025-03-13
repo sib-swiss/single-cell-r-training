@@ -1,5 +1,7 @@
 ---
 title: "Advanced analyses"
+execute:
+  eval: false
 ---
 
 
