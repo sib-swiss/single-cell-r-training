@@ -89,6 +89,10 @@ datadirs <- list.files(path = "data", full.names = TRUE)
 # replace underscores with hyphen to correctly extract sample names later on
 names(datadirs) <- basename(datadirs) |> gsub("_", "-", x = _)
 
+# for now, we take only one sample per treatment
+datadirs <- datadirs[c("Female-Cocaine-1", "Female-Sucrose-1",
+                       "Male-Cocaine-1", "Male-Sucrose-1")]
+
 # create a large sparse matrix from all count data
 sparse_matrix <- Seurat::Read10X(data.dir = datadirs)
 
