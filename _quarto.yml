@@ -27,7 +27,7 @@ website:
           - href: "day1/day1-2_analysis_tools_qc.qmd"
       - text: "day 2"
         menu: 
-          - href: "day2-1_normalization_scaling.qmd"
+          - href: "day2/day2-1_normalization_scaling.qmd"
           - href: "day2/day2-2_dimensionality_reduction.qmd"
           - href: "day2/day2-3_integration.qmd"
           - href: "day2/day2-4_clustering.qmd"
