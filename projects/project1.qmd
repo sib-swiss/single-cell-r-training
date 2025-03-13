@@ -10,27 +10,73 @@ Project 1 is about a single cell sequencing project of zebrafish retina. Photore
 
 ## Available data
 
-Data has been downloaded and prepared for you from [GEO GSE202212](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE202212). The format is `.h5`, and contains the count matrices after running `cellranger`. To create the count tables, the EGFP sequence was added to the reference genome. The gene name of EGFP is `GFPx`. 
+Data has been downloaded and prepared for you from [GEO GSE202212](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE202212). The format is `.h5`, and contains the count matrices after running `cellranger`. To create the count tables, the EGFP sequence was added to the reference genome. The gene name of EGFP is `EGFP`. 
 
 In order to download the data, run:
 
 ```{bash}
-wget thedata.tar.gz
-tar -xzcvf thedata.tar.gz
+wget https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project1.tar.gz
+tar -xzcvf project1.tar.gz
 ```
 
 
-After extracting, you see that there are eight files with count matrices:
+After extracting, a directory `project1` appears with the following content:
+
 
 ```
-GSM6106352_ctrl1_filtered_feature_bc_matrix.h5
-GSM6106353_ctrl2_filtered_feature_bc_matrix.h5
-GSM6106354_3dp1_filtered_feature_bc_matrix.h5
-GSM6106355_3dp2_filtered_feature_bc_matrix.h5
-GSM6106356_7dp1_filtered_feature_bc_matrix.h5
-GSM6106357_7dp2_filtered_feature_bc_matrix.h5
-GSM6106358_10dp1_filtered_feature_bc_matrix.h5
-GSM6106359_10dp2_filtered_feature_bc_matrix.h5
+.
+├── data
+│   ├── 10dp1
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 10dp2
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 3dp1
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 3dp2
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 7dp1
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 7dp2
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── ctrl1
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   └── ctrl2
+│       ├── filtered_feature_bc_matrix
+│       │   ├── barcodes.tsv.gz
+│       │   ├── features.tsv.gz
+│       │   └── matrix.mtx.gz
+│       └── web_summary.html
+└── paper.pdf
+
+17 directories, 33 files
 ```
 
 Showing us that we have two replicates per treatment, and four treatments:
@@ -40,34 +86,30 @@ Showing us that we have two replicates per treatment, and four treatments:
 - 7dp: 7 days post injury
 - 10dp: 10 days post injury
 
-Use the following code to read the h5 files in R, and create a combined Seurat object:
+Now create a new project in the `project1` directory (Project (None) > New Project ...), and create Seurat object from the count matrices:
 
 ```{r}
 library(Seurat)
-library(stringr)
-# get a list of file names
-h5_files <- list.files("data/project1/GSE202212_RAW/", full.names = TRUE)
 
-# create a list of seurat objects
-seu_list <- lapply(h5_files,
-  function(x) {
-    # extract the sample name from the file name
-    sample_id <- basename(x) |> word(2, sep = "_")
-    
-    # read the h5 files as sparse matrix and convert it to a seurat object
-    Read10X_h5(x, use.names = TRUE, unique.features = TRUE) |> 
-      CreateSeuratObject(project = sample_id) 
-  }
-)
+# vector of paths to all sample directories
+datadirs <- list.files(path = "data", full.names = TRUE) 
 
-# name the list according to the treatment name
-names(seu_list) <- basename(h5_files) |> word(2, sep = "_")
+# get the sample names
+# replace underscores with hyphen to correctly extract sample names later on
+samples <- basename(datadirs) |> gsub("_", "-", x = _)
 
-# merge the seurat objects and join the assay layers
-seu <- merge(seu_list[[1]], y = seu_list[2:length(seu_list)],
-             add.cell.ids = names(seu_list),
-             project = "zebra") |>
-  JoinLayers()
+# files are in filter_feature_bc_matrix
+datadirs <- paste(datadirs, "filtered_feature_bc_matrix", sep = "/")
+
+names(datadirs) <- samples
+
+# create a large sparse matrix from all count data
+sparse_matrix <- Seurat::Read10X(data.dir = datadirs)
+
+# create a seurat object from sparse matrix
+seu <- Seurat::CreateSeuratObject(counts = sparse_matrix,
+                                  project = "Zebrafish")
+
 ```
 
 

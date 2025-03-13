@@ -44,91 +44,73 @@ https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/
 tar -xzcvf project4.tar.gz
 ```
 
+After extracting, a directory `project4` appears with the following content:
+
 ```
-GSE208653/
+.
 ├── data
-│   ├── ADC_6
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── HSIL_1
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── HSIL_2
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── N_1
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── N_2
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── N_HPV_NEG_1
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── N_HPV_NEG_2
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   ├── SCC_4
-│   │   ├── barcodes.tsv.gz
-│   │   ├── features.tsv.gz
-│   │   └── matrix.mtx.gz
-│   └── SCC_5
-│       ├── barcodes.tsv.gz
-│       ├── features.tsv.gz
-│       └── matrix.mtx.gz
+│   ├── ADC_6
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── HSIL_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── HSIL_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── N_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── N_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── N_HPV_NEG_1
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── N_HPV_NEG_2
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   ├── SCC_4
+│   │   ├── barcodes.tsv.gz
+│   │   ├── features.tsv.gz
+│   │   └── matrix.mtx.gz
+│   └── SCC_5
+│       ├── barcodes.tsv.gz
+│       ├── features.tsv.gz
+│       └── matrix.mtx.gz
 ├── paper1.pdf
 └── paper2.pdf
+
+10 directories, 29 files
 ```
 
-Use the following code to read the data files in R, and create a combined Seurat object:
+Now create a new project in the `project1` directory (Project (None) > New Project ...), and create Seurat object from the count matrices:
 
 ```{r}
 library(Seurat)
+# vector of paths to all sample directories
+datadirs <- list.files(path = "data", full.names = TRUE)
 
-# Function to read the data from the files and create a Seurat object
-read_10x_data <- function(sample_path) {
-  # Read data
-  data <- Read10X(sample_path)
-  barcodes <- readLines(paste0(sample_path, "/barcodes.tsv.gz"))
-  features <- read.delim(paste0(sample_path, "/features.tsv.gz"), header = FALSE)
+# get the sample names
+# replace underscores with hyphen to correctly extract sample names later on
+names(datadirs) <- basename(datadirs) |> gsub("_", "-", x = _) 
 
-  # Create Seurat object
-  seurat_object <- Seurat::CreateSeuratObject(data)
-  seurat_object <- AddMetaData(seurat_object, metadata = barcodes, 
-                               col.name = "barcodes")
-  seurat_object <- AddMetaData(seurat_object, metadata = features$V2,
-                               col.name = "features")
+# for now, we only take the HPV negative and cervical cancer samples
+datadirs <- datadirs[c("N-HPV-NEG-1", "N-HPV-NEG-2", "SCC-4", "SCC-5")]
 
-  return(seurat_object)
-}
+# create a large sparse matrix from all count data
+sparse_matrix <- Seurat::Read10X(data.dir = datadirs)
 
-# Data directory
-data_dir <- "data/project4/GSE208653/data"
-
-# Read data for each sample and combine into a single Seurat object
-samples <- basename(list.dirs(path = data_dir, full.names = T)[-1])
-
-seurat_objects <- lapply(samples, function(sample) 
-  read_10x_data(sample_path = file.path(data_dir, sample)))
-
-combined_seurat <- merge(seurat_objects[[1]],
-  y = seurat_objects[-1],
-  add.cell.ids = samples, project = "CervicalCancerStudy"
-)
-
-combined_seurat@meta.data$orig.ident <- sapply(
-  rownames(combined_seurat@meta.data),
-  function(x) {
-    paste(strsplit(x = x, split = "_")[[1]][1:3], collapse = "_")
-  }
-)
+# create a seurat object from sparse matrix
+seu <- Seurat::CreateSeuratObject(counts = sparse_matrix,
+                                  project = "CervicalCancerStudy")
 ```
 
 
