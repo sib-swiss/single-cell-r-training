@@ -106,23 +106,7 @@ with this dataset, go through the steps we have performed during the course, and
 
 ## Tips
 
-- For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following table:
+## Tips
 
-```{r}
-library(biomaRt)
-
-# Connect to Ensembl's FlyBase dataset
-ensembl <- useMart("ensembl", dataset = "dmelanogaster_gene_ensembl")
-
-# Define attributes to fetch
-attributes <- c("flybase_annot_id", "ensembl_gene_id", "flybase_gene_id",
-                "external_gene_name", "flybasename_gene", "description")
-
-# Get data
-gene_table <- getBM(attributes = attributes, mart = ensembl)
-
-# Print the first few rows
-head(gene_table)
-```
-
+- For mitochondrial genes and ribosomol genes you can use the following patterns: `"^mt:"` and `"^Rp[SL]"`. 
 - Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution. 
