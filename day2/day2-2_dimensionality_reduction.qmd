@@ -85,7 +85,7 @@ The elbowplot can help you in determining how many PCs to use for downstream ana
 
 ```{r}
 Seurat::ElbowPlot(seu, ndims = 40) +
-  geom_vline(xintercept = 25, linetype = "dashed", color = "red", linewidth = 1)
+  ggplot2::geom_vline(xintercept = 25, linetype = "dashed", color = "red", linewidth = 1)
 ```
 
 The elbow plot ranks principle components based on the percentage of variance explained by each one. Where we observe an "elbow" or flattening curve, the majority of true signal is captured by this number of PCs, eg around 25 PCs for the seu dataset.
