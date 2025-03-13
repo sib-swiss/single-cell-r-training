@@ -14,8 +14,12 @@ title: "Integration"
 
 ```{r}
 #| echo: false
-seu <- readRDS("seu_day2-1.rds")
-suppressPackageStartupMessages({library(Seurat)}) 
+#| warning: false
+#| message: false
+
+library(Seurat)
+
+seu <- readRDS("day2/seu_day2-2.rds")
 ```
 
 Let's have a look at the UMAP again. Although cells of different samples are shared amongst 'clusters', you can still see seperation within the clusters:
@@ -70,7 +74,7 @@ Seurat::DimPlot(seu, reduction = "umap")
 
 
 ```{r}
-saveRDS(seu, "seu_day2-2.rds")
+saveRDS(seu, "day2/seu_day2-3.rds")
 ```
 
 Clear your environment:

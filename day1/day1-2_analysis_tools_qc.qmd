@@ -2,6 +2,8 @@
 title: "Analysis tools and QC"
 project:
   execute-dir: project
+editor_options: 
+  chunk_output_type: console
 ---
 
 ::: {.callout-note}
@@ -344,5 +346,5 @@ Seurat::VlnPlot(seu, features = c("nFeature_RNA",
 
 ```{r}
 #| echo: false
-saveRDS(seu, "seu_day1-2.rds")
+saveRDS(seu, "day1/seu_day1-2.rds")
 ```

@@ -26,7 +26,7 @@ title: "Dimensionality reduction"
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
-seu <- readRDS("seu_day1-3.rds")
+seu <- readRDS("day2/seu_day2-1.rds")
 ```
 
 And load the following packages:
@@ -84,14 +84,15 @@ Seurat::DimHeatmap(seu, dims = 1:12, cells = 500, balanced = TRUE)
 The elbowplot can help you in determining how many PCs to use for downstream analysis such as UMAP:
 
 ```{r}
-Seurat::ElbowPlot(seu, ndims = 40)
+Seurat::ElbowPlot(seu, ndims = 40) +
+  geom_vline(xintercept = 25, linetype = "dashed", color = "red", linewidth = 1)
 ```
 
 The elbow plot ranks principle components based on the percentage of variance explained by each one. Where we observe an "elbow" or flattening curve, the majority of true signal is captured by this number of PCs, eg around 25 PCs for the seu dataset.
 
 Including too many PCs usually does not affect much the result, while including too few PCs can affect the results very much.
 
-UMAP: The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space.
+**UMAP:** The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space.
 
 ```{r}
 #| output: false
@@ -114,9 +115,9 @@ Try to change:
 
 **B.** The number of neighbors used for the calculation of the UMAP. Which is the parameter to change and how did it affect the output. What is the default ? In which situation would you lower/increase this ?
 
-**C.** The number of dims to extremes dims = 1:5 or dims = 1:50 how
+**C.** The number of dims to extremes `dims = 1:5` or `dims = 1:50` how
 did it affect the output ? In your opinion better few PCAs too much or too few ?
-Why does dims = 1:100 not work? When would more precision be needed?
+Why does `dims = 1:100` not work? When would more precision be needed?
 
 :::
 
@@ -146,7 +147,7 @@ seu <- Seurat::RunUMAP(seu, dims = 1:25, n.neighbors = 5)
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 
-The default number of neighbours is 30. It can be of interest to change the number of neighbors if one has subset the data (for instance in the situation where you would only consider the t-cells inyour data set), then maybe the number of neighbors in a cluster would anyway be most of the time lower than 30 then 30 is too much. In the other extreme where your dataset is extremely big an increase in the number of neighbors can be considered.
+The default number of neighbours is 30. It can be of interest to change the number of neighbors if one has subset the data (for instance in the situation where you would only consider the t-cells in your data set), then maybe the number of neighbors in a cluster would anyway be most of the time lower than 30 then 30 is too much. In the other extreme where your dataset is extremely big an increase in the number of neighbors can be considered.
 
 **Answer C** 
 
@@ -168,7 +169,7 @@ seu <- Seurat::RunUMAP(seu, dims = 1:50)
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 
-Taking dims = 1:100 does not work as in the step RunPCA by default only 50pcs are calculated, so the maximum that we can consider in further steps are 50, if more precision makes sense, for instance, if the genes that is of interest for your study is not present when the RunPCA was calculated, then an increase in the number of components calculated at start might be interesting tobe considered. Taking too few PCs we have a « blob » everything looks connected. Too many PCs tends to separate everything. Personally it is more interesting for me too have maybe 2 clusters separated of epithelial cells that I then group for further downstream analysis rather than having very distinct cells being clustered together. So I would rather take the « elbow » of the elbow plot a bit further to the right.
+Taking dims = 1:100 does not work as in the step `RunPCA` by default only 50pcs are calculated, so the maximum that we can consider in further steps are 50, if more precision makes sense, for instance, if the genes that is of interest for your study is not present when the `RunPCA` was calculated, then an increase in the number of components calculated at start might be interesting tobe considered. Taking too few PCs we have a « blob » everything looks connected. Too many PCs tends to separate everything. Personally it is more interesting for me too have maybe 2 clusters separated of epithelial cells that I then group for further downstream analysis rather than having very distinct cells being clustered together. So I would rather take the « elbow » of the elbow plot a bit further to the right.
 
 :::
 
@@ -184,5 +185,5 @@ seu <- Seurat::RunUMAP(seu, dims = 1:25)
 
 ```{r}
 #| echo: false
-saveRDS(seu, "seu_day2-1.rds")
+saveRDS(seu, "day2/seu_day2-2.rds")
 ```
