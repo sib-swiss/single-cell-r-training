@@ -3,6 +3,11 @@ title: "Normalization and scaling"
 editor_options: 
   chunk_output_type: console
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
 ::: {.callout-note}
 ## Learning outcomes
 
