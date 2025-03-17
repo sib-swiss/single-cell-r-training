@@ -4,10 +4,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
-```
-
 ::: {.callout-note}
 ## Learning outcomes
 
@@ -33,8 +29,9 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ## Exercises
 
 ```{r}
-#| echo: false
-#| output: false
+#| warning: false
+#| message: false
+
 library(Seurat)
 seu <- readRDS("day1/seu_day1-2.rds")
 ```
@@ -48,7 +45,7 @@ Normalized values are stored in the "RNA" assay (as item of the `@assay` slot) o
 This is how you can call the function (don't run it yet! Read the exercise first):
 
 ```{r}
-#| eval: false
+
 # Don't run it yet! Read the exercise first
 seu <- Seurat::NormalizeData(seu,
                      normalization.method = "LogNormalize",
@@ -81,7 +78,7 @@ Returning:
 
 ```{r}
 #| echo: false
-Seurat::GetAssayData(object = seu, slot = "counts")[1:10,1:10]  
+Seurat::GetAssayData(object = seu, layer = "counts")[1:10,1:10]  
 ```
 
 ## After normalization
@@ -96,8 +93,6 @@ Seurat::GetAssayData(object = seu, slot = "data")[1:10,1:10]
 
 :::
 ::: 
-
-
 
 ::: {.callout-note}
 ## Updating `seu`
