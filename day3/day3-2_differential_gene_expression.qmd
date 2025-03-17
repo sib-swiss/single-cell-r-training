@@ -1,5 +1,7 @@
 ---
 title: "Differential gene expression"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Material
@@ -48,7 +50,7 @@ Subset the table to only keep the significant genes, and you can save it as a cs
 ```{r}
 de_genes <- subset(de_genes, de_genes$p_val_adj < 0.05)
 write.csv(de_genes,
-          "de_genes_FindAllMarkers.csv",
+          "day3/de_genes_FindAllMarkers.csv",
           row.names = F, quote = F)
 
 top_specific_markers <- de_genes %>%
@@ -174,7 +176,6 @@ Seurat::DimPlot(proB, group.by = "orig.ident")
 table(proB@meta.data$type)
 
 head(proB@meta.data)
-
 ```
 
 ::: callout-note

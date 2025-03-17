@@ -1,5 +1,7 @@
 ---
 title: "Integration"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Material

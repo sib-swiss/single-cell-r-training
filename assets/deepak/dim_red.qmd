@@ -1,0 +1,189 @@
+---
+title: "PCA Analysis of Simulated scRNA-seq Data"
+editor: source
+execute:
+  eval: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(factoextra)
+library(tidyverse)
+library(splatter)  # For simulating scRNA-seq data
+library(scran)     # For quality control and normalization (optional)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# 1. Simulate scRNA-seq data with Splatter
+# Parameters for simulation
+n_genes <- 100    # Number of genes (features)
+n_cells <- 500     # Number of cells (samples)
+n_groups <- 10      # Number of cell groups (e.g., cell types)
+de_prob <- 0.7     # Probability of differential expression
+de_down_prob <- 0.2  # Probability of downregulation
+de_fac_loc <- 2    # Location parameter for differential expression factor
+de_fac_scale <- 0.5  # Scale parameter for differential expression factor
+
+# Simulate the data
+sim <- splatSimulate(group.prob = rep(1/n_groups, n_groups),
+                     nGenes = n_genes,
+                     batchCells = n_cells,  # Use batchCells instead of nCells
+                     de.prob = de_prob,
+                     de.downProb = de_down_prob,
+                     de.facLoc = de_fac_loc,
+                     de.facScale = de_fac_scale,
+                     method = "groups",
+                     verbose = FALSE)
+
+# Extract the count matrix
+counts <- assays(sim)$counts
+data_df <- t(counts)  # Transpose to have cells as rows and genes as columns
+
+# Optional: Normalize the data (e.g., using scran for scRNA-seq)
+library_size <- colSums(counts)
+size_factors <- calculateSumFactors(counts)
+normalized_counts <- t(t(counts) / size_factors)
+data_df <- as.data.frame(normalized_counts)
+
+# 1. Plot data variability (Boxplot of gene expression across cells)
+plot1 <- ggplot(data = log1p(data_df) %>% gather(key = "Gene", value = "Expression"),
+               aes(x = Gene, y = Expression)) +
+  geom_boxplot(fill = "lightblue", outlier.alpha = 0.1) +
+  theme_minimal() +
+  labs(title = "Gene Expression Variability Across Cells",
+       x = "Genes",
+       y = "Normalized Expression") +
+  theme(axis.text.x = element_blank())  # Too many genes to label
+
+print(plot1)
+# ggsave("expression_variability_plot.png", plot1, width = 8, height = 6)
+
+# 2. Perform PCA
+# Scale the data (important for PCA with scRNA-seq data)
+pca_result <- prcomp(data_df, center = TRUE, scale. = TRUE)
+
+# Get PCA scores
+pca_scores <- as.data.frame(pca_result$x)
+
+# 2. Plot first two principal components
+plot2 <- ggplot(pca_scores, aes(x = PC1, y = PC2)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  theme_minimal() +
+  labs(title = "PCA of Simulated scRNA-seq Data",
+       x = paste0("PC1 (", round(summary(pca_result)$importance[2,1]*100, 1), "% variance)"),
+       y = paste0("PC2 (", round(summary(pca_result)$importance[2,2]*100, 1), "% variance)"))
+
+print(plot2)
+# ggsave("pca_plot.png", plot2, width = 8, height = 6)
+
+# INTERMEDIATE PLOT 2: PCA Directions (Loadings) on Original Data
+# Select two genes with high variance for illustration
+var_genes <- apply(data_df, 2, var)
+top_genes <- names(sort(var_genes, decreasing = TRUE)[1:2])
+plot_data <- data_df[, top_genes]
+loadings <- pca_result$rotation[, 1:2]  # Loadings for PC1 and PC2
+
+# Scale the loadings for visualization
+loadings_scaled <- loadings * 10  # Adjust scaling factor for visibility
+
+# Create a data frame for plotting the loadings as arrows
+loadings_df <- data.frame(
+  Gene = rownames(loadings),
+  PC1 = loadings_scaled[, "PC1"],
+  PC2 = loadings_scaled[, "PC2"]
+)
+
+# Scatterplot of original data with PCA directions overlaid
+plot_intermediate2 <- ggplot(plot_data, aes_string(x = top_genes[1], y = top_genes[2])) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_segment(data = loadings_df, 
+               aes(x = 0, y = 0, xend = PC1, yend = PC2), 
+               arrow = arrow(length = unit(0.2, "cm")), 
+               color = "red", size = 1) +
+  geom_text(data = loadings_df, 
+            aes(x = PC1, y = PC2, label = Gene), 
+            color = "red", vjust = -1, size = 3) +
+  theme_minimal() +
+  labs(title = "Original Data with PCA Directions (PC1 and PC2 Loadings)",
+       x = top_genes[1],
+       y = top_genes[2])
+
+print(plot_intermediate2)
+# ggsave("pca_directions_plot.png", plot_intermediate2, width = 8, height = 6)
+
+# INTERMEDIATE PLOT 3: Biplot (Feature Contributions to PCs)
+plot_intermediate3 <- fviz_pca_biplot(pca_result, 
+                                     repel = TRUE,  # Avoid text overlap
+                                     col.var = "red",  # Color for variable arrows
+                                     col.ind = "blue",  # Color for individuals
+                                     alpha.ind = 0.6) +
+  theme_minimal() +
+  labs(title = "PCA Biplot: Gene Contributions to PCs")
+
+print(plot_intermediate3)
+# ggsave("pca_biplot.png", plot_intermediate3, width = 8, height = 6)
+
+# NEW PLOT: Orthogonal Vector Plot for PC1 and PC2
+scale_factor <- max(abs(pca_scores[, c("PC1", "PC2")])) * 0.5  # Adjust scaling for visibility
+orthogonal_df <- data.frame(
+  PC = c("PC1", "PC2"),
+  x_start = c(0, 0),
+  y_start = c(0, 0),
+  x_end = c(scale_factor, 0),
+  y_end = c(0, scale_factor)
+)
+
+plot_orthogonal <- ggplot(pca_scores, aes(x = PC1, y = PC2)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_segment(data = orthogonal_df, 
+               aes(x = x_start, y = y_start, xend = x_end, yend = y_end), 
+               arrow = arrow(length = unit(0.2, "cm")), 
+               color = "red", size = 1) +
+  geom_text(data = orthogonal_df, 
+            aes(x = x_end, y = y_end, label = PC), 
+            color = "red", vjust = -1, hjust = ifelse(orthogonal_df$PC == "PC1", 0.5, -0.1)) +
+  theme_minimal() +
+  labs(title = "Orthogonal Directions of PC1 and PC2",
+       x = paste0("PC1 (", round(summary(pca_result)$importance[2,1]*100, 1), "% variance)"),
+       y = paste0("PC2 (", round(summary(pca_result)$importance[2,2]*100, 1), "% variance)")) +
+  coord_equal()
+
+print(plot_orthogonal)
+# ggsave("orthogonal_vector_plot.png", plot_orthogonal, width = 8, height = 6)
+
+# 3. Create Elbow plot
+var_explained <- summary(pca_result)$importance[2,]
+cum_var_explained <- summary(pca_result)$importance[3,]
+
+elbow_df <- data.frame(
+  PC = 1:ncol(data_df),
+  Standard_Deviation = sqrt(var_explained) * 100  # Convert variance to standard deviation
+)
+
+plot3 <- ggplot(elbow_df, aes(x = PC, y = Standard_Deviation)) +
+  geom_line(color = "black") +
+  geom_point(color = "black") +
+  theme_minimal() +
+  labs(title = "Elbow Plot for PCA (Standard Deviation)",
+       x = "Principal Component",
+       y = "Standard Deviation") +
+  scale_x_continuous(breaks = seq(1, ncol(data_df), by = 5)) +
+  ylim(0, max(elbow_df$Standard_Deviation) * 1.1)  # Set y-limit to match your example
+
+print(plot3)
+# ggsave("elbow_plot.png", plot3, width = 8, height = 6)
+
+# Print summary of PCA to help decide number of components
+print(summary(pca_result))
+
+# Optional: Use factoextra to create a nicer scree plot
+plot4 <- fviz_eig(pca_result, addlabels = TRUE, ylim = c(0, max(elbow_df$Standard_Deviation) * 1.1))
+print(plot4)
+# ggsave("scree_plot.png", plot4, width = 8, height = 6)
+```
+
+
