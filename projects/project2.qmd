@@ -23,7 +23,7 @@ In order to download the data, run:
 
 ```{bash}
 wget https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project2.tar.gz
-tar -xzcvf project2.tar.gz
+tar -xzvf project2.tar.gz
 ```
 
 

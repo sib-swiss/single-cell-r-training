@@ -1,5 +1,7 @@
 ---
 title: "Normalization and scaling"
+editor_options: 
+  chunk_output_type: console
 ---
 ::: {.callout-note}
 ## Learning outcomes
@@ -195,3 +197,4 @@ rm(list = ls())
 gc()
 .rs.restartR()
 ```
+
