@@ -33,7 +33,7 @@ editor_options:
 #| message: false
 
 library(Seurat)
-seu <- readRDS("day1/seu_day1-2.rds")
+seu <- readRDS("../day1/seu_day1-2.rds")
 ```
 
 ### Normalization
