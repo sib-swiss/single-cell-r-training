@@ -6,7 +6,7 @@ editor_options:
 
 ## Material
 
-{{< downloadthis ../assets/pdf/DGE_and_enrichment_analysis.pdf dname="DGE_and_enrichment_analysis" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/202503_differential_analysis.pdf dname="DGE_and_enrichment_analysis" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/6Y5uCQWRRbg?si=mcV9qJUap1qvFjy3 >}}
 
