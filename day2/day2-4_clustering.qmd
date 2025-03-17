@@ -21,6 +21,8 @@ editor_options:
 Load the `seu` dataset you have created earlier today:
 
 ```{r}
+#| echo: false
+#| output: false
 seu <- readRDS("day2/seu_day2-3.rds")
 ```
 
