@@ -20,7 +20,6 @@ editor_options:
 #| message: false
 
 library(Seurat)
-
 seu <- readRDS("day2/seu_day2-2.rds")
 ```
 

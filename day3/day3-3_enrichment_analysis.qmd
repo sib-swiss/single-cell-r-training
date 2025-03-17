@@ -20,6 +20,7 @@ editor_options:
 
 ```{r}
 #| echo: false
+#| output: false
 tum_vs_norm <- readRDS("day3/tum_vs_norm_day3-2.rds")
 limma_de <- readRDS("day3/limma_de_day3-2.rds")
 proB <- readRDS("day3/proB_day3-2.rds")
@@ -28,6 +29,7 @@ proB <- readRDS("day3/proB_day3-2.rds")
 Load the following packages:
 
 ```{r}
+#| echo: false
 #| output: false
 library(clusterProfiler)
 library(enrichplot)
