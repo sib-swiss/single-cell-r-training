@@ -4,6 +4,9 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+
+
 ::: {.callout-note}
 ## Learning outcomes
 
@@ -18,15 +21,28 @@ editor_options:
 
 ## Material
 
+
+
+
 {{< downloadthis ../assets/pdf/202503_normalization_scaling.pdf dname="Dimensionality_Reduction_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+
 
 {{< video https://youtu.be/QS6ZH_41b4s?si=fvaNGkqjsIcxTEFn >}}
 
+
 {{< downloadthis ../assets/pdf/scRNAseq_RM_Integration_dimreduction.pdf dname="scRNAseq_RM_Integration_dimreduction" label="Download the presentation from the video" icon="filetype-pdf" >}}
+
+
+
+
+
 
 - [Seurat vignette](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html)
 
 ## Exercises
+
+
+
 
 ```{r}
 #| warning: false
@@ -36,6 +52,9 @@ library(Seurat)
 seu <- readRDS("day1/seu_day1-2.rds")
 ```
 
+
+
+
 ### Normalization
 
 After removing unwanted cells from the dataset, the next step is to normalize the data.
@@ -44,6 +63,9 @@ Normalized values are stored in the "RNA" assay (as item of the `@assay` slot) o
 
 This is how you can call the function (don't run it yet! Read the exercise first):
 
+
+
+
 ```{r}
 
 # Don't run it yet! Read the exercise first
@@ -51,6 +73,9 @@ seu <- Seurat::NormalizeData(seu,
                      normalization.method = "LogNormalize",
                      scale.factor = 10000)
 ```
+
+
+
 
 
 ::: {.callout-important}
@@ -66,22 +91,37 @@ You can extract assay data with the function `Seurat::GetAssayData`. By default,
 # Answer
 You can check out some assay data with:
 
+
+
+
 ```{r}
 #| eval: false
 Seurat::GetAssayData(seu)[1:10,1:10]  
 ```
+
+
+
 
 Returning:
     
 ::: {.panel-tabset}
 ## Before normalization
 
+
+
+
 ```{r}
 #| echo: false
 Seurat::GetAssayData(object = seu, layer = "counts")[1:10,1:10]  
 ```
 
+
+
+
 ## After normalization
+
+
+
 
 ```{r}
 #| echo: false
@@ -90,6 +130,9 @@ seu <- Seurat::NormalizeData(seu,
                      scale.factor = 10000)
 Seurat::GetAssayData(object = seu, slot = "data")[1:10,1:10]  
 ```
+
+
+
 
 :::
 ::: 
@@ -103,13 +146,22 @@ As you might have noticed, this function takes the object `seu` as input, and it
 
 We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). Focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets. The procedure in Seurat models the mean-variance relationship inherent in single-cell data, and is implemented in the `FindVariableFeatures()` function. By default, 2,000 genes (features) per dataset are returned and these will be used in downstream analysis, like PCA.
 
+
+
+
 ```{r}
 seu <- Seurat::FindVariableFeatures(seu,
                             selection.method = "vst",
                             nfeatures = 2000)
 ```
 
+
+
+
 Let's have a look at the 10 most variable genes:
+
+
+
 
 ```{r}
 # Identify the 10 most highly variable genes
@@ -117,13 +169,22 @@ top10 <- head(Seurat::VariableFeatures(seu), 10)
 top10
 ```
 
+
+
+
 We can plot them in a nicely labeled scatterplot:
+
+
+
 
 ```{r}
 vf_plot <- Seurat::VariableFeaturePlot(seu)
 Seurat::LabelPoints(plot = vf_plot,
             points = top10, repel = TRUE)
 ```
+
+
+
 
 ::: {.callout-warning}
 ## Make sure the plotting window is large enough
@@ -143,9 +204,15 @@ step prior to dimensional reduction techniques like PCA. The `ScaleData()` funct
 
 This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate. The results of this are stored in `seu$RNA@scale.data`
 
+
+
+
 ```{r}
 seu <- Seurat::ScaleData(seu)
 ```
+
+
+
 
 
 ::: {.callout-note}
@@ -166,17 +233,29 @@ Run `SCTransform` on the `seu` object. Where is the output stored?
 ## Answer
 You can run it like so:
 
+
+
+
 ```{r}
 #| output: false
 seu <- Seurat::SCTransform(seu)
 ```
 
+
+
+
 And it will add an extra assay to the object. `names(seu@assays)` returns:
+
+
+
 
 ```{r}
 #| echo: false
 names(seu@assays)
 ```
+
+
+
 
 Meaning that a whole new assay was added (including the sparse matrices with counts, normalized data and scaled data). 
 :::
@@ -184,20 +263,35 @@ Meaning that a whole new assay was added (including the sparse matrices with cou
 ::: {.callout-warning}
 Running `SCTransform` will change `@active.assay` into `SCT`(in stead of `RNA`; check it with `DefaultAssay(seu)`). This assay is used as a default for following function calls. To change the active assay to `RNA` run:
 
+
+
+
 ```{r}
 DefaultAssay(seu) <- "RNA"
 ```
+
+
+
 :::
 
 ### Save the dataset and clear environment
 
 Now, save the dataset so you can use it tomorrow:
 
+
+
+
 ```{r}
 saveRDS(seu, "day2/seu_day2-1.rds")
 ```
 
+
+
+
 Clear your environment:
+
+
+
 
 ```{r}
 #| eval: false
