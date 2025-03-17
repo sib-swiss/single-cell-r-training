@@ -4,9 +4,13 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
 ## Material
 
-{{< downloadthis ../assets/pdf/Clustering_SIB.pdf dname="Clustering_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/202503_clustering.pdf dname="Clustering_SIB" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/kqcvqqZp3Jo?si=T1lHw0z-4wv6BvF- >}}
 
@@ -21,6 +25,8 @@ editor_options:
 Load the `seu` dataset you have created earlier today:
 
 ```{r}
+#| echo: false
+#| output: false
 seu <- readRDS("day2/seu_day2-3.rds")
 ```
 

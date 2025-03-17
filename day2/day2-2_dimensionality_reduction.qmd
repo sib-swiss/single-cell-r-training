@@ -1,11 +1,16 @@
 ---
 title: "Dimensionality reduction"
+editor_options: 
+  chunk_output_type: console
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
 
 ## Material
 
-{{< downloadthis ../assets/pdf/Dimensionality_Reduction_SIB.pdf dname="Dimensionality_Reduction_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/202503_dimensionality_reduction.pdf dname="Dimensionality_Reduction_SIB" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/QS6ZH_41b4s?si=fvaNGkqjsIcxTEFn >}}
 
@@ -26,6 +31,8 @@ title: "Dimensionality reduction"
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
+#| echo: false
+#| output: false
 seu <- readRDS("day2/seu_day2-1.rds")
 ```
 
