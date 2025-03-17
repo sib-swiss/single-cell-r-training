@@ -1,10 +1,16 @@
 ---
 title: "Differential gene expression"
+editor_options: 
+  chunk_output_type: console
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
 
 ## Material
 
-{{< downloadthis ../assets/pdf/DGE_and_enrichment_analysis.pdf dname="DGE_and_enrichment_analysis" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/202503_differential_analysis.pdf dname="DGE_and_enrichment_analysis" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/6Y5uCQWRRbg?si=mcV9qJUap1qvFjy3 >}}
 
@@ -19,6 +25,8 @@ title: "Differential gene expression"
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
+#| echo: false
+#| output: false
 seu <- readRDS("day3/seu_day3-1.rds")
 ```
 
@@ -48,7 +56,7 @@ Subset the table to only keep the significant genes, and you can save it as a cs
 ```{r}
 de_genes <- subset(de_genes, de_genes$p_val_adj < 0.05)
 write.csv(de_genes,
-          "de_genes_FindAllMarkers.csv",
+          "day3/de_genes_FindAllMarkers.csv",
           row.names = F, quote = F)
 
 top_specific_markers <- de_genes %>%
@@ -174,7 +182,6 @@ Seurat::DimPlot(proB, group.by = "orig.ident")
 table(proB@meta.data$type)
 
 head(proB@meta.data)
-
 ```
 
 ::: callout-note

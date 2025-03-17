@@ -1,10 +1,16 @@
 ---
 title: "Enrichment analysis"
+editor_options: 
+  chunk_output_type: console
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
 
 ## Material
 
-{{< downloadthis ../assets/pdf/enrichment_analysis.pdf dname="enrichment_analysis" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/202503_enrichment_analysis.pdf dname="enrichment_analysis" label="Download the presentation" icon="filetype-pdf" >}}
 
 - [MSigDB](http://www.gsea-msigdb.org/gsea/msigdb/index.jsp)
 - `clusterProfiler` [vignette](https://bioconductor.org/packages/release/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html)
@@ -18,6 +24,7 @@ title: "Enrichment analysis"
 
 ```{r}
 #| echo: false
+#| output: false
 tum_vs_norm <- readRDS("day3/tum_vs_norm_day3-2.rds")
 limma_de <- readRDS("day3/limma_de_day3-2.rds")
 proB <- readRDS("day3/proB_day3-2.rds")
@@ -26,6 +33,7 @@ proB <- readRDS("day3/proB_day3-2.rds")
 Load the following packages:
 
 ```{r}
+#| echo: false
 #| output: false
 library(clusterProfiler)
 library(enrichplot)
@@ -49,7 +57,7 @@ label types use:
 
 ```{r}
 #| output: false
-BiocManager::install("org.Hs.eg.db", update = FALSE)
+# BiocManager::install("org.Hs.eg.db", update = FALSE)
 library(org.Hs.eg.db)
 AnnotationDbi::keytypes(org.Hs.eg.db)
 ```
@@ -134,13 +142,14 @@ We can quite easily generate a plot called an enrichment map with the `enrichplo
 
 ```{r}
 enrichplot::emapplot(enrichplot::pairwise_termsim(enr_go),
-                     showCategory = 30,
-                     cex.params = list(category_label = 0.5))
+                     showCategory = 30)
 ```
 
 Instead of testing for Gene Ontology terms, we can also test for other gene set collections. For example the Hallmark collection from [MSigDB](http://www.gsea-msigdb.org/gsea/msigdb/index.jsp):
 
 ```{r}
+library(msigdbr)
+library(msigdbdf)
 gmt <- msigdbr::msigdbr(species = "human", category = "H")
 ```
 
