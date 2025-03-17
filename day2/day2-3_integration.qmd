@@ -6,7 +6,7 @@ editor_options:
 
 ## Material
 
-{{< downloadthis ../assets/pdf/Integration_SIB.pdf dname="Integration_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/202503_integration.pdf dname="Integration_SIB" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/2TsW5A53hTg?si=Bas__YskLl21-YjF >}}
 
