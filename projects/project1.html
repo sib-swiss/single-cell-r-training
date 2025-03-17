@@ -269,7 +269,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="available-data" class="level2"><h2 class="anchored" data-anchor-id="available-data">Available data</h2>
 <p>Data has been downloaded and prepared for you from <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE202212">GEO GSE202212</a>. The format is <code>.h5</code>, and contains the count matrices after running <code>cellranger</code>. To create the count tables, the EGFP sequence was added to the reference genome. The gene name of EGFP is <code>EGFP</code>.</p>
 <p>In order to download the data, run:</p>
-<div class="cell" data-hash="project1_cache/html/unnamed-chunk-1_407d3724714650bb2be891964dc55403">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project1.tar.gz</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzcvf</span> project1.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -335,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>10dp: 10 days post injury</li>
 </ul>
 <p>Now create a new project in the <code>project1</code> directory (Project (None) &gt; New Project …), and create Seurat object from the count matrices:</p>
-<div class="cell" data-hash="project1_cache/html/unnamed-chunk-2_90eec1e54c3b1f49c5e7899de4583561">
+<div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># vector of paths to all sample directories</span></span>
