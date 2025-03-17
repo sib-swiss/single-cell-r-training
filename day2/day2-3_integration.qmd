@@ -4,6 +4,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
 ## Material
 
 {{< downloadthis ../assets/pdf/202503_integration.pdf dname="Integration_SIB" label="Download the presentation" icon="filetype-pdf" >}}
