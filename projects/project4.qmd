@@ -8,7 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Project 4 focuses on understanding the mechanisms of immune remodeling in cervical cancer (CC) and identifying potential therapeutic targets. Cervical cancer progression involves complex interactions between immune cells and tumor cells, leading to an immunosuppressive microenvironment. To investigate these interactions, this study utilizes scRNA-seq data from normal cervix, high-grade squamous intraepithelial lesions (HSIL), and cervical cancer tissues to analyze transcriptional responses in immune cells.
+Project 4 focuses on understanding the mechanisms of immune remodeling in cervical cancer (CC) and identifying potential therapeutic targets; [paper1](https://onlinelibrary.wiley.com/doi/10.1002/ctm2.1219), [paper2](https://onlinelibrary.wiley.com/doi/10.1002/cac2.12486). Cervical cancer progression involves complex interactions between immune cells and tumor cells, leading to an immunosuppressive microenvironment. To investigate these interactions, this study utilizes scRNA-seq data from normal cervix, high-grade squamous intraepithelial lesions (HSIL), and cervical cancer tissues to analyze transcriptional responses in immune cells.
 
 Unsupervised clustering of transcriptional profiles revealed distinct immune cell populations and their interactions with tumor cells. Differences in immune cell states were linked to the progression of cervical cancer and the establishment of an immunosuppressive microenvironment. Specifically, the study identified unique HPV-related epithelial clusters and critical node genes that regulate disease progression. The transition from normal cervix to HSIL and cervical cancer was marked by changes in immune cell populations, including T cells, dendritic cells, and macrophages.
 
@@ -123,4 +123,13 @@ with this dataset, go through the steps we have performed during the course, and
 ## Tips
 
 - For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following patterns: `"^MT-"`, `"^RP[SL]"` and `"^HB[^(P)]"`. 
+
 - Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution. 
+
+- Please read the methods section of the paper.
+
+- If the code for data analysis is available, try to adapt it (for specific parameters).
+
+- Check the supplementary figures.
+
+- Try to understand if they used some other tools for the data analysis.
