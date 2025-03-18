@@ -8,7 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Project 2 focuses on a single-cell sequencing study of the Drosophila brain following acute cocaine exposure. Flies were exposed to cocaine, which impaired locomotor activity and increased the incidence of seizures and compulsive grooming. To investigate the specific cell populations responding to cocaine, single-cell transcriptional responses were analyzed in duplicate samples of flies that consumed sucrose or sucrose supplemented with cocaine. The study utilized the 10x Genomics Chromium platform for single-cell RNA sequencing.
+Project 2 focuses on a single-cell sequencing study of the Drosophila brain following acute cocaine exposure; [paper](https://genome.cshlp.org/content/31/10/1927.long). Flies were exposed to cocaine, which impaired locomotor activity and increased the incidence of seizures and compulsive grooming. To investigate the specific cell populations responding to cocaine, single-cell transcriptional responses were analyzed in duplicate samples of flies that consumed sucrose or sucrose supplemented with cocaine. The study utilized the 10x Genomics Chromium platform for single-cell RNA sequencing.
 
 Unsupervised clustering of transcriptional profiles from 86,224 cells revealed 36 distinct clusters, representing all major cell types (neuronal and glial) and neurotransmitter types from most brain regions. Differential expression analysis within individual clusters indicated cluster-specific responses to cocaine, with Kenyon cells of the mushroom bodies and glia showing particularly large transcriptional changes. The study highlighted profound sexual dimorphism in brain transcriptional responses to cocaine, with males exhibiting more pronounced changes than females.
 
@@ -105,12 +105,19 @@ seu <- Seurat::CreateSeuratObject(counts = sparse_matrix,
 ::: {.callout-important}
 ## Project exercise
 
-with this dataset, go through the steps we have performed during the course, and try to reproduce the results provided in the paper. Pay specific attention to quality control, clustering and annotation. 
+With this dataset, go through the steps we have performed during the course, and try to reproduce the results provided in the paper. Pay specific attention to quality control, clustering and annotation. 
 :::
 
 ## Tips
 
-## Tips
-
 - For mitochondrial genes and ribosomol genes you can use the following patterns: `"^mt:"` and `"^Rp[SL]"`. 
+
 - Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution. 
+
+- Please read the methods section of the paper.
+
+- If the code for data analysis is available, try to adapt it (for specific parameters).
+
+- Check the supplementary figures.
+
+- Try to understand if they used some other tools for the data analysis.
