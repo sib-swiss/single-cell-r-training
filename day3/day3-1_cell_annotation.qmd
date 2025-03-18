@@ -17,7 +17,7 @@ editor_options:
 ## Exercises
 
 ```{r}
-#| output: false
+#| output: true
 seu <- readRDS("day2/seu_day2-4.rds")
 library(Seurat)
 ```
@@ -25,7 +25,7 @@ library(Seurat)
 Load the following packages:
 
 ```{r}
-#| output: false
+#| output: true
 library(celldex)
 library(SingleR)
 ```
