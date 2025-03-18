@@ -272,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="available-data" class="level2"><h2 class="anchored" data-anchor-id="available-data">Available data</h2>
 <p>Data has been downloaded and prepared for you from <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE152495">GEO GSE152495</a>.</p>
 <p>In order to download the data, run:</p>
-<div class="cell" data-hash="project2_cache/html/unnamed-chunk-1_af1f33fb0fa4dd3d6dd87334f841b5d2">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project2.tar.gz</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzvf</span> project2.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -322,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Female_Cocaine: treatments</li>
 </ul>
 <p>Now create a new project in the <code>project2</code> directory (Project (None) &gt; New Project …), and create Seurat object from the count matrices:</p>
-<div class="cell" data-hash="project2_cache/html/unnamed-chunk-2_0c95cda781c22c19a4e141aa6f9bd4b2">
+<div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># vector of paths to all sample directories</span></span>

@@ -271,7 +271,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="available-data" class="level2"><h2 class="anchored" data-anchor-id="available-data">Available data</h2>
 <p>Data has been downloaded and prepared for you from <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE199994">GEO GSE199994</a>.</p>
 <p>In order to download the data, run:</p>
-<div class="cell" data-hash="project3_cache/html/unnamed-chunk-1_9cfe8598d84656171fd5c625e6458346">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project3.tar.gz</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzvf</span> project3.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -324,7 +324,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>P: treatments</li>
 </ul>
 <p>Use the following code to read the data files in R, and create a combined Seurat object:</p>
-<div class="cell" data-hash="project3_cache/html/unnamed-chunk-2_b1011138aa66ea65e7be41b4e88b8447">
+<div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="co"># vector of paths to all sample directories</span></span>
 <span><span class="va">datadirs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"data"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
