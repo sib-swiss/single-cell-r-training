@@ -10,7 +10,7 @@ Project 1 is about a single cell sequencing project of zebrafish retina. Photore
 
 ## Available data
 
-Data has been downloaded and prepared for you from [GEO GSE202212](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE202212). The format is `.h5`, and contains the count matrices after running `cellranger`. To create the count tables, the EGFP sequence was added to the reference genome. The gene name of EGFP is `EGFP`. 
+Data has been downloaded and prepared for you from [GEO GSE202212](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE202212). The count matrices are created with `cellranger`. To create the count tables, the EGFP sequence was added to the reference genome. The gene name of EGFP is `EGFP`. 
 
 In order to download the data, run:
 
