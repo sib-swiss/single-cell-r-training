@@ -119,7 +119,7 @@ In addition to the original count table, the `Seurat` object can therefore store
 seurat_object <- Seurat::function(seurat_object)
 ```
 
-So, the function takes an object as input and we assign it to an object with the same name. Meaning that we overwrite the object used as input. This is fine in many cases, because `Seurat` adds information to the input object, and returns is. We will use this syntax for the first time at [Normalization and scaling](day1-3_normalization_scaling.qmd).
+So, the function takes an object as input and we assign it to an object with the same name. Meaning that we overwrite the object used as input. This is fine in many cases, because `Seurat` adds information to the input object, and returns is. We will use this syntax for the first time at [Normalization and scaling](../day2/day2-1_normalization_scaling.qmd).
 
 ::: {.callout-note}
 ## Getting specific information out of the `Seurat` object

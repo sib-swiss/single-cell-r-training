@@ -4,9 +4,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
-```
 
 ## Material
 
@@ -31,7 +28,6 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
-#| echo: false
 #| output: false
 seu <- readRDS("day2/seu_day2-1.rds")
 ```
@@ -39,6 +35,7 @@ seu <- readRDS("day2/seu_day2-1.rds")
 And load the following packages:
 
 ```{r}
+#| output: false
 library(Seurat)
 ```
 
