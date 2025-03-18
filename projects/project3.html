@@ -265,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>Project 3 focuses on understanding the role of type I interferon (IFN-I) responsiveness in shaping immune outcomes following PD1 blockade therapy. Type I interferons play a dual role in cancer immunotherapy, promoting both anti-tumor immunity and immune suppression through T cell exhaustion. To investigate how pre-existing IFN-I responses influence therapeutic success, this study utilizes scRNA-seq data from <strong>healthy donors and 8 treated patients</strong> to analyze transcriptional responses in immune cells.</p>
+</header><p>Project 3 focuses on understanding the role of type I interferon (IFN-I) responsiveness in shaping immune outcomes following PD1 blockade therapy; <a href="https://www.nature.com/articles/s41590-022-01262-7">paper</a>. Type I interferons play a dual role in cancer immunotherapy, promoting both anti-tumor immunity and immune suppression through T cell exhaustion. To investigate how pre-existing IFN-I responses influence therapeutic success, this study utilizes scRNA-seq data from <strong>healthy donors and 8 treated patients</strong> to analyze transcriptional responses in immune cells.</p>
 <p>Unsupervised clustering of transcriptional profiles revealed distinct immune cell populations and IFN-I-induced responses. Differences in IFN-I responsiveness were linked to immune cell states and transcriptional programs that influence therapy outcomes. Patients with lower pre-therapy IFN-I responsiveness in CD4 and CD8 effector T cells (Teff cells) exhibited transcriptional signatures associated with improved immune function, whereas highly responsive Teff cells displayed gene expression patterns linked to immune dysfunction and therapy resistance.</p>
 <p>Further analysis identified epigenetically imprinted IFN-I response states that predefine immune reactivity to therapy. Coexpression and network analyses demonstrated that IFN-I responsiveness influences functional T cell programs and systemic immune coordination. This study provides insights into how pre-existing immune states impact therapeutic success and highlights transcriptional markers that could be used to predict patient outcomes in PD1 blockade immunotherapy.</p>
 <section id="available-data" class="level2"><h2 class="anchored" data-anchor-id="available-data">Available data</h2>
@@ -358,8 +358,12 @@ Project exercise
 </div>
 </section><section id="tips" class="level2"><h2 class="anchored" data-anchor-id="tips">Tips</h2>
 <ul>
-<li>For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following patterns: <code>"^MT-"</code>, <code>"^RP[SL]"</code> and <code>"^HB[^(P)]"</code>.</li>
-<li>Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</li>
+<li><p>For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following patterns: <code>"^MT-"</code>, <code>"^RP[SL]"</code> and <code>"^HB[^(P)]"</code>.</p></li>
+<li><p>Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</p></li>
+<li><p>Please read the methods section of the paper.</p></li>
+<li><p>If the code for data analysis is available, try to adapt it (for specific parameters).</p></li>
+<li><p>Check the supplementary figures.</p></li>
+<li><p>Try to understand if they used some other tools for the data analysis.</p></li>
 </ul>
 
 

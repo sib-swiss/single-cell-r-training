@@ -265,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>Project 4 focuses on understanding the mechanisms of immune remodeling in cervical cancer (CC) and identifying potential therapeutic targets. Cervical cancer progression involves complex interactions between immune cells and tumor cells, leading to an immunosuppressive microenvironment. To investigate these interactions, this study utilizes scRNA-seq data from normal cervix, high-grade squamous intraepithelial lesions (HSIL), and cervical cancer tissues to analyze transcriptional responses in immune cells.</p>
+</header><p>Project 4 focuses on understanding the mechanisms of immune remodeling in cervical cancer (CC) and identifying potential therapeutic targets; <a href="https://onlinelibrary.wiley.com/doi/10.1002/ctm2.1219">paper1</a>, <a href="https://onlinelibrary.wiley.com/doi/10.1002/cac2.12486">paper2</a>. Cervical cancer progression involves complex interactions between immune cells and tumor cells, leading to an immunosuppressive microenvironment. To investigate these interactions, this study utilizes scRNA-seq data from normal cervix, high-grade squamous intraepithelial lesions (HSIL), and cervical cancer tissues to analyze transcriptional responses in immune cells.</p>
 <p>Unsupervised clustering of transcriptional profiles revealed distinct immune cell populations and their interactions with tumor cells. Differences in immune cell states were linked to the progression of cervical cancer and the establishment of an immunosuppressive microenvironment. Specifically, the study identified unique HPV-related epithelial clusters and critical node genes that regulate disease progression. The transition from normal cervix to HSIL and cervical cancer was marked by changes in immune cell populations, including T cells, dendritic cells, and macrophages.</p>
 <p>Further analysis identified key immune cell subsets and their roles in shaping the tumor microenvironment. Network analyses demonstrated that immune cell interactions influence functional T cell programs and systemic immune coordination. This study provides insights into how immune remodeling impacts cervical cancer progression and highlights transcriptional markers that could be used to predict patient outcomes and guide therapeutic strategies.</p>
 <section id="available-data" class="level2"><h2 class="anchored" data-anchor-id="available-data">Available data</h2>
@@ -383,8 +383,12 @@ Project exercise
 </div>
 </section><section id="tips" class="level2"><h2 class="anchored" data-anchor-id="tips">Tips</h2>
 <ul>
-<li>For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following patterns: <code>"^MT-"</code>, <code>"^RP[SL]"</code> and <code>"^HB[^(P)]"</code>.</li>
-<li>Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</li>
+<li><p>For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following patterns: <code>"^MT-"</code>, <code>"^RP[SL]"</code> and <code>"^HB[^(P)]"</code>.</p></li>
+<li><p>Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</p></li>
+<li><p>Please read the methods section of the paper.</p></li>
+<li><p>If the code for data analysis is available, try to adapt it (for specific parameters).</p></li>
+<li><p>Check the supplementary figures.</p></li>
+<li><p>Try to understand if they used some other tools for the data analysis.</p></li>
 </ul>
 
 
