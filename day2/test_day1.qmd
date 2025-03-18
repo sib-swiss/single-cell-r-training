@@ -1,0 +1,19 @@
+---
+title: "Normalization and scaling"
+editor_options: 
+  chunk_output_type: console
+---
+
+::: callout-note
+:::
+
+1.  Which of these tachnique is Microwell-based?
+
+- [ ] 10x genomics
+- [ ] SMART-seq
+- [ ] BD Rhapsody
+- [ ] SPLiT-seq
+- [ ] All of the above
+- [ ] None of the above
+
+2. 
