@@ -9,7 +9,7 @@ editor_options:
 ---
 
 
-Project 3 focuses on understanding the role of type I interferon (IFN-I) responsiveness in shaping immune outcomes following PD1 blockade therapy. Type I interferons play a dual role in cancer immunotherapy, promoting both anti-tumor immunity and immune suppression through T cell exhaustion. To investigate how pre-existing IFN-I responses influence therapeutic success, this study utilizes scRNA-seq data from **healthy donors and 8 treated patients** to analyze transcriptional responses in immune cells.  
+Project 3 focuses on understanding the role of type I interferon (IFN-I) responsiveness in shaping immune outcomes following PD1 blockade therapy; [paper](https://www.nature.com/articles/s41590-022-01262-7). Type I interferons play a dual role in cancer immunotherapy, promoting both anti-tumor immunity and immune suppression through T cell exhaustion. To investigate how pre-existing IFN-I responses influence therapeutic success, this study utilizes scRNA-seq data from **healthy donors and 8 treated patients** to analyze transcriptional responses in immune cells.  
 
 Unsupervised clustering of transcriptional profiles revealed distinct immune cell populations and IFN-I-induced responses. Differences in IFN-I responsiveness were linked to immune cell states and transcriptional programs that influence therapy outcomes. Patients with lower pre-therapy IFN-I responsiveness in CD4 and CD8 effector T cells (Teff cells) exhibited transcriptional signatures associated with improved immune function, whereas highly responsive Teff cells displayed gene expression patterns linked to immune dysfunction and therapy resistance.  
 
@@ -112,4 +112,13 @@ with this dataset, go through the steps we have performed during the course, and
 ## Tips
 
 - For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following patterns: `"^MT-"`, `"^RP[SL]"` and `"^HB[^(P)]"`. 
+
 - Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution. 
+
+- Please read the methods section of the paper.
+
+- If the code for data analysis is available, try to adapt it (for specific parameters).
+
+- Check the supplementary figures.
+
+- Try to understand if they used some other tools for the data analysis.
