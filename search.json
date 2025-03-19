@@ -438,7 +438,7 @@
     "href": "day2/test_day1.html",
     "title": "Normalization and scaling",
     "section": "",
-    "text": "Note\n\n\n\n\n\n\n\nWhich of these tachnique is Microwell-based?\n\n\n10x genomics\nSMART-seq\nBD Rhapsody\nSPLiT-seq\nAll of the above\nNone of the above"
+    "text": "Note\n\n\n\n\n\n\n\nWhich of these tachnique is Microwell-based?\n\n\n10x genomics\nSMART-seq\nBD Rhapsody\nSPLiT-seq\nAll of the above\nNone of the above\n\n\nWhich function is used to subset Seurat object?"
   },
   {
     "objectID": "day3/day3-2_differential_gene_expression.html",
