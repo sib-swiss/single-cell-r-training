@@ -16,4 +16,5 @@ editor_options:
 - [ ] All of the above
 - [ ] None of the above
 
-2. 
+2. Which function is used to subset `Seurat` object?
+
