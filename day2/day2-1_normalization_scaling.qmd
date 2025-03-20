@@ -45,7 +45,6 @@ Normalized values are stored in the "RNA" assay (as item of the `@assay` slot) o
 This is how you can call the function (don't run it yet! Read the exercise first):
 
 ```{r}
-
 # Don't run it yet! Read the exercise first
 seu <- Seurat::NormalizeData(seu,
                      normalization.method = "LogNormalize",
@@ -88,7 +87,7 @@ Seurat::GetAssayData(object = seu, layer = "counts")[1:10,1:10]
 seu <- Seurat::NormalizeData(seu,
                      normalization.method = "LogNormalize",
                      scale.factor = 10000)
-Seurat::GetAssayData(object = seu, slot = "data")[1:10,1:10]  
+Seurat::GetAssayData(object = seu, layer = "data")[1:10,1:10]  
 ```
 
 :::
@@ -185,7 +184,7 @@ Meaning that a whole new assay was added (including the sparse matrices with cou
 Running `SCTransform` will change `@active.assay` into `SCT`(in stead of `RNA`; check it with `DefaultAssay(seu)`). This assay is used as a default for following function calls. To change the active assay to `RNA` run:
 
 ```{r}
-DefaultAssay(seu) <- "RNA"
+DefaultAssay(seu) <- "SCT"
 ```
 :::
 
