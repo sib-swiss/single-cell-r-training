@@ -34,16 +34,19 @@ To perform the integration, we split our object by sample, resulting into a set 
 
 ```{r}
 #| output: false
+#| eval: false
+#| echo: false
+list <- SplitObject(seu, split.by = "orig.ident")
+features <- SelectIntegrationFeatures(object.list = list, nfeatures = 3000)
+list <- PrepSCTIntegration(object.list = list, anchor.features = features)
+anchors <- FindIntegrationAnchors(object.list = list, normalization.method = "SCT",
+    anchor.features = features)
+seu <- IntegrateData(anchorset = anchors, normalization.method = "SCT")
 
-seu[["RNA"]] <- split(seu[["RNA"]], f = seu$orig.ident)
-
-seu <- Seurat::IntegrateLayers(object = seu, method = CCAIntegration,
-                       orig.reduction = "pca",
-                       new.reduction = "integrated.cca",
-                       verbose = FALSE)
-
-# re-join layers after integration
-seu[["RNA"]] <- JoinLayers(seu[["RNA"]])
+seu <- RunPCA(seu, verbose = FALSE)
+seu <- RunUMAP(seu, reduction = "pca", dims = 1:30, verbose = FALSE)
+seu <- FindNeighbors(seu, reduction = "pca", dims = 1:30)
+seu <- FindClusters(seu, resolution = 0.3)
 ```
 
 
