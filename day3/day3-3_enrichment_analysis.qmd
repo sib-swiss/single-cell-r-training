@@ -2,6 +2,7 @@
 title: "Enrichment analysis"
 editor_options: 
   chunk_output_type: console
+format: docx
 ---
 
 
@@ -138,6 +139,7 @@ enr_go@result[, 1:7] |> head() |> knitr::kable()
 We can quite easily generate a plot called an enrichment map with the `enrichplot` package:
 
 ```{r}
+#| eval: false
 enrichplot::emapplot(enrichplot::pairwise_termsim(enr_go),
                      showCategory = 30)
 ```

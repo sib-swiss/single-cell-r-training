@@ -10,7 +10,7 @@ editor_options:
 
 {{< video https://youtu.be/dNO7W7qkKBM?si=xkLBHjT8V25AEzIx >}}
 
-{{< downloadthis ../assets/pdf/08_cell_type_annotation.pdf dname="cell_type_annotation" label="Download the presentation from the video" icon="filetype-pdf" >}
+{{< downloadthis ../assets/pdf/08_cell_type_annotation.pdf dname="cell_type_annotation" label="Download the presentation from the video" icon="filetype-pdf" >}}
 
 - [Review on automated cell annotation](https://www.sciencedirect.com/science/article/pii/S2001037021000192)
 
