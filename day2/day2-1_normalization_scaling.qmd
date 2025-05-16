@@ -184,7 +184,7 @@ Meaning that a whole new assay was added (including the sparse matrices with cou
 Running `SCTransform` will change `@active.assay` into `SCT`(in stead of `RNA`; check it with `DefaultAssay(seu)`). This assay is used as a default for following function calls. To change the active assay to `RNA` run:
 
 ```{r}
-DefaultAssay(seu) <- "SCT"
+DefaultAssay(seu) <- "RNA"
 ```
 :::
 

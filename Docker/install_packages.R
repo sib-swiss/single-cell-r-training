@@ -31,9 +31,14 @@ if (!require("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
 }
 
+if (!require("renv", quietly = TRUE)) {
+  install.packages("renv")
+}
+
+
 ## install and check package loading -------------------------------------------
 for (pkg in basename(pkgs)) {
-  BiocManager::install(pkg, ask = FALSE, update = FALSE)
+  renv::install(pkg, ask = FALSE, update = FALSE)
 
   if (!library(pkg, character.only = TRUE, logical.return = TRUE)) {
     write(

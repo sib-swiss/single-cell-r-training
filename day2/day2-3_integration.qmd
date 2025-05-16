@@ -32,6 +32,21 @@ Seurat::DimPlot(seu, reduction = "umap")
 
 To perform the integration, we split our object by sample, resulting into a set of layers within the `RNA` assay. The layers are integrated and stored in the reduction slot - in our case we call it `integrated.cca`. Then, we re-join the layers
 
+
+```{r}
+#| output: false
+
+seu[["RNA"]] <- split(seu[["RNA"]], f = seu$orig.ident)
+
+seu <- Seurat::IntegrateLayers(object = seu, method = CCAIntegration,
+                       orig.reduction = "pca",
+                       new.reduction = "integrated.cca",
+                       verbose = FALSE)
+
+# re-join layers after integration
+seu[["RNA"]] <- JoinLayers(seu[["RNA"]])
+```
+
 ```{r}
 #| output: false
 #| eval: false
