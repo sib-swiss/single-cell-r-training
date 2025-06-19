@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-deploy-latest-version:
     runs-on: ubuntu-latest
-    timeout-minutes: 10 # Adjust as needed
+    timeout-minutes: 10
 
     permissions:
       contents: write
@@ -22,9 +22,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Quarto
-        uses: quarto-dev/quarto-action@v2
+        uses: quarto-dev/quarto-action/setup@v1 # CORRECTED LINE HERE
         with:
-          version: 'latest'
+          version: 'latest' # This downloads the latest Quarto CLI
           # projectDir: 'docs' # Uncomment if your Quarto project is in a subdirectory
 
       - name: Render Quarto project
@@ -41,6 +41,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
           publish_branch: gh-pages
-          destination_dir: latest # Deploy to 'latest/' subdirectory
+          destination_dir: latest
           force_orphan: false
           keep_files: true
