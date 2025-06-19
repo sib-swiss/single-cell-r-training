@@ -3,7 +3,7 @@ project:
   execute-dir: project
   render:
     - "*.qmd"
-    - "!CONTRIBUTIONG.md"
+    - "!CONTRIBUTING.md"
     - "!LICENSE.md"
 
 website:
@@ -42,7 +42,14 @@ website:
           - href: "projects/project2.qmd"
           - href: "projects/project3.qmd"
           - href: "projects/project4.qmd"
-          
+
+      - text: "Versions"
+        menu:
+          - href: /v2025.3/
+            text: "v2025.3"
+          - href: /latest/
+            text: "Latest"
+
     right:
       - icon: github
         href: https://github.com/sib-swiss/single-cell-r-training/
@@ -75,11 +82,7 @@ format:
       </script>
       <!-- End Matomo Code -->
 
-
 execute:
   freeze: auto 
   cache: true
   tidy: true
-
-
-
