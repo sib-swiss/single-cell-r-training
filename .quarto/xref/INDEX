@@ -1,0 +1,68 @@
+{
+  "about.qmd": {
+    "about.html": "b0cdfecc"
+  },
+  "advanced_exercise/01_trajectory_analysis.qmd": {
+    "01_trajectory_analysis.html": "be2523c6"
+  },
+  "advanced_exercise/02_advanced_analysis.qmd": {
+    "02_advanced_analysis.html": "745e7813"
+  },
+  "assets/deepak/deepak.qmd": {
+    "deepak.html": "a362046b"
+  },
+  "assets/deepak/dim_red.qmd": {
+    "dim_red.html": "0c2946a0"
+  },
+  "course_schedule.qmd": {
+    "course_schedule.html": "c99562bf"
+  },
+  "day1/day1-1_setup.qmd": {
+    "day1-1_setup.html": "3ab50779"
+  },
+  "day1/day1-1a_cellranger.qmd": {
+    "day1-1a_cellranger.html": "686047d4"
+  },
+  "day1/day1-2_analysis_tools_qc.qmd": {
+    "day1-2_analysis_tools_qc.html": "21a6b261"
+  },
+  "day2/day2-1_normalization_scaling.qmd": {
+    "day2-1_normalization_scaling.html": "969962d5"
+  },
+  "day2/day2-2_dimensionality_reduction.qmd": {
+    "day2-2_dimensionality_reduction.html": "25fc53f5"
+  },
+  "day2/day2-3_integration.qmd": {
+    "day2-3_integration.html": "c1709c55"
+  },
+  "day2/day2-4_clustering.qmd": {
+    "day2-4_clustering.html": "a6d8add8"
+  },
+  "day3/day3-1_cell_annotation.qmd": {
+    "day3-1_cell_annotation.html": "4e7eeb7f"
+  },
+  "day3/day3-2_differential_gene_expression.qmd": {
+    "day3-2_differential_gene_expression.html": "21f58ba7"
+  },
+  "day3/day3-3_enrichment_analysis.qmd": {
+    "day3-3_enrichment_analysis.docx": "d50ef807"
+  },
+  "index.qmd": {
+    "index.html": "7dee86d7"
+  },
+  "precourse_preparations.qmd": {
+    "precourse_preparations.html": "440a14eb"
+  },
+  "projects/project1.qmd": {
+    "project1.html": "6972a508"
+  },
+  "projects/project2.qmd": {
+    "project2.html": "75cf914c"
+  },
+  "projects/project3.qmd": {
+    "project3.html": "0427f496"
+  },
+  "projects/project4.qmd": {
+    "project4.html": "e06b02cd"
+  }
+}
