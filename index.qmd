@@ -14,21 +14,20 @@ Are you looking for material of previous versions of the course? Find it at [sib
 
 ## Teachers
 
-- Deepak Tanwar
 - Geert van Geest [ORCiD](https://orcid.org/0000-0002-1561-078X)
+- Joana Carlevaro-Fita [ORCiD](https://orcid.org/0000-0002-1674-2055)
+- Deepak Tanwar [ORCiD](https://orcid.org/0000-0001-8036-1989)
 
-## Teachers of previous and other courses
+## Helper
+
+- Cassandra Litchfield [ORCiD](https://orcid.org/0000-0001-9374-1681)
+
+## Teachers and authors of previous and other courses
 
 - Tania Wyss [ORCiD](https://orcid.org/0000-0003-2641-0895)
 - Rachel Marcone-Jeitziner [ORCiD](https://orcid.org/0000-0002-5711-8435)
 - Alex Russell Lederer [ORCiD](https://orcid.org/0000-0001-6381-5088)
 - Luciano Cascione [ORCiD](https://orcid.org/0000-0002-4606-0637)
-
-## Authors
-
-- Tania Wyss [ORCiD](https://orcid.org/0000-0003-2641-0895)
-- Rachel Marcone-Jeitziner [ORCiD](https://orcid.org/0000-0002-5711-8435)
-- Alex Russell Lederer [ORCiD](https://orcid.org/0000-0001-6381-5088)
 - Geert van Geest [ORCiD](https://orcid.org/0000-0002-1561-078X)
 - Patricia Palagi [ORCiD](https://orcid.org/0000-0001-9062-6303)
 
