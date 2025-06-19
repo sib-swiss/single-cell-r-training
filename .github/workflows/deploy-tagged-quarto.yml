@@ -10,24 +10,24 @@ on:
 jobs:
   build-and-deploy-tagged-version:
     runs-on: ubuntu-latest
-    timeout-minutes: 10 # Adjust as needed for your project's build time
+    timeout-minutes: 10
 
     permissions:
-      contents: write # To push to gh-pages branch
-      pages: write    # To deploy to GitHub Pages
-      id-token: write # For OIDC authentication (recommended for pages)
+      contents: write
+      pages: write
+      id-token: write
 
     steps:
       - name: Checkout repository at tag
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }} # Checkout the specific tag that triggered the workflow
-          fetch-depth: 0        # Ensure full history for Quarto and other tools
+          ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Setup Quarto
-        uses: quarto-dev/quarto-action@v2
+        uses: quarto-dev/quarto-action/setup@v1 # CORRECTED LINE HERE
         with:
-          version: 'latest' # Or a specific version like '1.4.0'
+          version: 'latest' # This downloads the latest Quarto CLI
           # If your _quarto.yml and .qmd files are in a subdirectory like 'docs/', uncomment this:
           # projectDir: 'docs'
 
@@ -47,12 +47,8 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site             # The directory Quarto outputs to
-          publish_branch: gh-pages         # The branch GitHub Pages serves from
-          destination_dir: ${{ steps.get_version.outputs.VERSION }} # e.g., 'v2025.3/'
-          force_orphan: false              # IMPORTANT: Do not delete existing content
-          keep_files: true                 # IMPORTANT: Ensures existing version folders are kept
-          # Note: peaceiris/actions-gh-pages v4 with force_orphan: false and destination_dir
-          # correctly creates/updates the subdirectory without affecting others.
-          # The `keep_files: true` is an explicit safeguard but might not be strictly
-          # necessary with force_orphan: false for new subdirs, but it doesn't hurt.
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          destination_dir: ${{ steps.get_version.outputs.VERSION }}
+          force_orphan: false
+          keep_files: true
