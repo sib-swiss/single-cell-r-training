@@ -25,9 +25,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Quarto
-        uses: quarto-dev/quarto-action/setup@v1 # CORRECTED LINE HERE
+        uses: quarto-dev/quarto-action/setup@v2 # CORRECTED HERE
         with:
-          version: 'latest' # This downloads the latest Quarto CLI
+          version: 'latest'
           # If your _quarto.yml and .qmd files are in a subdirectory like 'docs/', uncomment this:
           # projectDir: 'docs'
 
