@@ -8,37 +8,38 @@ title: "Course schedule"
 
 ## Day 1
 
-| block   	| start    	| end      	| subject                        	|
-|---------	|----------	|----------	|--------------------------------	|
-| introduction 	| 9:15 AM  	| 9:30 AM 	| [Introduction](day1/day1-1_setup.qmd) |
-| block 1 	| 9:30 AM  	| 10:30 AM 	| [Introduction scRNAseq](day1/day1-1_setup.qmd) |
-|         	| 10:30 AM 	| 11:00 AM 	| BREAK                          	|
-| block 2 	| 11:00 AM 	| 12:30 PM 	| [10X and Cellranger](day1/day1-1a_cellranger.qmd) 	     |
-|         	| 12:30 PM 	| 1:30 PM  	| BREAK                          	|
-| block 3 	| 1:30 PM  	| 3:00 PM  	| [Analysis tools and QC](day1/day1-2_analysis_tools_qc.qmd)             	 |
-|         	| 3:00 PM  	| 3:30 PM  	| BREAK                          	|
-| block 4 	| 3:30 PM  	| 5:00 PM  	| Group work                |
+| block   	| start    	| end      	| subject                        	| lecturer                        |
+|---------	|----------	|----------	|--------------------------------	|--------------------------------	|
+| introduction 	| 9:15 AM  	| 9:30 AM 	| [Introduction](day1/day1-1_setup.qmd) | Geert van Geest | 
+| block 1 	| 9:30 AM  	| 10:30 AM 	| [Introduction scRNAseq](day1/day1-1_setup.qmd) | Geert van Geest |
+|         	| 10:30 AM 	| 11:00 AM 	| BREAK                          	| |
+| block 2 	| 11:00 AM 	| 12:30 PM 	| [10X and Cellranger](day1/day1-1a_cellranger.qmd) 	     | Geert van Geest |
+|         	| 12:30 PM 	| 1:30 PM  	| BREAK                          	| |
+| block 3 	| 1:30 PM  	| 3:00 PM  	| [Analysis tools and QC](day1/day1-2_analysis_tools_qc.qmd)             	 | Geert van Geest |
+|         	| 3:00 PM  	| 3:30 PM  	| BREAK                          	| |
+| block 4 	| 3:30 PM  	| 5:00 PM  	| Group work                | Joana Carlevaro-Fita |
 
 ## Day 2
 
-| block   	| start    	| end      	| subject                             	|
-|---------	|----------	|----------	|-------------------------------------	|
-| block 1 	| 9:15 AM  	| 10:30 AM  	| [Normalization and scaling](day2/day2-1_normalization_scaling.qmd)                  |
-|         	| 10:30 AM 	| 11:00 AM 	| BREAK                               	|
-| block 2 	| 11:00 AM 	| 12:30 PM 	| [Dimensionality reduction](day2/day2-2_dimensionality_reduction.qmd) and [Integration](day2/day2-3_integration.qmd)  |
-|         	| 12:30 PM 	| 1:30 PM  	| BREAK                               	|
-| block 3 	| 1:30 PM  	| 3:00 PM  	| [Clustering](day2/day2-4_clustering.qmd)     	|
-|         	| 3:00 PM  	| 3:30 PM  	| BREAK                               	|
-| block 4 	| 3:30 PM  	| 5:00 PM  	| group work 	|
+| block   	| start    	| end      	| subject                             	| lecturer                        |
+|---------	|----------	|----------	|-------------------------------------	|--------------------------------	|
+| block 1 	| 9:15 AM  	| 10:30 AM  	| [Normalization and scaling](day2/day2-1_normalization_scaling.qmd)  |  Deepak Tanwar |
+|         	| 10:30 AM 	| 11:00 AM 	| BREAK                               	| |
+| block 2 	| 11:00 AM 	| 12:30 PM 	| [Dimensionality reduction](day2/day2-2_dimensionality_reduction.qmd) and [Integration](day2/day2-3_integration.qmd)  |  Deepak Tanwar |
+|         	| 12:30 PM 	| 1:30 PM  	| BREAK                               	| |
+| block 3 	| 1:30 PM  	| 3:00 PM  	| [Clustering](day2/day2-4_clustering.qmd)     	| Joana Carlevaro-Fita |
+|         	| 3:00 PM  	| 3:30 PM  	| BREAK                               	| |
+| block 4 	| 3:30 PM  	| 5:00 PM  	| group work 	| |
 
 ## Day 3
 
-| block   	| start    	| end      	| subject                             	|
-|---------	|----------	|----------	|-------------------------------------	|
-| block 1 	| 9:15 AM  	| 10:30 AM 	| [Cell annotation](day3/day3-1_cell_annotation.qmd) 	|
-|         	| 10:30 AM 	| 11:00 AM 	| BREAK                               	|
-| block 2 	| 11:00 AM 	| 12:30 PM 	| [Differential gene expression](day3/day3-2_differential_gene_expression.qmd) and [Enrichment analysis](day3/day3-3_enrichment_analysis.qmd)            	|
-|         	| 12:30 PM 	| 1:30 PM  	| BREAK                               	|
-| block 3 	| 1:30 PM  	| 3:00 PM  	| group work |
-|         	| 3:00 PM  	| 3:30 PM  	| BREAK                               	|
-| block 4 	| 3:30 PM  	| 5:00 PM  	| group work 	|
+| block   	| start    	| end      	| subject                             	| lecturer                        |
+|---------	|----------	|----------	|-------------------------------------	|--------------------------------	|
+| block 1 	| 9:15 AM  	| 10:30 AM 	| [Cell annotation](day3/day3-1_cell_annotation.qmd) 	| Joana Carlevaro-Fita |
+|         	| 10:30 AM 	| 11:00 AM 	| BREAK                               	| |
+| block 2 	| 11:00 AM 	| 12:30 PM 	| [Differential gene expression](day3/day3-2_differential_gene_expression.qmd) and [Enrichment analysis](day3/day3-3_enrichment_analysis.qmd)            	| Deepak Tanwar |
+|         	| 12:30 PM 	| 1:30 PM  	| BREAK                               	| |
+| block 3 	| 1:30 PM  	| 3:00 PM  	| group work | |
+|         	| 3:00 PM  	| 3:30 PM  	| BREAK                         |       	|
+| block 4 	| 3:30 PM  	| 5:00 PM  	| group work 	+ presentations | |
+| post-course 	| 5:00 PM  	| 5:10 PM  	| [Post-course information]() 	| Deepak Tanwar |
