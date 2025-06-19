@@ -1,0 +1,16 @@
+name: Test Quarto Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: quarto-dev/quarto-action/setup@v2 # Test this specific line
+        with:
+          version: 'latest'
+      - run: quarto --version # Just to confirm Quarto is installed
