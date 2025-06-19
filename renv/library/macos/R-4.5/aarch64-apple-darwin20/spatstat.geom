@@ -1,1 +1,0 @@
-/Users/detanw/Library/Caches/org.R-project.R/R/renv/cache/v5/macos/R-4.5/aarch64-apple-darwin20/spatstat.geom/3.4-1/63b664df946dc09a491ac8067189f405/spatstat.geom
