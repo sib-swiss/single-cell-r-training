@@ -6,6 +6,10 @@ project:
     - "!CONTRIBUTING.md"
     - "!LICENSE.md"
 
+profiles:
+  - v2025.3
+  - latest
+
 website:
   title: "Single cell transcriptomics"
   favicon: assets/SIB_logo.svg
@@ -43,12 +47,12 @@ website:
           - href: "projects/project3.qmd"
           - href: "projects/project4.qmd"
 
-      # - text: "Versions"
-      #   menu:
-      #     - href: /v2025.3/
-      #       text: "v2025.3"
-      #     - href: /latest/
-      #       text: "Latest"
+      - text: "Versions"
+        menu:
+          - href: /v2025.3/
+            text: "v2025.3"
+          - href: /latest/
+            text: "Latest"
 
     right:
       - icon: github
