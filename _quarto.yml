@@ -38,6 +38,7 @@ website:
           - href: "day3/day3-3_enrichment_analysis.qmd"
       - text: "projects"
         menu:
+          - href: "projects/introduction.qmd"
           - href: "projects/project1.qmd"
           - href: "projects/project2.qmd"
           - href: "projects/project3.qmd"
