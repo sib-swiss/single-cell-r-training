@@ -37,6 +37,7 @@ library(glmGamPoi)
 seu <- readRDS("day1/seu_day1-2.rds")
 ```
 
+
 ### Normalization
 
 After removing unwanted cells from the dataset, the next step is to normalize the data.
