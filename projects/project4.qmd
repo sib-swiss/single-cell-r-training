@@ -122,32 +122,47 @@ With this dataset, go through the steps we have performed during the course, and
 
 ## Guidance questions
 
-The following questions may be used to guide your analyses. 
+If you'd like more structure, the following questions may guide your analyses: 
 
 ### Quality control and filtering
 
 - How many cells are there in the data set (raw data)?
-- Is there evidence of dying cells? If so, how can you filter out dying cells?
+
+- Is there evidence of dying cells? If so, how can you filter for dying cells?
+
 - How does your filtering strategy compare with what was done in the two papers?
 
-#### Bonus questions (advanced)
+::: {.callout-tip collapse="true"}
+## Bonus questions (advanced)
 - Why do you think paper 2 chose not to remove potential doublets?
-- Do you think paper 1 or paper 2 chose a better threshold for mitochondrial percentage?
+
+- Do you think paper 1 or paper 2 chose a better threshold for removing cells based on high mitochondrial gene expression?
+
+:::     
 
 ### Normalization & scaling
 - Which normalization strategy was used in the papers?
+
 - How many principal components would you suggest for downstream analyses?
+
 - Are there batch-effects in this dataset? If so, how can you tell? How could you correct for batch effects?
 
 ### Clustering & annotation
 - Which clustering resolution would you suggest for downstream analyses?
+
 - Which major cell types are you expecting for this dataset?
-- Which marker genes could we use for annotation?
+
+- Which marker genes will you use for annotation?
+
 - Which clusters can you clearly identify using these markers genes?
 
-####  Bonus questions (advanced)
-- If we didn’t have such a list of marker genes, which other techniques could we try?
+::: {.callout-tip collapse="true"}
+## Bonus questions (advanced)
+- If you didn’t have such a list of marker genes, which other techniques could you try?
+
 - How do these compare to manual annotation?
+
+:::  
 
 ## Additional tips
 
