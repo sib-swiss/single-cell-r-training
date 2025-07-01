@@ -20,7 +20,7 @@ libxt6 \
     libcairo2-dev \
     libxt-dev
     
-COPY ../renv.lock ./
+COPY renv.lock ./
 
 RUN Rscript -e 'install.packages("renv")'
 RUN Rscript -e 'renv::restore()'
