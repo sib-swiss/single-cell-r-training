@@ -258,6 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#available-data" id="toc-available-data" class="nav-link active" data-scroll-target="#available-data">Available data</a></li>
+  <li><a href="#project-excercises-and-questions" id="toc-project-excercises-and-questions" class="nav-link" data-scroll-target="#project-excercises-and-questions">Project excercises and questions</a></li>
   <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
   </ul></nav>
     </div>
@@ -283,7 +284,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In order to download the data, run:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project1.tar.gz</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzcvf</span> project1.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xvf</span> project1.tar.gz</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> project1.tar.gz </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After extracting, a directory <code>project1</code> appears with the following content:</p>
 <pre><code>.
@@ -379,13 +381,32 @@ Project exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>with this dataset, go through the steps we have performed during the course, and try to reproduce the results provided in the paper. Pay specific attention to quality control, clustering and annotation.</p>
+<p>With this dataset, go through the steps we have performed during the course, and try to answer the following questions. Pay specific attention to quality control, clustering and annotation.</p>
 </div>
 </div>
+</section><section id="project-excercises-and-questions" class="level2"><h2 class="anchored" data-anchor-id="project-excercises-and-questions">Project excercises and questions</h2>
+<p>Look at the quality of the dataset, understand possible pitfalls and decide how to best filter the data</p>
+<ul>
+<li>Have a look at the seurat object before starting your analysis. How many cells and genes are present? Is the data already normalised?</li>
+<li>Assess the quality of the samples. Are there any important issues to consider? Would you remove genes?</li>
+</ul>
+<p>Normalise, integrate and visualise the data in order to cluster the cells into biologically meaningful populations</p>
+<ul>
+<li>Which clustering resolution would you choose?</li>
+<li>Inspect the clustering (ie. % of mitochondrial, number of features..), would you filter out some populations? do you need to change your resolution?</li>
+</ul>
+<p>Next step will be to identify the different cell types, in particular MG, rods and cons. MG is the cell population where we want to evaluate if EGFP is expressed during regeneration (as a reported of CAREG).</p>
+<ul>
+<li>Annotate cells (at least rods, cons and MG) and describe EGFP behavior in the different conditions (Ctr, 3dp, 7dp, 10dp)</li>
+<li>Can you identify a subpopulation of MG cells expression EGFP?</li>
+</ul>
+<p>Bonus: can you identify expression profile differences in injured vs uninjured Rods cells? and in Cons cells? How do your results compare to the ones from the paper?</p>
 </section><section id="tips" class="level2"><h2 class="anchored" data-anchor-id="tips">Tips</h2>
 <ul>
-<li>For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following patterns: <code>"^mt-"</code>, <code>"^rp[sl]"</code> and <code>"^hb[^(p)]"</code>.</li>
-<li>Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</li>
+<li>For mitochondrial genes, ribosomal genes and hemoglobin genes you can use the following patterns: <code>"^mt-"</code>, <code>"^rp[sl]"</code> and <code>"^hb[^(p)]"</code>.</li>
+<li>Work iterative; meaning that based on results of an analsyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</li>
+<li>You can plot the samples by condition (keeping the 2 replicates together). For that, try adding a new metadata column that summarises the information you need.</li>
+<li>For cell type annotation, have a look at the methods section from the original paper, they provide a supplementary table with retina gene markers.</li>
 </ul>
 
 
