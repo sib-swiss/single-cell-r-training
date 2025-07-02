@@ -11,7 +11,7 @@ editor_options:
 
 {{< video https://youtu.be/kqcvqqZp3Jo?si=T1lHw0z-4wv6BvF- >}}
 
-{{< downloadthis ../assets/pdf/scRNAseq_clustering_RM.pdf dname="scRNAseq_clustering_RM" label="Download the presentation from the video" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/07_scRNAseq_clustering_RM.pdf dname="07_scRNAseq_clustering_RM" label="Download the presentation from the video" icon="filetype-pdf" >}}
 
 
 
