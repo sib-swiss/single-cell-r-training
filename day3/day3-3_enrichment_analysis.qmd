@@ -2,7 +2,7 @@
 title: "Enrichment analysis"
 editor_options: 
   chunk_output_type: console
-format: docx
+format: html
 ---
 
 
