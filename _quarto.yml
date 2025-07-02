@@ -5,6 +5,8 @@ project:
     - "*.qmd"
     - "!CONTRIBUTING.md"
     - "!LICENSE.md"
+    - "!assets/"
+    - "!advanced_exercise/"
 
 profiles:
   - v2025.3
