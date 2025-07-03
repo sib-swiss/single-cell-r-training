@@ -60,7 +60,7 @@ Have a look at the assay data before and after running `NormalizeData()`. Did it
 ::: 
 
 ::: {.callout-tip}
-You can extract assay data with the function `Seurat::GetAssayData`. By default, the slot `data` is used (inside the slot `assay`), containing normalized counts. Use `Seurat::GetAssayData(seu, slot = "counts")` to get the raw counts. 
+You can extract assay data with the function `Seurat::GetAssayData`. By default, the slot `data` is used (inside the slot `assay`), containing normalized counts. Use `Seurat::GetAssayData(seu, layer = "counts")` to get the raw counts. 
 :::
 
 ::: {.callout-tip collapse="true"}
