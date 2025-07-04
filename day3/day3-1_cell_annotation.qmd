@@ -6,7 +6,7 @@ editor_options:
 
 ## Material
 
-{{< downloadthis ../assets/pdf/08_cell_type_annotation.pdf dname="CellAnnotation_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/20250702_annotation_JC.pdf dname="CellAnnotation_SIB" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/dNO7W7qkKBM?si=xkLBHjT8V25AEzIx >}}
 
