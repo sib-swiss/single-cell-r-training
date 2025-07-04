@@ -26,7 +26,7 @@ Log in to Rstudio server with the provided link, username and password.
 
 ## Own installation
 
-Install the required packages usinf [renv](https://rstudio.github.io/renv/index.html)
+Install the required packages using [renv](https://rstudio.github.io/renv/index.html)
 
 ```{r}
 #| eval: false

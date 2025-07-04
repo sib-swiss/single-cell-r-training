@@ -42,4 +42,4 @@ title: "Course schedule"
 | block 3 	| 1:30 PM  	| 3:00 PM  	| group work | |
 |         	| 3:00 PM  	| 3:30 PM  	| BREAK                         |       	|
 | block 4 	| 3:30 PM  	| 5:00 PM  	| group work 	+ presentations | |
-| post-course 	| 5:00 PM  	| 5:10 PM  	| [Post-course information]() 	| Deepak Tanwar |
+| post-course 	| 5:00 PM  	| 5:10 PM  	| [Post-course information](assets/pdf/11_post_course.pdf) 	| Deepak Tanwar |
