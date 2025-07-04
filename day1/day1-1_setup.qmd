@@ -29,7 +29,9 @@ Log in to Rstudio server with the provided link, username and password.
 Install the required packages usinf [renv](https://rstudio.github.io/renv/index.html)
 
 ```{r}
+#| eval: false
 install.packages("renv")
+
 renv::restore(lockfile = "https://raw.githubusercontent.com/sib-swiss/single-cell-r-training/refs/heads/master/renv.lock")
 ```
 
