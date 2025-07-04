@@ -21,13 +21,14 @@ Data has been downloaded and prepared for you from [GEO GSE199994](https://www.n
 In order to download the data, run:
 
 ```{bash}
-wget [https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project3.tar.gz](https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project3.tar.gz)
+wget https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project3.tar.gz
+
 tar -xzvf project3.tar.gz
 ```
 
 After extracting, a directory `GSE199994` appears with the following format:
 
-```
+```         
 GSE199994/
 ├── data
 │   ├── HD1
@@ -95,77 +96,77 @@ seu <- Seurat::CreateSeuratObject(counts = sparse_matrix,
 project = "InterferonStudy")
 ```
 
-::: {.callout-important}
-
+::: callout-important
 ## Project exercise
 
 With this dataset, go through the steps we have performed during the course, and try to reproduce the results provided in the paper.
 :::
 
 ## Tips
+
 Pay specific attention to the following key analysis steps and parameters from the paper:
 
-### 1\. Quality Control (QC)
+### 1. Quality Control (QC)
 
 The paper's methods for filtering were primarily based on mass cytometry (CyTOF) data. For your scRNA-seq data, you should apply standard QC metrics to filter out low-quality cells and genes using the `subset` function in Seurat.
 
-  * **Mitochondrial Genes:** Use the pattern `"^MT-"` to calculate the percentage of mitochondrial reads (`PercentageFeatureSet`).
-  * **Ribosomal Genes:** Use the pattern `"^RP[SL]"` to calculate the percentage of ribosomal reads.
-  * **Hemoglobin Genes:** Use the pattern `"^HB[^(P)]"` to calculate the percentage of hemoglobin reads.
-  * **Filtering:** Use the `subset` function to filter cells based on the number of features (`nFeature_RNA`), UMI counts (`nCount_RNA`), and the calculated percentages of mitochondrial, ribosomal, and hemoglobin reads.
+-   **Mitochondrial Genes:** Use the pattern `"^MT-"` to calculate the percentage of mitochondrial reads (`PercentageFeatureSet`).
+-   **Ribosomal Genes:** Use the pattern `"^RP[SL]"` to calculate the percentage of ribosomal reads.
+-   **Hemoglobin Genes:** Use the pattern `"^HB[^(P)]"` to calculate the percentage of hemoglobin reads.
+-   **Filtering:** Use the `subset` function to filter cells based on the number of features (`nFeature_RNA`), UMI counts (`nCount_RNA`), and the calculated percentages of mitochondrial, ribosomal, and hemoglobin reads.
 
-### 2\. Data Normalization and Scaling
+### 2. Data Normalization and Scaling
 
 The paper used `arcsinh` transformation for their protein expression data. For your scRNA-seq data, you should use `SCTransform` to regress out unwanted variation.
 
-  * **Reproduce:**
+-   **Reproduce:**
     1.  Use the `SCTransform()` function to normalize and scale the data and to regress out confounding factors like the number of UMIs (`nFeature_RNA`). The paper mentions using `scTransform` residuals for differential expression calculation, so this method is highly relevant.
 
-### 3\. Dimensionality Reduction
+### 3. Dimensionality Reduction
 
 The paper used **UMAP** for visualization. For this, you will first need to perform a linear dimensionality reduction.
 
-  * **Reproduce:**
+-   **Reproduce:**
     1.  Run PCA on the scaled data using the `RunPCA()` function.
     2.  Use an Elbow Plot (`ElbowPlot()`) to determine the appropriate number of principal components.
     3.  Run UMAP on the selected principal components using the `RunUMAP()` function to visualize the data in 2D.
 
-### 4\. Unsupervised Clustering
+### 4. Unsupervised Clustering
 
 The paper used the **fast-PhenoGraph** algorithm for clustering and identified **39 distinct clusters** in their `ex vivo` dataset.
 
-  * **Reproduce:**
+-   **Reproduce:**
     1.  Find the nearest neighbors using `FindNeighbors()`.
     2.  Apply the clustering algorithm using `FindClusters()`. You can adjust the `resolution` parameter to identify a similar number of clusters as reported in the paper. A resolution between 0.5 and 1.0 is a good starting point.
 
-### 5\. Cluster Annotation
+### 5. Cluster Annotation
 
 Annotate your clusters by identifying top marker genes for each cluster. The paper manually classified clusters based on lineage marker expression.
 
-  * **Reproduce:**
+-   **Reproduce:**
     1.  Use the `FindAllMarkers()` function to find marker genes for each cluster. You can set `min.pct = 0.25` and `logfc.threshold = 0.25` as a starting point.
     2.  Filter the marker genes (e.g., based on adjusted p-value) and use known canonical markers to assign cell type labels to your clusters.
 
-### 6\. Differential Expression (DE) and IFN-I Response Analysis
+### 6. Differential Expression (DE) and IFN-I Response Analysis
 
 A core part of the paper's analysis is the **IFN-I response capacity (IRC)** score, which was based on the expression of a core set of IFN-I-stimulated proteins (ISPs). The paper also used the **Wilcoxon's rank-sum test** for statistical testing.
 
-  * **IFN-I Response Score:** To replicate this using gene expression data, you can use Seurat’s `AddModuleScore()` function. The paper used the ISPs **BST2, PKR, ISG15, MX1, IFIT3, and IRF7**. You can use the corresponding genes to define your ISG gene list.
-  * **Differential Expression:** Use the `FindMarkers()` function to compare gene expression between groups (e.g., patients with high vs. low IFN-I responsiveness). You should specify `test.use = "wilcox"` for the Wilcoxon's rank-sum test.
+-   **IFN-I Response Score:** To replicate this using gene expression data, you can use Seurat’s `AddModuleScore()` function. The paper used the ISPs **BST2, PKR, ISG15, MX1, IFIT3, and IRF7**. You can use the corresponding genes to define your ISG gene list.
+-   **Differential Expression:** Use the `FindMarkers()` function to compare gene expression between groups (e.g., patients with high vs. low IFN-I responsiveness). You should specify `test.use = "wilcox"` for the Wilcoxon's rank-sum test.
 
-### 7\. Comparison of Patient Groups
+### 7. Comparison of Patient Groups
 
 The paper's key finding relates IFN-I responsiveness to therapy outcome.
 
-  * **Reproduce:**
+-   **Reproduce:**
     1.  After calculating the IFN-I response score, classify patient cells into high and low IFN-I responsive groups based on their scores. A common approach is to use the median or a quantile-based cutoff.
     2.  Perform a differential expression analysis between these two groups within specific cell clusters to identify gene expression patterns associated with improved or poor outcomes.
 
-### 8\. Pathway Enrichment Analysis
+### 8. Pathway Enrichment Analysis
 
 The paper used **Gene Set Enrichment Analysis (GSEA)** and **Ingenuity Pathway Analysis (IPA)**. You can use the `R` package `clusterProfiler` for this task.
 
-  * **Reproduce:**
+-   **Reproduce:**
     1.  Take the list of differentially expressed genes from your DE analysis.
     2.  Perform a pathway enrichment analysis using `clusterProfiler` to identify affected biological pathways. You can use functions like `enrichGO` for Gene Ontology enrichment.
 
@@ -173,5 +174,5 @@ The paper used **Gene Set Enrichment Analysis (GSEA)** and **Ingenuity Pathway A
 
 As you work through the analysis, you can compare your results to the following figures from the paper:
 
-  * **UMAP Plots:** Compare your UMAP plots with **Figure 1b** and **Figure 2a** to check your clustering and visualization.
-  * **IRC Score Plots:** Compare the distributions of your calculated IFN-I response score across different cell populations to the violin plots in **Figure 2d**.
+-   **UMAP Plots:** Compare your UMAP plots with **Figure 1b** and **Figure 2a** to check your clustering and visualization.
+-   **IRC Score Plots:** Compare the distributions of your calculated IFN-I response score across different cell populations to the violin plots in **Figure 2d**.
