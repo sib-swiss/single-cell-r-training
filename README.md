@@ -23,7 +23,7 @@ Any contribution to this course material is highly appreciated :+1:. Please have
 This website is generated with [quarto](https://quarto.org/). To re-build the website, download and install [Rstudio](https://posit.co/download/rstudio-desktop/) and [Quarto CLI](https://quarto.org/docs/get-started/). Also make sure you have installed the [required packages](Docker/install_packages.R). After that, clone this repository:
 
 ```sh
-git clone https://github.com/sib-swiss/single-cell-training.git
+git clone https://github.com/sib-swiss/single-cell-r-training.git
 ```
 
 Open the project in Rstudio, and run in the terminal:
