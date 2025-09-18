@@ -1,95 +1,95 @@
-name: Render and publish
+project:
+  type: website
+  execute-dir: project
+  render:
+    - "*.qmd"
+    - "!CONTRIBUTING.md"
+    - "!LICENSE.md"
+    - "!assets/"
+    - "!advanced_exercise/"
 
-on:
-  workflow_dispatch:
-    inputs:
-      release_tag:
-        description: 'Tag name of the release to publish (e.g., v2025.7)'
-        required: true
-        default: ''
-  push:
-    paths:
-      - '**.qmd'
-      - '**.yml'
-      - '_freeze/**'
-    branches:
-      - master
-      - deepak
-  release:
-    types: [published]
+profiles:
+  - v2025.3
+  - latest
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+website:
+  title: "Single cell transcriptomics"
+  favicon: assets/SIB_logo.svg
+  search: true
+  page-navigation: true
+  # google-analytics: G-1H5B39PY7V
+  # cookie-consent: true
+  navbar:
+    background: "#003eaa"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: precourse_preparations.qmd
+      - href: course_schedule.qmd
+      - text: "day 1"
+        menu:
+          - href: "day1/day1-1_setup.qmd"
+          - href: "day1/day1-1a_cellranger.qmd"
+          - href: "day1/day1-2_analysis_tools_qc.qmd"
+      - text: "day 2"
+        menu: 
+          - href: "day2/day2-1_normalization_scaling.qmd"
+          - href: "day2/day2-2_dimensionality_reduction.qmd"
+          - href: "day2/day2-3_integration.qmd"
+          - href: "day2/day2-4_clustering.qmd"
+      - text: "day 3"
+        menu:
+          - href: "day3/day3-1_cell_annotation.qmd"
+          - href: "day3/day3-2_differential_gene_expression.qmd"
+          - href: "day3/day3-3_enrichment_analysis.qmd"
+      - text: "projects"
+        menu:
+          - href: "projects/introduction.qmd"
+          - href: "projects/project1.qmd"
+          - href: "projects/project2.qmd"
+          - href: "projects/project3.qmd"
+          - href: "projects/project4.qmd"
 
-jobs:
-  publish-latest:
-    runs-on: ubuntu-latest
-    container:
-      image: sibswiss/training-singlecell-rstudio:latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      # - text: "Versions"
+      #   menu:
+      #     - href: /v2025.3/
+      #       text: "v2025.3"
+      #     - href: /latest/
+      #       text: "Latest"
 
-      - name: Build site with latest profile
-        run: |
-          quarto render --profile latest
+    right:
+      - icon: github
+        href: https://github.com/sib-swiss/single-cell-r-training/
+        aria-label: GitHub
+  sidebar:
+    logo: assets/SIB_LogoQ_GBv.svg
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+format:
+  html:
+    code-link: true
+    theme: 
+      - default
+      - custom.scss
+    toc: true
+    header-includes: |
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+      <!-- Matomo -->
+      <script>
+        var _paq = window._paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+          var u="https://matomo.sib.swiss/";
+          _paq.push(['setTrackerUrl', u+'matomo.php']);
+          _paq.push(['setSiteId', '220']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+      </script>
+      <!-- End Matomo Code -->
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '_site/'
-
-      - name: Deploy Latest
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./_site
-          destination_dir: latest
-
-  publish-release:
-    runs-on: ubuntu-latest
-    container:
-      image: sibswiss/training-singlecell-rstudio:latest  # Default image
-    if: (github.event_name == 'release' && github.event.action == 'published') || (github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag != '')
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.release_tag || github.event.release.tag_name }}
-
-      - name: Set up specific Docker image for release (if available)
-        if: startsWith(github.event.inputs.release_tag || github.event.release.tag_name, 'v')
-        run: |
-          TAG=${{ github.event.inputs.release_tag || github.event.release.tag_name }}
-          if [ "$TAG" == "v2025.7" ]; then
-            echo "Using Docker image sibswiss/training-singlecell-rstudio:v2025.7"
-            # Note: This is a workaround; actual image switch requires a new job or custom action
-            docker pull sibswiss/training-singlecell-rstudio:v2025.7 || echo "Falling back to latest"
-          fi
-
-      - name: Build site with release profile
-        run: |
-          quarto render --profile ${{ github.event.inputs.release_tag || github.event.release.tag_name }}
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '_site/'
-
-      - name: Deploy Release
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./_site
-          destination_dir: ${{ github.event.inputs.release_tag || github.event.release.tag_name }}
+execute:
+  freeze: auto 
+  cache: true
+  tidy: true
