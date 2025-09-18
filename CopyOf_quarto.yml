@@ -17,6 +17,8 @@ website:
   favicon: assets/SIB_logo.svg
   search: true
   page-navigation: true
+  # google-analytics: G-1H5B39PY7V
+  # cookie-consent: true
   navbar:
     background: "#003eaa"
     left:
@@ -47,8 +49,14 @@ website:
           - href: "projects/project2.qmd"
           - href: "projects/project3.qmd"
           - href: "projects/project4.qmd"
-      - text: "Versions"
-        menu: false  # Disable static menu to use custom dropdown
+
+      # - text: "Versions"
+      #   menu:
+      #     - href: /v2025.3/
+      #       text: "v2025.3"
+      #     - href: /latest/
+      #       text: "Latest"
+
     right:
       - icon: github
         href: https://github.com/sib-swiss/single-cell-r-training/
@@ -80,51 +88,6 @@ format:
         })();
       </script>
       <!-- End Matomo Code -->
-      <!-- Custom Dropdown for Versions -->
-      <style>
-        .dropdown {
-          position: relative;
-          display: inline-block;
-        }
-        .dropbtn {
-          background-color: #003eaa;
-          color: white;
-          padding: 10px;
-          border: none;
-          cursor: pointer;
-        }
-        .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: #f9f9f9;
-          min-width: 160px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 1;
-        }
-        .dropdown-content a {
-          color: black;
-          padding: 12px 16px;
-          text-decoration: none;
-          display: block;
-        }
-        .dropdown-content a:hover {background-color: #f1f1f1;}
-        .dropdown:hover .dropdown-content {display: block;}
-        .dropdown:hover .dropbtn {background-color: #002d77;}
-      </style>
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const dropdown = document.querySelector('.dropdown');
-          const versions = ['/v2025.3/', '/latest/']; // Add new versions as needed
-          let currentPath = window.location.pathname;
-          let dropdownContent = '<div class="dropdown-content">';
-          versions.forEach(version => {
-            let isActive = currentPath.startsWith(version) ? ' style="background-color: #ddd;"' : '';
-            dropdownContent += `<a href="${version}"${isActive}>${version.replace('/', '').replace('/', '')}</a>`;
-          });
-          dropdownContent += '</div>';
-          dropdown.innerHTML = `<button class="dropbtn">Versions</button>${dropdownContent}`;
-        });
-      </script>
 
 execute:
   freeze: auto 
