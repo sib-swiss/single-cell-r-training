@@ -2,6 +2,11 @@ name: Render versions
 
 on:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Tag name of the release to publish (e.g., v2025.7)'
+        required: true
+        default: ''
   push:
     paths:
       - '**.qmd'
@@ -51,18 +56,18 @@ jobs:
 
   publish-release:
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' && github.event.action == 'published'
+    if: (github.event_name == 'release' && github.event.action == 'published') || (github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag != '')
     container:
       image: sibswiss/training-singlecell-rstudio:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.event.inputs.release_tag || github.event.release.tag_name }}
 
       - name: Build site with release profile
         run: |
-          quarto render --profile ${{ github.event.release.tag_name }}
+          quarto render --profile ${{ github.event.inputs.release_tag || github.event.release.tag_name }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -78,4 +83,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./_site
-          destination_dir: ${{ github.event.release.tag_name }}
+          destination_dir: ${{ github.event.inputs.release_tag || github.event.release.tag_name }}
