@@ -1,0 +1,81 @@
+name: Render versions
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.qmd'
+      - '**.yml'
+      - '_freeze/**'
+    branches:
+      - master
+      - deepak
+  release:
+    types: [published]
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  publish-latest:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/deepak'
+    container:
+      image: sibswiss/training-singlecell-rstudio:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build site with latest profile
+        run: |
+          quarto render --profile latest
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site/'
+
+      - name: Deploy Latest
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./_site
+          destination_dir: latest
+
+  publish-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    container:
+      image: sibswiss/training-singlecell-rstudio:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Build site with release profile
+        run: |
+          quarto render --profile ${{ github.event.release.tag_name }}
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site/'
+
+      - name: Deploy Release
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./_site
+          destination_dir: ${{ github.event.release.tag_name }}
