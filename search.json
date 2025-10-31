@@ -4,21 +4,14 @@
     "href": "course_materials/precourse_preparations.html",
     "title": "Precourse preparations",
     "section": "",
-    "text": "Participants should already have a basic knowledge in Next Generation Sequencing (NGS) techniques, or have already followed the course NGS - Quality control, Alignment, Visualisation. Knowledge in RNA sequencing is a plus. A basic knowledge of the R statistical software is required. Test your R skills with the quiz here, before registering."
+    "text": "You should meet the learning outcomes of: Introduction to bulk RNA-Seq: From Quality Control to Pathway Analysis.\nYou should also meet the learning outcomes of: NGS - Quality control, Alignment, Visualisation and First Steps with R in Life Sciences.\nIn summary, participants must already have a basic knowledge in Next Generation Sequencing (NGS) techniques, R (evaluate your R skills here) and UNIX (self-assess your skills with the e-learning course UNIX Fundamentals, and this quiz).\n\n\n\nAttendees should have a Wi-Fi enabled computer. An online R and RStudio environment will be provided. However, in case you wish to perform the practical exercises on your own computer, please take a moment to install the following before the course:\n\nR version &gt; 4.2.\nLatest RStudio version, the free version is perfectly fine.\nThe R packages necessary for the course. Find the script to install them here."
   },
   {
-    "objectID": "course_materials/precourse_preparations.html#required-competences",
-    "href": "course_materials/precourse_preparations.html#required-competences",
+    "objectID": "course_materials/precourse_preparations.html#prerequisites",
+    "href": "course_materials/precourse_preparations.html#prerequisites",
     "title": "Precourse preparations",
     "section": "",
-    "text": "Participants should already have a basic knowledge in Next Generation Sequencing (NGS) techniques, or have already followed the course NGS - Quality control, Alignment, Visualisation. Knowledge in RNA sequencing is a plus. A basic knowledge of the R statistical software is required. Test your R skills with the quiz here, before registering."
-  },
-  {
-    "objectID": "course_materials/precourse_preparations.html#software",
-    "href": "course_materials/precourse_preparations.html#software",
-    "title": "Precourse preparations",
-    "section": "Software",
-    "text": "Software\nAttendees should have a Wi-Fi enabled computer. An online R and RStudio environment will be provided. In order to access that environment your computer needs to be able to access http websites (not https). You can check this by browsing to http://www.httpforever.com. However, in case you wish to perform the practical exercises on your own computer, please take a moment to install the following before the course:\n\nR version &gt; 4.0.\nLatest RStudio version, the free version is perfectly fine.\nThe R packages necessary for the course. Find the script to install them here."
+    "text": "You should meet the learning outcomes of: Introduction to bulk RNA-Seq: From Quality Control to Pathway Analysis.\nYou should also meet the learning outcomes of: NGS - Quality control, Alignment, Visualisation and First Steps with R in Life Sciences.\nIn summary, participants must already have a basic knowledge in Next Generation Sequencing (NGS) techniques, R (evaluate your R skills here) and UNIX (self-assess your skills with the e-learning course UNIX Fundamentals, and this quiz).\n\n\n\nAttendees should have a Wi-Fi enabled computer. An online R and RStudio environment will be provided. However, in case you wish to perform the practical exercises on your own computer, please take a moment to install the following before the course:\n\nR version &gt; 4.2.\nLatest RStudio version, the free version is perfectly fine.\nThe R packages necessary for the course. Find the script to install them here."
   },
   {
     "objectID": "course_materials/about.html",
@@ -35,25 +28,39 @@
     "text": "Looking for previous material?\n\n\n\nAre you looking for material of previous versions of the course? Find it at sib-swiss.github.io/single-cell-training-archived"
   },
   {
+    "objectID": "website/index.html#overview",
+    "href": "website/index.html#overview",
+    "title": "SIB course Single Cell Transcriptomics",
+    "section": "Overview",
+    "text": "Overview\nSingle-cell RNA sequencing (scRNAseq) allows researchers to study gene expression at the single cell level. For example, scRNAseq can help to identify expression patterns that differ between conditions within a cell-type. To generate and analyze scRNAseq data, several methods are available, all with their strengths and weaknesses depending on the researchers’ needs. This 3-day course will cover the main technologies as well as the main aspects to consider while designing a scRNAseq experiment. In addition, it will cover the theoretical background of analysis methods with hands-on practical data analysis sessions applied to droplet-based methods."
+  },
+  {
+    "objectID": "website/index.html#audience",
+    "href": "website/index.html#audience",
+    "title": "SIB course Single Cell Transcriptomics",
+    "section": "Audience",
+    "text": "Audience\nThis course is intended for life scientists and bioinformaticians familiar with “Next Generation Sequencing” who want to acquire the necessary skills to analyse scRNA-seq gene expression data."
+  },
+  {
+    "objectID": "website/index.html#learning-objectives",
+    "href": "website/index.html#learning-objectives",
+    "title": "SIB course Single Cell Transcriptomics",
+    "section": "Learning objectives",
+    "text": "Learning objectives\nAt the end of the course, participants will be able to:\n\nDistinguish advantages and pitfalls of scRNA-seq, including its applications in experimental design.\nDesign their own scRNA-seq experiment, by using common technologies like 10X Genomics.\nApply quality control (QC) measures and utilize analysis tools to preprocess scRNA-seq data.\nApply normalization, scaling, dimensionality reduction, and integration and clustering on single-cell transcriptomics data techniques using R.\nDifferentiate between cell annotation techniques to identify and characterize cell populations.\nUse differential gene expression analysis methods on single-cell transcriptomics data to gain biological insights.\nSelect enrichment analysis methods appropriate to the biological question and data.\nDevelop a single-cell transcriptomics data analysis workflow from raw count matrix to differential gene expression with peer support and light guidance."
+  },
+  {
     "objectID": "website/index.html#teachers",
     "href": "website/index.html#teachers",
     "title": "SIB course Single Cell Transcriptomics",
     "section": "Teachers",
-    "text": "Teachers\n\nGeert van Geest ORCiD\nJoana Carlevaro-Fita ORCiD\nDeepak Tanwar ORCiD"
-  },
-  {
-    "objectID": "website/index.html#helper",
-    "href": "website/index.html#helper",
-    "title": "SIB course Single Cell Transcriptomics",
-    "section": "Helper",
-    "text": "Helper\n\nCassandra Litchfield ORCiD"
+    "text": "Teachers\n\nDeepak Tanwar ORCiD\nLuciano Cascione ORCiD"
   },
   {
     "objectID": "website/index.html#teachers-and-authors-of-previous-and-other-courses",
     "href": "website/index.html#teachers-and-authors-of-previous-and-other-courses",
     "title": "SIB course Single Cell Transcriptomics",
     "section": "Teachers and authors of previous and other courses",
-    "text": "Teachers and authors of previous and other courses\n\nTania Wyss ORCiD\nRachel Marcone-Jeitziner ORCiD\nAlex Russell Lederer ORCiD\nLuciano Cascione ORCiD\nGeert van Geest ORCiD\nPatricia Palagi ORCiD"
+    "text": "Teachers and authors of previous and other courses\n\nTania Wyss ORCiD\nRachel Marcone-Jeitziner ORCiD\nAlex Russell Lederer ORCiD\nGeert van Geest ORCiD\nJoana Carlevaro-Fita ORCiD\nPatricia Palagi ORCiD"
   },
   {
     "objectID": "website/index.html#attribution",
@@ -68,20 +75,6 @@
     "title": "SIB course Single Cell Transcriptomics",
     "section": "License & copyright",
     "text": "License & copyright\nLicense: CC BY 4.0\nCopyright: SIB Swiss Institute of Bioinformatics"
-  },
-  {
-    "objectID": "website/index.html#learning-outcomes",
-    "href": "website/index.html#learning-outcomes",
-    "title": "SIB course Single Cell Transcriptomics",
-    "section": "Learning outcomes",
-    "text": "Learning outcomes\n\nGeneral learning outcomes\nAfter this course, you will be able to:\n\ndistinguish advantages and pitfalls of scRNAseq\ndesign your own scRNA-seq experiment\napply a downstream analysis using R\n\n\n\nLearning outcomes explained\nTo reach the general learning outcomes above, we have set a number of smaller learning outcomes. Each chapter starts with these smaller learning outcomes. Use these at the start of a chapter to get an idea what you will learn. Use them also at the end of a chapter to evaluate whether you have learned what you were expected to learn."
-  },
-  {
-    "objectID": "website/index.html#learning-experiences",
-    "href": "website/index.html#learning-experiences",
-    "title": "SIB course Single Cell Transcriptomics",
-    "section": "Learning experiences",
-    "text": "Learning experiences\nTo reach the learning outcomes we will use lectures, exercises, polls and group work. During exercises, you are free to discuss with other participants. During lectures, focus on the lecture only.\n\nExercises\nEach block has practical work involved. Some more than others. The practicals are subdivided into chapters, and we’ll have a (short) discussion after each chapter. All answers to the practicals are incorporated, but they are hidden. Do the exercise first by yourself, before checking out the answer. If your answer is different from the answer in the practicals, try to figure out why they are different."
   },
   {
     "objectID": "course_materials/course_schedule.html",
