@@ -578,3 +578,110 @@ gt(normalized_data) %>%
     )
   )
 ```
+
+
+
+```{r}
+# -------------------------------------------------
+# 0. Load libraries & data
+# -------------------------------------------------
+library(Seurat)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+data("pbmc_small")
+
+# -------------------------------------------------
+# 1. Select high-count cells (top 50% by total UMI)
+# -------------------------------------------------
+total_counts <- colSums(GetAssayData(pbmc_small, slot = "counts"))
+threshold <- quantile(total_counts, 0.75)  # 50th percentile
+high_count_cells <- names(total_counts[total_counts >= threshold])
+
+cat("Selected", length(high_count_cells), "high-count cells (top 50%)\n")
+# e.g., "Selected 40 high-count cells..."
+
+# Subset the Seurat object
+pbmc_high <- subset(pbmc_small, cells = high_count_cells)
+
+# -------------------------------------------------
+# 2. Run pipeline on high-count subset
+# -------------------------------------------------
+pbmc_raw   <- pbmc_high
+pbmc_norm  <- NormalizeData(pbmc_raw, verbose = FALSE)
+
+# Explicit log1p
+pbmc_log1p <- pbmc_raw
+pbmc_log1p[["RNA"]]@data <- log1p(GetAssayData(pbmc_raw, slot = "counts"))
+
+# Scale (HVGs)
+pbmc_scaled <- pbmc_raw %>%
+  NormalizeData(verbose = FALSE) %>%
+  FindVariableFeatures(nfeatures = 200, verbose = FALSE) %>%
+  ScaleData(verbose = FALSE)
+
+# -------------------------------------------------
+# 3. Extract expression matrices
+# -------------------------------------------------
+raw_mat    <- GetAssayData(pbmc_raw,    slot = "counts")
+norm_mat   <- GetAssayData(pbmc_norm,   slot = "data")
+log1p_mat  <- GetAssayData(pbmc_log1p,  slot = "data")
+scale_mat  <- GetAssayData(pbmc_scaled, slot = "scale.data")  # HVGs only
+
+# -------------------------------------------------
+# 4. Build long data frame (one row per gene-cell-stage)
+# -------------------------------------------------
+df <- bind_rows(
+  as.data.frame(t(raw_mat))   %>% mutate(Stage = "Raw"),
+  as.data.frame(t(norm_mat))  %>% mutate(Stage = "Normalized"),
+  as.data.frame(t(log1p_mat)) %>% mutate(Stage = "Log1p"),
+  # Scaled: only HVGs → pad missing genes with NA
+  as.data.frame(t(scale_mat)) %>%
+    mutate(across(everything(), ~replace(., is.na(.), NA))) %>%
+    mutate(Stage = "Scaled")
+) %>%
+  pivot_longer(cols = -Stage, names_to = "Gene", values_to = "Expr") %>%
+  mutate(
+    Stage = factor(Stage, levels = c("Raw", "Normalized", "Log1p", "Scaled")),
+    Cell  = rep(colnames(pbmc_raw), each = nrow(raw_mat) * 4)
+  ) %>%
+  filter(!is.na(Expr))  # remove NAs from scaled non-HVGs
+
+# -------------------------------------------------
+# 5. Plot: One boxplot per cell, faceted by stage
+# -------------------------------------------------
+ggplot(df, aes(x = Cell, y = Expr, fill = Stage)) +
+  geom_boxplot(outlier.shape = 1, linewidth = 0.4, width = 0.9) +
+  facet_wrap(~ Stage, scales = "free_y", ncol = 4) +
+  scale_y_continuous(labels = comma) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal(base_size = 10) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 7),
+    panel.grid.minor = element_blank(),
+    strip.text = element_text(face = "bold", size = 11),
+    legend.position = "none",
+    plot.title = element_text(face = "bold", hjust = 0.5)
+  ) +
+  labs(
+    title = paste0("Per-Cell Expression (Top ", length(high_count_cells), " High-Count Cells)"),
+    subtitle = "Raw → Normalized → Log1p → Scaled (HVGs only)",
+    x = "Cell (ordered by total UMI)",
+    y = "Expression"
+  )
+
+# -------------------------------------------------
+# 6. Save high-quality output
+# -------------------------------------------------
+ggsave("high_count_cells_boxplots.png", p,
+       width = 14, height = 8, dpi = 300, bg = "white")
+ggsave("high_count_cells_boxplots.pdf", p,
+       width = 14, height = 8, bg = "white")
+
+# -------------------------------------------------
+# 7. Show plot
+# -------------------------------------------------
+print(p)
+```
+
