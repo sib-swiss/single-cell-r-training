@@ -1,0 +1,107 @@
+---
+title: "Integration"
+editor_options: 
+  chunk_output_type: console
+---
+
+
+## Material
+
+{{< downloadthis ../assets/pdf/06_integration.pdf dname="Integration_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+
+{{< video https://youtu.be/2TsW5A53hTg?si=Bas__YskLl21-YjF >}}
+
+{{< downloadthis ../assets/pdf/scRNAseq_RM_Integration_dimreduction.pdf dname="scRNAseq_RM_Integration_dimreduction" label="Download the presentation from the video" icon="filetype-pdf" >}}
+
+## Exercises
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+library(Seurat)
+seu <- readRDS("day2/seu_day2-2.rds")
+```
+
+Let's have a look at the UMAP again. Although cells of different samples are shared amongst 'clusters', you can still see seperation within the clusters:
+
+```{r}
+Seurat::DimPlot(seu, reduction = "umap")
+```
+
+To perform the integration, we split our object by sample, resulting into a set of layers within the `RNA` assay. The layers are integrated and stored in the reduction slot - in our case we call it `integrated.cca`. Then, we re-join the layers
+
+
+```{r}
+#| output: false
+
+seu[["RNA"]] <- split(seu[["RNA"]], f = seu$orig.ident)
+
+seu <- Seurat::IntegrateLayers(object = seu, method = CCAIntegration,
+                       orig.reduction = "pca",
+                       new.reduction = "integrated.cca",
+                       verbose = FALSE)
+
+# re-join layers after integration
+seu[["RNA"]] <- JoinLayers(seu[["RNA"]])
+```
+
+<!-- ```{r} -->
+<!-- #| output: false -->
+<!-- #| eval: false -->
+<!-- #| echo: false -->
+<!-- list <- SplitObject(seu, split.by = "orig.ident") -->
+<!-- features <- SelectIntegrationFeatures(object.list = list, nfeatures = 3000) -->
+<!-- list <- PrepSCTIntegration(object.list = list, anchor.features = features) -->
+<!-- anchors <- FindIntegrationAnchors(object.list = list, normalization.method = "SCT", -->
+<!--     anchor.features = features) -->
+<!-- seu <- IntegrateData(anchorset = anchors, normalization.method = "SCT") -->
+
+<!-- seu <- RunPCA(seu, verbose = FALSE) -->
+<!-- seu <- RunUMAP(seu, reduction = "pca", dims = 1:30, verbose = FALSE) -->
+<!-- seu <- FindNeighbors(seu, reduction = "pca", dims = 1:30) -->
+<!-- seu <- FindClusters(seu, resolution = 0.3) -->
+<!-- ``` -->
+
+
+We can then use this new integrated matrix for clustering and visualization. Now, we can re-run and visualize the results with UMAP.
+
+::: {.callout-important}
+## Exercise
+Create the UMAP again on the `integrated.cca` reduction (using the function `RunUMAP` - set the option `reduction` accordingly). After that, generate the UMAP plot. Did the integration perform well?
+::: 
+
+::: {.callout-tip collapse="true"}
+## Answer
+
+Performing the scaling, PCA and UMAP:
+
+```{r}
+#| output: false
+seu <- RunUMAP(seu, dims = 1:30, reduction = "integrated.cca")
+```
+
+Plotting the UMAP:
+
+```{r}
+Seurat::DimPlot(seu, reduction = "umap")
+```
+::: 
+
+
+### Save the dataset and clear environment
+
+
+```{r}
+saveRDS(seu, "day2/seu_day2-3.rds")
+```
+
+Clear your environment:
+
+```{r}
+#| eval: false
+rm(list = ls())
+gc()
+.rs.restartR()
+```
