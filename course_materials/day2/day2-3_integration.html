@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.31">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>Precourse preparations – Single cell transcriptomics</title>
+<title>Integration – Single cell transcriptomics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +17,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
-
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../course_materials/assets/SIB_logo.svg" rel="icon" type="image/svg+xml">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ab62ab6abcf2bb06eba42c0c53629186.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../course_materials/assets/SIB_logo.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ab62ab6abcf2bb06eba42c0c53629186.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -67,10 +97,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
-<!-- Matomo -->
-<script>
+}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+<!-- Matomo --><script>
   var _paq = window._paq = window._paq || [];
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   _paq.push(['trackPageView']);
@@ -82,20 +110,14 @@ ul.task-list li input[type="checkbox"] {
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
   })();
-</script>
-<!-- End Matomo Code -->
-
-
+</script><!-- End Matomo Code -->
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Single cell transcriptomics</span>
     </a>
   </div>
@@ -105,161 +127,150 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../course_materials/precourse_preparations.html"> 
+    <a class="nav-link" href="../../course_materials/precourse_preparations.html"> 
 <span class="menu-text">Precourse preparations</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../course_materials/course_schedule.html"> 
+    <a class="nav-link" href="../../course_materials/course_schedule.html"> 
 <span class="menu-text">Course schedule</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 1</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">    
-        <li>
-    <a class="dropdown-item" href="../course_materials/day1/day1-1_setup.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">
+<li>
+    <a class="dropdown-item" href="../../course_materials/day1/day1-1_setup.html">
  <span class="dropdown-text">Setup</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day1/day1-1a_cellranger.html">
+    <a class="dropdown-item" href="../../course_materials/day1/day1-1a_cellranger.html">
  <span class="dropdown-text">Introduction &amp; cellranger</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day1/day1-2_analysis_tools_qc.html">
+    <a class="dropdown-item" href="../../course_materials/day1/day1-2_analysis_tools_qc.html">
  <span class="dropdown-text">Analysis tools and QC</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 2</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">    
-        <li>
-    <a class="dropdown-item" href="../course_materials/day2/day2-1_normalization_scaling.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">
+<li>
+    <a class="dropdown-item" href="../../course_materials/day2/day2-1_normalization_scaling.html">
  <span class="dropdown-text">Normalization and scaling</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day2/day2-2_dimensionality_reduction.html">
+    <a class="dropdown-item" href="../../course_materials/day2/day2-2_dimensionality_reduction.html">
  <span class="dropdown-text">Dimensionality reduction</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day2/day2-3_integration.html">
+    <a class="dropdown-item" href="../../course_materials/day2/day2-3_integration.html">
  <span class="dropdown-text">Integration</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day2/day2-4_clustering.html">
+    <a class="dropdown-item" href="../../course_materials/day2/day2-4_clustering.html">
  <span class="dropdown-text">Clustering</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 3</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">    
-        <li>
-    <a class="dropdown-item" href="../course_materials/day3/day3-1_cell_annotation.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">
+<li>
+    <a class="dropdown-item" href="../../course_materials/day3/day3-1_cell_annotation.html">
  <span class="dropdown-text">Cell annotation</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day3/day3-2_differential_gene_expression.html">
+    <a class="dropdown-item" href="../../course_materials/day3/day3-2_differential_gene_expression.html">
  <span class="dropdown-text">Differential gene expression</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day3/day3-3_enrichment_analysis.html">
+    <a class="dropdown-item" href="../../course_materials/day3/day3-3_enrichment_analysis.html">
  <span class="dropdown-text">Enrichment analysis</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">projects</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
-        <li>
-    <a class="dropdown-item" href="../course_materials/projects/introduction.qmd">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">
+<li>
+    <a class="dropdown-item" href="../../course_materials/projects/introduction.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/projects/project1.qmd">
+    <a class="dropdown-item" href="../../course_materials/projects/project1.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/projects/project2.qmd">
+    <a class="dropdown-item" href="../../course_materials/projects/project2.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/projects/project3.qmd">
+    <a class="dropdown-item" href="../../course_materials/projects/project3.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/projects/project4.qmd">
+    <a class="dropdown-item" href="../../course_materials/projects/project4.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
     </ul>
-  </li>
+</li>
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/sib-swiss/single-cell-r-training/"> <i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Precourse preparations</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Integration</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="../index.html" class="sidebar-logo-link">
-      <img src="../course_materials/assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
-      </a>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../course_materials/assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
       </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a>
+<li><a href="#material" id="toc-material" class="nav-link active" data-scroll-target="#material">Material</a></li>
+  <li>
+<a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#knowledge" id="toc-knowledge" class="nav-link" data-scroll-target="#knowledge">Knowledge</a></li>
-  <li><a href="#technical" id="toc-technical" class="nav-link" data-scroll-target="#technical">Technical</a></li>
-  </ul></li>
+<li><a href="#save-the-dataset-and-clear-environment" id="toc-save-the-dataset-and-clear-environment" class="nav-link" data-scroll-target="#save-the-dataset-and-clear-environment">Save the dataset and clear environment</a></li>
   </ul>
-</nav>
+</li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Precourse preparations</h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Integration</h1>
 </div>
 
 
@@ -273,32 +284,102 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
+</header><section id="material" class="level2"><h2 class="anchored" data-anchor-id="material">Material</h2>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/2TsW5A53hTg?si=Bas__YskLl21-YjF" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+</section><section id="exercises" class="level2"><h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<p>Let’s have a look at the UMAP again. Although cells of different samples are shared amongst ‘clusters’, you can still see seperation within the clusters:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">seu</span>, reduction <span class="op">=</span> <span class="st">"umap"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="day2-3_integration_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To perform the integration, we split our object by sample, resulting into a set of layers within the <code>RNA</code> assay. The layers are integrated and stored in the reduction slot - in our case we call it <code>integrated.cca</code>. Then, we re-join the layers</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seu</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">seu</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span>, f <span class="op">=</span> <span class="va">seu</span><span class="op">$</span><span class="va">orig.ident</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">seu</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/IntegrateLayers.html">IntegrateLayers</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">seu</span>, method <span class="op">=</span> <span class="va">CCAIntegration</span>,</span>
+<span>                       orig.reduction <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>                       new.reduction <span class="op">=</span> <span class="st">"integrated.cca"</span>,</span>
+<span>                       verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># re-join layers after integration</span></span>
+<span><span class="va">seu</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">JoinLayers</span><span class="op">(</span><span class="va">seu</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- ```{r} -->
+<!-- #| output: false -->
+<!-- #| eval: false -->
+<!-- #| echo: false -->
+<!-- list <- SplitObject(seu, split.by = "orig.ident") -->
+<!-- features <- SelectIntegrationFeatures(object.list = list, nfeatures = 3000) -->
+<!-- list <- PrepSCTIntegration(object.list = list, anchor.features = features) -->
+<!-- anchors <- FindIntegrationAnchors(object.list = list, normalization.method = "SCT", -->
+<!--     anchor.features = features) -->
+<!-- seu <- IntegrateData(anchorset = anchors, normalization.method = "SCT") -->
+<!-- seu <- RunPCA(seu, verbose = FALSE) -->
+<!-- seu <- RunUMAP(seu, reduction = "pca", dims = 1:30, verbose = FALSE) -->
+<!-- seu <- FindNeighbors(seu, reduction = "pca", dims = 1:30) -->
+<!-- seu <- FindClusters(seu, resolution = 0.3) -->
+<!-- ``` -->
+<p>We can then use this new integrated matrix for clustering and visualization. Now, we can re-run and visualize the results with UMAP.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Create the UMAP again on the <code>integrated.cca</code> reduction (using the function <code>RunUMAP</code> - set the option <code>reduction</code> accordingly). After that, generate the UMAP plot. Did the integration perform well?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Performing the scaling, PCA and UMAP:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">seu</span> <span class="op">&lt;-</span> <span class="fu">RunUMAP</span><span class="op">(</span><span class="va">seu</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, reduction <span class="op">=</span> <span class="st">"integrated.cca"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plotting the UMAP:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">seu</span>, reduction <span class="op">=</span> <span class="st">"umap"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="day2-3_integration_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section id="save-the-dataset-and-clear-environment" class="level3"><h3 class="anchored" data-anchor-id="save-the-dataset-and-clear-environment">Save the dataset and clear environment</h3>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">seu</span>, <span class="st">"course_materials/day2/seu_day2-3.rds"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Clear your environment:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/gc.html">gc</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">.rs.restartR</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
-<section id="prerequisites" class="level2">
-<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
-<section id="knowledge" class="level3">
-<h3 class="anchored" data-anchor-id="knowledge">Knowledge</h3>
-<p>You should meet the learning outcomes of: <a href="https://www.sib.swiss/training/course/2022-rnaseq-bulk-intro">Introduction to bulk RNA-Seq: From Quality Control to Pathway Analysis</a>.</p>
-<p>You should also meet the learning outcomes of: <a href="https://sib-swiss.github.io/NGS-introduction-training/2021.11/">NGS - Quality control, Alignment, Visualisation</a> and <a href="https://www.sib.swiss/training/course/2022-fsr">First Steps with R in Life Sciences</a>.</p>
-<p>In summary, participants must already have a basic knowledge in Next Generation Sequencing (NGS) techniques, R (evaluate your R skills <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIyeuabd_ZOWXgI1MWHapmaOMu20L9ESkLDZiWnpmkpujyOg/viewform?usp=sf_link">here</a>) and UNIX (self-assess your skills with the e-learning course <a href="https://www.sib.swiss/training/course/2022-unix">UNIX Fundamentals</a>, and this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfJ-oV_t3e-s3IIc-d_v-3-s1pT2f-i1t_nO_z-G_m-J_y-g/viewform?usp=sf_link">quiz</a>).</p>
-</section>
-<section id="technical" class="level3">
-<h3 class="anchored" data-anchor-id="technical">Technical</h3>
-<p>Attendees should have a Wi-Fi enabled computer. An <strong>online R and RStudio environment</strong> will be provided. However, in case you wish to perform the practical exercises on your own computer, please take a moment to install the following before the course:</p>
-<ul>
-<li><a href="https://cran.r-project.org/">R</a> version &gt; 4.2.</li>
-<li>Latest RStudio version, the <a href="https://rstudio.com/products/rstudio/download/">free version</a> is perfectly fine.</li>
-<li>The R packages necessary for the course. Find the script to install them <a href="https://github.com/sib-swiss/single-cell-training/blob/master/Docker/install_packages.R">here</a>.</li>
-</ul>
-
-
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -698,7 +779,6 @@ ul.task-list li input[type="checkbox"] {
   });
   </script>
 </div> <!-- /content -->
-
 
 
 

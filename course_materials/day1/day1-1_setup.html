@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.31">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>Precourse preparations – Single cell transcriptomics</title>
+<title>Setup – Single cell transcriptomics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +17,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
-
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../course_materials/assets/SIB_logo.svg" rel="icon" type="image/svg+xml">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ab62ab6abcf2bb06eba42c0c53629186.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../course_materials/assets/SIB_logo.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ab62ab6abcf2bb06eba42c0c53629186.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -67,10 +97,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
-<!-- Matomo -->
-<script>
+}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+<!-- Matomo --><script>
   var _paq = window._paq = window._paq || [];
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   _paq.push(['trackPageView']);
@@ -82,20 +110,14 @@ ul.task-list li input[type="checkbox"] {
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
   })();
-</script>
-<!-- End Matomo Code -->
-
-
+</script><!-- End Matomo Code -->
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Single cell transcriptomics</span>
     </a>
   </div>
@@ -105,161 +127,152 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../course_materials/precourse_preparations.html"> 
+    <a class="nav-link" href="../../course_materials/precourse_preparations.html"> 
 <span class="menu-text">Precourse preparations</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../course_materials/course_schedule.html"> 
+    <a class="nav-link" href="../../course_materials/course_schedule.html"> 
 <span class="menu-text">Course schedule</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 1</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">    
-        <li>
-    <a class="dropdown-item" href="../course_materials/day1/day1-1_setup.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">
+<li>
+    <a class="dropdown-item" href="../../course_materials/day1/day1-1_setup.html">
  <span class="dropdown-text">Setup</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day1/day1-1a_cellranger.html">
+    <a class="dropdown-item" href="../../course_materials/day1/day1-1a_cellranger.html">
  <span class="dropdown-text">Introduction &amp; cellranger</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day1/day1-2_analysis_tools_qc.html">
+    <a class="dropdown-item" href="../../course_materials/day1/day1-2_analysis_tools_qc.html">
  <span class="dropdown-text">Analysis tools and QC</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 2</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">    
-        <li>
-    <a class="dropdown-item" href="../course_materials/day2/day2-1_normalization_scaling.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">
+<li>
+    <a class="dropdown-item" href="../../course_materials/day2/day2-1_normalization_scaling.html">
  <span class="dropdown-text">Normalization and scaling</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day2/day2-2_dimensionality_reduction.html">
+    <a class="dropdown-item" href="../../course_materials/day2/day2-2_dimensionality_reduction.html">
  <span class="dropdown-text">Dimensionality reduction</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day2/day2-3_integration.html">
+    <a class="dropdown-item" href="../../course_materials/day2/day2-3_integration.html">
  <span class="dropdown-text">Integration</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day2/day2-4_clustering.html">
+    <a class="dropdown-item" href="../../course_materials/day2/day2-4_clustering.html">
  <span class="dropdown-text">Clustering</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 3</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">    
-        <li>
-    <a class="dropdown-item" href="../course_materials/day3/day3-1_cell_annotation.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">
+<li>
+    <a class="dropdown-item" href="../../course_materials/day3/day3-1_cell_annotation.html">
  <span class="dropdown-text">Cell annotation</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day3/day3-2_differential_gene_expression.html">
+    <a class="dropdown-item" href="../../course_materials/day3/day3-2_differential_gene_expression.html">
  <span class="dropdown-text">Differential gene expression</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/day3/day3-3_enrichment_analysis.html">
+    <a class="dropdown-item" href="../../course_materials/day3/day3-3_enrichment_analysis.html">
  <span class="dropdown-text">Enrichment analysis</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">projects</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
-        <li>
-    <a class="dropdown-item" href="../course_materials/projects/introduction.qmd">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">
+<li>
+    <a class="dropdown-item" href="../../course_materials/projects/introduction.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/projects/project1.qmd">
+    <a class="dropdown-item" href="../../course_materials/projects/project1.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/projects/project2.qmd">
+    <a class="dropdown-item" href="../../course_materials/projects/project2.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/projects/project3.qmd">
+    <a class="dropdown-item" href="../../course_materials/projects/project3.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../course_materials/projects/project4.qmd">
+    <a class="dropdown-item" href="../../course_materials/projects/project4.qmd">
  <span class="dropdown-text"></span></a>
   </li>  
     </ul>
-  </li>
+</li>
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/sib-swiss/single-cell-r-training/"> <i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Precourse preparations</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Setup</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="../index.html" class="sidebar-logo-link">
-      <img src="../course_materials/assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
-      </a>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../course_materials/assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
       </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a>
+<li><a href="#material" id="toc-material" class="nav-link active" data-scroll-target="#material">Material</a></li>
+  <li>
+<a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#knowledge" id="toc-knowledge" class="nav-link" data-scroll-target="#knowledge">Knowledge</a></li>
-  <li><a href="#technical" id="toc-technical" class="nav-link" data-scroll-target="#technical">Technical</a></li>
-  </ul></li>
+<li><a href="#login-and-set-up" id="toc-login-and-set-up" class="nav-link" data-scroll-target="#login-and-set-up">Login and set up</a></li>
+  <li><a href="#create-a-project" id="toc-create-a-project" class="nav-link" data-scroll-target="#create-a-project">Create a project</a></li>
+  <li><a href="#downloading-the-course-data" id="toc-downloading-the-course-data" class="nav-link" data-scroll-target="#downloading-the-course-data">Downloading the course data</a></li>
   </ul>
-</nav>
+</li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Precourse preparations</h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Setup</h1>
 </div>
 
 
@@ -273,32 +286,179 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
-
-
-<section id="prerequisites" class="level2">
-<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
-<section id="knowledge" class="level3">
-<h3 class="anchored" data-anchor-id="knowledge">Knowledge</h3>
-<p>You should meet the learning outcomes of: <a href="https://www.sib.swiss/training/course/2022-rnaseq-bulk-intro">Introduction to bulk RNA-Seq: From Quality Control to Pathway Analysis</a>.</p>
-<p>You should also meet the learning outcomes of: <a href="https://sib-swiss.github.io/NGS-introduction-training/2021.11/">NGS - Quality control, Alignment, Visualisation</a> and <a href="https://www.sib.swiss/training/course/2022-fsr">First Steps with R in Life Sciences</a>.</p>
-<p>In summary, participants must already have a basic knowledge in Next Generation Sequencing (NGS) techniques, R (evaluate your R skills <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIyeuabd_ZOWXgI1MWHapmaOMu20L9ESkLDZiWnpmkpujyOg/viewform?usp=sf_link">here</a>) and UNIX (self-assess your skills with the e-learning course <a href="https://www.sib.swiss/training/course/2022-unix">UNIX Fundamentals</a>, and this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfJ-oV_t3e-s3IIc-d_v-3-s1pT2f-i1t_nO_z-G_m-J_y-g/viewform?usp=sf_link">quiz</a>).</p>
-</section>
-<section id="technical" class="level3">
-<h3 class="anchored" data-anchor-id="technical">Technical</h3>
-<p>Attendees should have a Wi-Fi enabled computer. An <strong>online R and RStudio environment</strong> will be provided. However, in case you wish to perform the practical exercises on your own computer, please take a moment to install the following before the course:</p>
+</header><section id="material" class="level2"><h2 class="anchored" data-anchor-id="material">Material</h2>
+</section><section id="exercises" class="level2"><h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="login-and-set-up" class="level3"><h3 class="anchored" data-anchor-id="login-and-set-up">Login and set up</h3>
+<p>Choose one of the following:</p>
 <ul>
-<li><a href="https://cran.r-project.org/">R</a> version &gt; 4.2.</li>
-<li>Latest RStudio version, the <a href="https://rstudio.com/products/rstudio/download/">free version</a> is perfectly fine.</li>
-<li>The R packages necessary for the course. Find the script to install them <a href="https://github.com/sib-swiss/single-cell-training/blob/master/Docker/install_packages.R">here</a>.</li>
+<li>
+<strong>Enrolled:</strong> if you are enrolled in a course with a teacher</li>
+<li>
+<strong>Own installation:</strong> if you want to install packages on your own local Rstudio installation</li>
+<li>
+<strong>Docker:</strong> if you want to use the docker image locally</li>
+<li>
+<strong>renkulab.io</strong> if you want to easily deploy the environment outside the course</li>
 </ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Enrolled</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Own installation</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Docker</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">renkulab.io</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Log in to Rstudio server with the provided link, username and password.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Install the required packages using <a href="https://rstudio.github.io/renv/index.html">renv</a></p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"renv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">renv</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/renv/reference/restore.html">restore</a></span><span class="op">(</span>lockfile <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/sib-swiss/single-cell-r-training/refs/heads/master/renv.lock"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>With docker, you can use exactly the same environment as we use in the enrolled course, but than running locally.</p>
+<p>In the video below there’s a short tutorial on how to set up a docker container for this course. Note that you will need administrator rights, and that if you are using Windows, you need the latest version of Windows 10.</p>
+<div class="quarto-video"><iframe data-external="1" src="https://player.vimeo.com/video/481620477" width="640" height="360" frameborder="0" title="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>The command to run the environment required for this course looks like this (in a terminal):</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Modify the script
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The home directory within the container is mounted to your current directory (<code>$PWD</code>), if you want to change this behaviour, modify the path after <code>-v</code> to the working directory on your computer before running it.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>--rm <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>-p 8787:8787 <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>-e PASSWORD=test <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>-v <span class="va">$PWD</span>:/home/rstudio <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>sibswiss/training-singlecell-rstudio:2025.7</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If this command has run successfully, approach Rstudio server like this:</p>
+<pre><code>http://localhost:8787</code></pre>
+<p>Copy this URL into your browser. If you used the snippet above, the credentials will be:</p>
+<ul>
+<li>
+<strong>Username:</strong> <code>rstudio</code>
+</li>
+<li>
+<strong>Password:</strong> <code>test</code>
+</li>
+</ul>
+<p>Great! Now you will be able to use Rstudio with all required installations.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+About the options
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The option <code>-v</code> mounts a local directory in your computer to the directory <code>/home/rstudio</code> in the docker container (‘rstudio’ is the default user for Rstudio containers). In that way, you have files available both in the container and on your computer. Use this directory on your computer. Change the first path to a path on your computer that you want to use as a working directory.</p>
+<p>The part <code>sibswiss/training-singlecell-rstudio:2025.7</code> is the image we are going to load into the container. The image contains all the information about software and dependencies needed for this course. When you run this command for the first time it will download the image. Once it’s on your computer, it will start immediately.</p>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<p>To simply run the environment, you can use <a href="https://renkulab.io">renku</a>. You can find the repository (including the image) here: <a href="https://renkulab.io/projects/geert.vangeest/single-cell-training/">https://renkulab.io/projects/geert.vangeest/single-cell-training/</a>.</p>
+</div>
+</div>
+</div>
+</section><section id="create-a-project" class="level3"><h3 class="anchored" data-anchor-id="create-a-project">Create a project</h3>
+<p>Now that you have access to an environment with the required installations, we will set up a project in a new directory. On the top right choose the button <strong>Project (None)</strong> and select <strong>New Project…</strong></p>
+<p><img src="../assets/images/create_new_project.png" class="img-fluid" width="200"></p>
+<p>Continue by choosing <strong>New Directory</strong></p>
+<p><img src="../assets/images/choose_new_directory.png" class="img-fluid" width="300"></p>
+<p>As project type select <strong>New Project</strong></p>
+<p><img src="../assets/images/choose_new_project.png" class="img-fluid" width="300"></p>
+<p>Finally, type in the project name. This should be <code>single_cell_course</code>. Finish by clicking <strong>Create Project</strong>.</p>
+<p><img src="../assets/images/define_directory_name.png" class="img-fluid" width="300"></p>
+<p>Now that we have setup a project and a project directory (it is in <code>/home/rstudio/single_cell_course</code>), we can download the data that is required for this course. We will use the built-in terminal of Rstudio. To do this, select the <strong>Terminal</strong> tab:</p>
+<p><img src="../assets/images/select_terminal_tab.png" class="img-fluid" width="300"></p>
+</section><section id="downloading-the-course-data" class="level3"><h3 class="anchored" data-anchor-id="downloading-the-course-data">Downloading the course data</h3>
+<p>To download and extract the dataset, copy-paste these commands inside the terminal tab:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/course_data.tar.gz</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xvf</span> course_data.tar.gz</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> course_data.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+If on Windows
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you’re using Windows, you can directly open the <a href="https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/course_data.tar.gz">link</a> in your browser, and downloading will start automatically. Unpack the tar.gz file in the directory where you want to work in during the course.</p>
+</div>
+</div>
+<p>Have a look at the data directory you have downloaded. It should contain the following:</p>
+<pre><code>course_data
+├── count_matrices
+│   ├── ETV6-RUNX1_1
+│   │   └── outs
+│   │       └── filtered_feature_bc_matrix
+│   │           ├── barcodes.tsv.gz
+│   │           ├── features.tsv.gz
+│   │           └── matrix.mtx.gz
+│   ├── ETV6-RUNX1_2
+│   │   └── outs
+│   │       └── filtered_feature_bc_matrix
+│   │           ├── barcodes.tsv.gz
+│   │           ├── features.tsv.gz
+│   │           └── matrix.mtx.gz
+│   ├── ETV6-RUNX1_3
+│   │   └── outs
+│   │       └── filtered_feature_bc_matrix
+│   │           ├── barcodes.tsv.gz
+│   │           ├── features.tsv.gz
+│   │           └── matrix.mtx.gz
+│   ├── PBMMC_1
+│   │   └── outs
+│   │       └── filtered_feature_bc_matrix
+│   │           ├── barcodes.tsv.gz
+│   │           ├── features.tsv.gz
+│   │           └── matrix.mtx.gz
+│   ├── PBMMC_2
+│   │   └── outs
+│   │       └── filtered_feature_bc_matrix
+│   │           ├── barcodes.tsv.gz
+│   │           ├── features.tsv.gz
+│   │           └── matrix.mtx.gz
+│   └── PBMMC_3
+│       └── outs
+│           └── filtered_feature_bc_matrix
+│               ├── barcodes.tsv.gz
+│               ├── features.tsv.gz
+│               └── matrix.mtx.gz
+└── reads
+    ├── ETV6-RUNX1_1_S1_L001_I1_001.fastq.gz
+    ├── ETV6-RUNX1_1_S1_L001_R1_001.fastq.gz
+    └── ETV6-RUNX1_1_S1_L001_R2_001.fastq.gz
+
+20 directories, 21 files</code></pre>
+<p>This data comes from:</p>
+<p>Caron M, St-Onge P, Sontag T, Wang YC, Richer C, Ragoussis I, et al.&nbsp;<strong>Single-cell analysis of childhood leukemia reveals a link between developmental states and ribosomal protein expression as a source of intra-individual heterogeneity.</strong> Scientific Reports. 2020;10:1–12. Available from: http://dx.doi.org/10.1038/s41598-020-64929-x</p>
+<p>We will use the reads to showcase the use of <code>cellranger count</code>. The directory contains only reads from chromosome 21 and 22 of one sample (<code>ETV6-RUNX1_1</code>). The count matrices are output of <code>cellranger count</code>, and we will use those for the other exercises in <code>R</code>.</p>
 
 
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -698,7 +858,6 @@ ul.task-list li input[type="checkbox"] {
   });
   </script>
 </div> <!-- /content -->
-
 
 
 
