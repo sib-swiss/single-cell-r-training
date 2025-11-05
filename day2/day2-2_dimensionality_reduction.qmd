@@ -28,14 +28,16 @@ editor_options:
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
-#| output: false
+#| warning: false
+#| message: false
 seu <- readRDS("day2/seu_day2-1.rds")
 ```
 
 And load the following packages:
 
 ```{r}
-#| output: false
+#| warning: false
+#| message: false
 library(Seurat)
 ```
 

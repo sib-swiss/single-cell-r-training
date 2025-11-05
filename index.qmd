@@ -14,22 +14,28 @@ Are you looking for material of previous versions of the course? Find it at [sib
 
 ## Teachers
 
-- Geert van Geest [ORCiD](https://orcid.org/0000-0002-1561-078X)
-- Joana Carlevaro-Fita [ORCiD](https://orcid.org/0000-0002-1674-2055)
 - Deepak Tanwar [ORCiD](https://orcid.org/0000-0001-8036-1989)
+- Luciano Cascione [ORCiD](https://orcid.org/0000-0002-4606-0637)
 
-## Helper
+### Teachers of previous iterations
 
-- Cassandra Litchfield [ORCiD](https://orcid.org/0000-0001-9374-1681)
-
-## Teachers and authors of previous and other courses
-
+- Joana Carlevaro-Fita [ORCiD](https://orcid.org/0000-0002-1674-2055)
 - Tania Wyss [ORCiD](https://orcid.org/0000-0003-2641-0895)
 - Rachel Marcone-Jeitziner [ORCiD](https://orcid.org/0000-0002-5711-8435)
 - Alex Russell Lederer [ORCiD](https://orcid.org/0000-0001-6381-5088)
 - Luciano Cascione [ORCiD](https://orcid.org/0000-0002-4606-0637)
 - Geert van Geest [ORCiD](https://orcid.org/0000-0002-1561-078X)
 - Patricia Palagi [ORCiD](https://orcid.org/0000-0001-9062-6303)
+
+## Helper
+
+-
+-
+
+### Helpers of previous iterations
+
+- Cassandra Litchfield [ORCiD](https://orcid.org/0000-0001-9374-1681)
+
 
 ## Attribution
 
@@ -45,11 +51,16 @@ Parts of this course are inspired by the [Broad Institute Single Cell Workshop](
 
 ### General learning outcomes
 
-After this course, you will be able to:
+At the end of the course, participants will be able to:
 
-- distinguish advantages and pitfalls of scRNAseq
-- design your own scRNA-seq experiment
-- apply a downstream analysis using R
+- Distinguish advantages and pitfalls of scRNA-seq, including its applications in experimental design.
+- Design their own scRNA-seq experiment, by using common technologies like 10X Genomics.
+- Apply quality control (QC) measures and utilize analysis tools to preprocess scRNA-seq data.
+- Apply normalization, scaling, dimensionality reduction, and integration and clustering on single-cell transcriptomics data techniques using R.
+- Differentiate between cell annotation techniques to identify and characterize cell populations.
+- Use differential gene expression analysis methods on single-cell transcriptomics data to gain biological insights.
+- Select enrichment analysis methods appropriate to the biological question and data.
+- Develop a single-cell transcriptomics data analysis workflow from raw count matrix to differential gene expression with peer support and light guidance.
 
 ### Learning outcomes explained
 
