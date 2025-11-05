@@ -41,6 +41,12 @@ The next step after the generation of the count matrices with `cellranger count`
 library(Seurat)
 ```
 
+::: {.callout-note}
+## Alternative: Bioconductor
+
+Another popular ecosystem for single-cell analysis in R is [Bioconductor](https://www.bioconductor.org/). It provides a collection of packages for the analysis of high-throughput genomic data. The core data structure for single-cell data in Bioconductor is the `SingleCellExperiment` object, which is conceptually similar to the `Seurat` object. While this course focuses on `Seurat`, many of the same principles and workflows can be applied using Bioconductor packages.
+:::
+
 ::: {.callout-tip}
 ## Tip: make an R script
 You could type and copy-paste the commands of these exercises directly in the console. However, that makes it hard to track what you have done. In addition, it can be nice to add comments to your code, so you can read back why you have made certain choices. In order to do that, do not write commands in the console, but write them in a script, and send them to the console with <kbd>^ Ctrl + ⏎ Enter</kbd> (Windows) or <kbd>⌘ Command + ⏎ Enter</kbd> (MacOS).
@@ -345,6 +351,19 @@ To evaluate this did the trick we can visualize those parameters again in a viol
 Seurat::VlnPlot(seu, features = c("nFeature_RNA",
                                   "percent.mito"))
 ```
+
+::: {.callout-note}
+## Common Pitfalls and Best Practices in QC
+
+Quality control is a critical step in single-cell RNA sequencing analysis. Here are some common pitfalls and best practices to keep in mind:
+
+- **Don't rely on default thresholds:** While general guidelines exist (e.g., mitochondrial percentage < 10%), optimal thresholds can vary significantly between experiments, tissues, and protocols. Always inspect your data visually (e.g., with violin plots and scatter plots) to determine appropriate cutoffs.
+- **Consider biological context:** High mitochondrial content might indicate dying cells in some contexts, but could be biologically meaningful in others (e.g., highly metabolic cells). Similarly, high gene counts could indicate doublets or genuinely large, transcriptionally active cells.
+- **Doublet detection:** Manual filtering based on high gene/UMI counts is a crude method for doublet removal. Consider using dedicated doublet detection tools (e.g., `DoubletFinder`, `scDblFinder`) for more robust identification and removal of cell doublets.
+- **Batch effects:** If your experiment involves multiple batches, ensure that your QC metrics are consistent across batches. Significant differences in QC metrics between batches might indicate technical issues that need to be addressed before downstream analysis.
+- **Iterative QC:** QC is often an iterative process. Initial filtering might reveal new patterns or issues that require further investigation and adjustment of thresholds.
+- **Document your decisions:** Always clearly document the QC metrics used, the thresholds applied, and the rationale behind your decisions. This ensures reproducibility and transparency of your analysis.
+:::
 
 ```{r}
 #| echo: true
