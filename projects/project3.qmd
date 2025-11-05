@@ -102,9 +102,9 @@ project = "InterferonStudy")
 With this dataset, go through the steps we have performed during the course, and try to reproduce the results provided in the paper.
 :::
 
-## Tips
+## Guidance questions
 
-Pay specific attention to the following key analysis steps and parameters from the paper:
+If you'd like more structure, the following questions may guide your analyses: 
 
 ### 1. Quality Control (QC)
 
@@ -169,6 +169,8 @@ The paper used **Gene Set Enrichment Analysis (GSEA)** and **Ingenuity Pathway A
 -   **Reproduce:**
     1.  Take the list of differentially expressed genes from your DE analysis.
     2.  Perform a pathway enrichment analysis using `clusterProfiler` to identify affected biological pathways. You can use functions like `enrichGO` for Gene Ontology enrichment.
+
+## Additional tips
 
 ### Key Figures to Compare
 
