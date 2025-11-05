@@ -31,7 +31,6 @@ editor_options:
 ```{r}
 #| warning: false
 #| message: false
-
 library(Seurat)
 library(glmGamPoi)
 seu <- readRDS("day1/seu_day1-2.rds")

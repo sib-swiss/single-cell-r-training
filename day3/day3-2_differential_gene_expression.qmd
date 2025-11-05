@@ -22,15 +22,16 @@ editor_options:
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
-#| echo: false
-#| output: false
+#| warning: false
+#| message: false
 seu <- readRDS("day3/seu_day3-1.rds")
 ```
 
 And load the following packages (install them if they are missing):
 
 ```{r}
-#| output: false
+#| warning: false
+#| message: false
 library(Seurat)
 library(edgeR) # BiocManager::install("edgeR")
 library(limma)

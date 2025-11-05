@@ -22,8 +22,8 @@ editor_options:
 Load the `seu` dataset you have created earlier today:
 
 ```{r}
-#| echo: false
-#| output: false
+#| warning: false
+#| message: false
 seu <- readRDS("day2/seu_day2-3.rds")
 ```
 
@@ -89,8 +89,6 @@ The method can be changed with algorithm = 2,3 or 4
 :::
 
 ```{r}
-#| echo: false
-
 saveRDS(seu, "day2/seu_day2-4.rds")
 ```
 

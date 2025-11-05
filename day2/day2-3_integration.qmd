@@ -16,7 +16,6 @@ editor_options:
 ## Exercises
 
 ```{r}
-#| echo: false
 #| warning: false
 #| message: false
 
@@ -95,13 +94,4 @@ Seurat::DimPlot(seu, reduction = "umap")
 
 ```{r}
 saveRDS(seu, "day2/seu_day2-3.rds")
-```
-
-Clear your environment:
-
-```{r}
-#| eval: false
-rm(list = ls())
-gc()
-.rs.restartR()
 ```
