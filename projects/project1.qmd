@@ -5,6 +5,8 @@ execute:
 project:
   execute-dir: project
 format: html
+editor_options: 
+  chunk_output_type: console
 ---
 
 Project 1 is about a single cell sequencing project of zebrafish retina. Photoreceptors were damaged with MNU and the response was investigated with help of transgenic fish that contained contstruct with a non-coding element (careg) regulating attached to a EGFP transcript, that can be used as regenerative activation marker. For single-cell transcriptomics analysis, cell suspensions were created from retinal cells, and processed with the 10x 3' kit. 
@@ -122,28 +124,34 @@ With this dataset, go through the steps we have performed during the course, and
 
 :::
 
-## Project excercises and questions
+## Guidance questions
 
-Look at the quality of the dataset, understand possible pitfalls and decide how to best filter the data
+If you'd like more structure, the following questions may guide your analyses: 
+
+### Quality control and filtering
 
 - Have a look at the seurat object before starting your analysis. How many cells and genes are present? Is the data already normalised? 
 - Assess the quality of the samples. Are there any important issues to consider? Would you remove genes?
 
-Normalise, integrate and visualise the data in order to cluster the cells into biologically meaningful populations
+### Normalization, integration and visualization
 
 - Which clustering resolution would you choose?
 - Inspect the clustering (ie. % of mitochondrial, number of features..), would you filter out some populations? do you need to change your resolution? 
 
-Next step will be to identify the different cell types, in particular MG, rods and cons. MG is the cell population where we want to evaluate if EGFP is expressed during regeneration (as a reported of CAREG). 
+### Cell type annotation
 
 - Annotate cells (at least rods, cons and MG) and describe EGFP behavior in the different conditions (Ctr, 3dp, 7dp, 10dp)
 - Can you identify a subpopulation of MG cells expression EGFP?
 
-Bonus: can you identify expression profile differences in injured vs uninjured Rods cells? and in Cons cells?
-How do your results compare to the ones from the paper?
+::: {.callout-tip collapse="true"}
+## Bonus questions (advanced)
 
+- Can you identify expression profile differences in injured vs uninjured Rods cells? and in Cons cells?
+- How do your results compare to the ones from the paper?
 
-## Tips
+:::  
+
+## Additional tips
 
 - For mitochondrial genes, ribosomal genes and hemoglobin genes you can use the following patterns: `"^mt-"`, `"^rp[sl]"` and `"^hb[^(p)]"`. 
 - Work iterative; meaning that based on results of an analsyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution. 
