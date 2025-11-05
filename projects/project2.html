@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.7.32">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Project 2 – Single cell transcriptomics</title>
 <style>
@@ -68,10 +68,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ab62ab6abcf2bb06eba42c0c53629186.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-230b0edcc17825a0f87886d255295d6c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -286,7 +286,7 @@ window.Quarto = {
   <ul>
 <li><a href="#available-data" id="toc-available-data" class="nav-link active" data-scroll-target="#available-data">Available data</a></li>
   <li>
-<a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a>
+<a href="#guidance-questions" id="toc-guidance-questions" class="nav-link" data-scroll-target="#guidance-questions">Guidance questions</a>
   <ul class="collapse">
 <li><a href="#quality-control-qc" id="toc-quality-control-qc" class="nav-link" data-scroll-target="#quality-control-qc">1. Quality Control (QC)</a></li>
   <li><a href="#data-normalization-and-scaling" id="toc-data-normalization-and-scaling" class="nav-link" data-scroll-target="#data-normalization-and-scaling">2. Data Normalization and Scaling</a></li>
@@ -296,7 +296,12 @@ window.Quarto = {
   <li><a href="#differential-expression-de-analysis" id="toc-differential-expression-de-analysis" class="nav-link" data-scroll-target="#differential-expression-de-analysis">6. Differential Expression (DE) Analysis</a></li>
   <li><a href="#analysis-of-sexual-dimorphism" id="toc-analysis-of-sexual-dimorphism" class="nav-link" data-scroll-target="#analysis-of-sexual-dimorphism">7. Analysis of Sexual Dimorphism</a></li>
   <li><a href="#pathway-enrichment-analysis" id="toc-pathway-enrichment-analysis" class="nav-link" data-scroll-target="#pathway-enrichment-analysis">8. Pathway Enrichment Analysis</a></li>
-  <li><a href="#key-figures-and-tables-to-compare" id="toc-key-figures-and-tables-to-compare" class="nav-link" data-scroll-target="#key-figures-and-tables-to-compare">Key Figures and Tables to Compare</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#additional-tips" id="toc-additional-tips" class="nav-link" data-scroll-target="#additional-tips">Additional tips</a>
+  <ul class="collapse">
+<li><a href="#key-figures-and-tables-to-compare" id="toc-key-figures-and-tables-to-compare" class="nav-link" data-scroll-target="#key-figures-and-tables-to-compare">Key Figures and Tables to Compare</a></li>
   </ul>
 </li>
   </ul></nav>
@@ -402,8 +407,8 @@ Project exercise
 <p>With this dataset, go through the steps we have performed during the course, and try to reproduce the results provided in the paper.</p>
 </div>
 </div>
-</section><section id="tips" class="level2"><h2 class="anchored" data-anchor-id="tips">Tips</h2>
-<p>Pay specific attention to the following key analysis steps and parameters from the paper:</p>
+</section><section id="guidance-questions" class="level2"><h2 class="anchored" data-anchor-id="guidance-questions">Guidance questions</h2>
+<p>If you’d like more structure, the following questions may guide your analyses:</p>
 <section id="quality-control-qc" class="level3"><h3 class="anchored" data-anchor-id="quality-control-qc">1. Quality Control (QC)</h3>
 <p>The paper does not provide explicit QC thresholds for filtering cells. You should use standard single-cell RNA-seq QC metrics and apply appropriate thresholds to filter out low-quality cells and genes.</p>
 <ul>
@@ -494,7 +499,8 @@ Project exercise
 <li>Perform a pathway enrichment analysis using <code>clusterProfiler</code> to identify affected biological pathways.</li>
 </ol>
 </li>
-</ul></section><section id="key-figures-and-tables-to-compare" class="level3"><h3 class="anchored" data-anchor-id="key-figures-and-tables-to-compare">Key Figures and Tables to Compare</h3>
+</ul></section></section><section id="additional-tips" class="level2"><h2 class="anchored" data-anchor-id="additional-tips">Additional tips</h2>
+<section id="key-figures-and-tables-to-compare" class="level3"><h3 class="anchored" data-anchor-id="key-figures-and-tables-to-compare">Key Figures and Tables to Compare</h3>
 <p>As you work through the analysis, you can compare your results to the following figures and tables from the paper:</p>
 <ul>
 <li>
@@ -589,7 +595,7 @@ Important
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/sib-swiss\.github\.io\/single-cell-r-training\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

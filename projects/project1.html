@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.7.32">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Project 1 – Single cell transcriptomics</title>
 <style>
@@ -68,10 +68,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ab62ab6abcf2bb06eba42c0c53629186.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-230b0edcc17825a0f87886d255295d6c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -260,8 +260,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#available-data" id="toc-available-data" class="nav-link active" data-scroll-target="#available-data">Available data</a></li>
-  <li><a href="#project-excercises-and-questions" id="toc-project-excercises-and-questions" class="nav-link" data-scroll-target="#project-excercises-and-questions">Project excercises and questions</a></li>
-  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  <li>
+<a href="#guidance-questions" id="toc-guidance-questions" class="nav-link" data-scroll-target="#guidance-questions">Guidance questions</a>
+  <ul class="collapse">
+<li><a href="#quality-control-and-filtering" id="toc-quality-control-and-filtering" class="nav-link" data-scroll-target="#quality-control-and-filtering">Quality control and filtering</a></li>
+  <li><a href="#normalization-integration-and-visualization" id="toc-normalization-integration-and-visualization" class="nav-link" data-scroll-target="#normalization-integration-and-visualization">Normalization, integration and visualization</a></li>
+  <li><a href="#cell-type-annotation" id="toc-cell-type-annotation" class="nav-link" data-scroll-target="#cell-type-annotation">Cell type annotation</a></li>
+  </ul>
+</li>
+  <li><a href="#additional-tips" id="toc-additional-tips" class="nav-link" data-scroll-target="#additional-tips">Additional tips</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -386,24 +393,41 @@ Project exercise
 <p>With this dataset, go through the steps we have performed during the course, and try to answer the following questions. Pay specific attention to quality control, clustering and annotation.</p>
 </div>
 </div>
-</section><section id="project-excercises-and-questions" class="level2"><h2 class="anchored" data-anchor-id="project-excercises-and-questions">Project excercises and questions</h2>
-<p>Look at the quality of the dataset, understand possible pitfalls and decide how to best filter the data</p>
+</section><section id="guidance-questions" class="level2"><h2 class="anchored" data-anchor-id="guidance-questions">Guidance questions</h2>
+<p>If you’d like more structure, the following questions may guide your analyses:</p>
+<section id="quality-control-and-filtering" class="level3"><h3 class="anchored" data-anchor-id="quality-control-and-filtering">Quality control and filtering</h3>
 <ul>
 <li>Have a look at the seurat object before starting your analysis. How many cells and genes are present? Is the data already normalised?</li>
 <li>Assess the quality of the samples. Are there any important issues to consider? Would you remove genes?</li>
-</ul>
-<p>Normalise, integrate and visualise the data in order to cluster the cells into biologically meaningful populations</p>
+</ul></section><section id="normalization-integration-and-visualization" class="level3"><h3 class="anchored" data-anchor-id="normalization-integration-and-visualization">Normalization, integration and visualization</h3>
 <ul>
 <li>Which clustering resolution would you choose?</li>
 <li>Inspect the clustering (ie. % of mitochondrial, number of features..), would you filter out some populations? do you need to change your resolution?</li>
-</ul>
-<p>Next step will be to identify the different cell types, in particular MG, rods and cons. MG is the cell population where we want to evaluate if EGFP is expressed during regeneration (as a reported of CAREG).</p>
+</ul></section><section id="cell-type-annotation" class="level3"><h3 class="anchored" data-anchor-id="cell-type-annotation">Cell type annotation</h3>
 <ul>
 <li>Annotate cells (at least rods, cons and MG) and describe EGFP behavior in the different conditions (Ctr, 3dp, 7dp, 10dp)</li>
 <li>Can you identify a subpopulation of MG cells expression EGFP?</li>
 </ul>
-<p>Bonus: can you identify expression profile differences in injured vs uninjured Rods cells? and in Cons cells? How do your results compare to the ones from the paper?</p>
-</section><section id="tips" class="level2"><h2 class="anchored" data-anchor-id="tips">Tips</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Bonus questions (advanced)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Can you identify expression profile differences in injured vs uninjured Rods cells? and in Cons cells?</li>
+<li>How do your results compare to the ones from the paper?</li>
+</ul>
+</div>
+</div>
+</div>
+</section></section><section id="additional-tips" class="level2"><h2 class="anchored" data-anchor-id="additional-tips">Additional tips</h2>
 <ul>
 <li>For mitochondrial genes, ribosomal genes and hemoglobin genes you can use the following patterns: <code>"^mt-"</code>, <code>"^rp[sl]"</code> and <code>"^hb[^(p)]"</code>.</li>
 <li>Work iterative; meaning that based on results of an analsyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</li>
@@ -484,7 +508,7 @@ Project exercise
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/sib-swiss\.github\.io\/single-cell-r-training\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
