@@ -10,3 +10,32 @@ execute:
 {{< downloadthis ../assets/pdf/Miscellanous.pdf dname="Miscellanous" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/hsc1bXyK7FU?si=uhRHphDwqTFXQVNb >}}
+
+## Advanced Topics
+
+This section provides a brief overview of and resources for several advanced single-cell analysis topics that were requested in the course feedback.
+
+### RNA Velocity
+
+RNA velocity is a technique that allows you to predict the future state of individual cells on a timescale of hours. It is based on the ratio of spliced and unspliced mRNA. This can be used to infer the direction of cell differentiation and to identify transient cell states.
+
+- **Tool:** [velocyto](http://velocyto.org/) is a popular tool for RNA velocity analysis. The `velocyto.R` package allows you to perform the analysis in R.
+- **Tutorial:** [RNA velocity analysis with Seurat and velocyto.R](https://satijalab.org/seurat/articles/velocity.html)
+
+### Inferring Copy Number Variations (CNVs)
+
+It is possible to infer large-scale chromosomal copy-number variations (CNVs) from scRNA-seq data. This can be useful for identifying tumor cells in a mixed population or for studying genomic instability.
+
+- **Tool:** [inferCNV](https://github.com/broadinstitute/inferCNV) is a widely used tool for inferring CNVs from scRNA-seq data.
+
+### Advanced Batch Correction
+
+While this course covers basic batch correction methods, more advanced methods are available for complex batch effects. These methods can be particularly useful when integrating datasets from different technologies or labs.
+
+- **Review:** [A comparison of methods for batch effects correction in single-cell RNA sequencing data](https://www.nature.com/articles/s41598-021-82126-3)
+
+### Pseudo-bulk Differential Expression
+
+Pseudo-bulk analysis involves aggregating counts from cells within the same sample and cluster to create a "pseudo-bulk" sample. This approach allows you to use standard bulk RNA-seq differential expression methods, which can be more powerful and statistically robust than single-cell methods in some cases.
+
+- **Tutorial:** [Pseudo-bulk differential expression analysis with Seurat](https://satijalab.org/seurat/articles/pseudo-bulk.html)
