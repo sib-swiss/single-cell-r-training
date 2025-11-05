@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.31">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>SIB course Single Cell Transcriptomics – Single cell transcriptomics</title>
+<title>Project 1 – Single cell transcriptomics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +17,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
-
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./assets/SIB_logo.svg" rel="icon" type="image/svg+xml">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ab62ab6abcf2bb06eba42c0c53629186.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../assets/SIB_logo.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ab62ab6abcf2bb06eba42c0c53629186.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -67,10 +97,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
-<!-- Matomo -->
-<script>
+}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+<!-- Matomo --><script>
   var _paq = window._paq = window._paq || [];
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   _paq.push(['trackPageView']);
@@ -82,20 +110,14 @@ ul.task-list li input[type="checkbox"] {
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
   })();
-</script>
-<!-- End Matomo Code -->
-
-
+</script><!-- End Matomo Code -->
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Single cell transcriptomics</span>
     </a>
   </div>
@@ -105,175 +127,146 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./precourse_preparations.html"> 
+    <a class="nav-link" href="../precourse_preparations.html"> 
 <span class="menu-text">Precourse preparations</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./course_schedule.html"> 
+    <a class="nav-link" href="../course_schedule.html"> 
 <span class="menu-text">Course schedule</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 1</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">    
-        <li>
-    <a class="dropdown-item" href="./day1/day1-1_setup.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">
+<li>
+    <a class="dropdown-item" href="../day1/day1-1_setup.html">
  <span class="dropdown-text">Setup</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./day1/day1-1a_cellranger.html">
+    <a class="dropdown-item" href="../day1/day1-1a_cellranger.html">
  <span class="dropdown-text">Introduction &amp; cellranger</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./day1/day1-2_analysis_tools_qc.html">
+    <a class="dropdown-item" href="../day1/day1-2_analysis_tools_qc.html">
  <span class="dropdown-text">Analysis tools and QC</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 2</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">    
-        <li>
-    <a class="dropdown-item" href="./day2/day2-1_normalization_scaling.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">
+<li>
+    <a class="dropdown-item" href="../day2/day2-1_normalization_scaling.html">
  <span class="dropdown-text">Normalization and scaling</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./day2/day2-2_dimensionality_reduction.html">
+    <a class="dropdown-item" href="../day2/day2-2_dimensionality_reduction.html">
  <span class="dropdown-text">Dimensionality reduction</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./day2/day2-3_integration.html">
+    <a class="dropdown-item" href="../day2/day2-3_integration.html">
  <span class="dropdown-text">Integration</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./day2/day2-4_clustering.html">
+    <a class="dropdown-item" href="../day2/day2-4_clustering.html">
  <span class="dropdown-text">Clustering</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">day 3</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">    
-        <li>
-    <a class="dropdown-item" href="./day3/day3-1_cell_annotation.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">
+<li>
+    <a class="dropdown-item" href="../day3/day3-1_cell_annotation.html">
  <span class="dropdown-text">Cell annotation</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./day3/day3-2_differential_gene_expression.html">
+    <a class="dropdown-item" href="../day3/day3-2_differential_gene_expression.html">
  <span class="dropdown-text">Differential gene expression</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./day3/day3-3_enrichment_analysis.html">
+    <a class="dropdown-item" href="../day3/day3-3_enrichment_analysis.html">
  <span class="dropdown-text">Enrichment analysis</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">projects</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
-        <li>
-    <a class="dropdown-item" href="./projects/introduction.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">
+<li>
+    <a class="dropdown-item" href="../projects/introduction.html">
  <span class="dropdown-text">Introduction</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/project1.html">
+    <a class="dropdown-item" href="../projects/project1.html">
  <span class="dropdown-text">Project 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/project2.html">
+    <a class="dropdown-item" href="../projects/project2.html">
  <span class="dropdown-text">Project 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/project3.html">
+    <a class="dropdown-item" href="../projects/project3.html">
  <span class="dropdown-text">Project 3</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./projects/project4.html">
+    <a class="dropdown-item" href="../projects/project4.html">
  <span class="dropdown-text">Project 4</span></a>
   </li>  
     </ul>
-  </li>
+</li>
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/sib-swiss/single-cell-r-training/"> <i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">SIB course Single Cell Transcriptomics</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Project 1</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="./index.html" class="sidebar-logo-link">
-      <img src="./assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
-      </a>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../assets/SIB_LogoQ_GBv.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
       </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#teachers" id="toc-teachers" class="nav-link active" data-scroll-target="#teachers">Teachers</a>
-  <ul class="collapse">
-  <li><a href="#teachers-of-previous-iterations" id="toc-teachers-of-previous-iterations" class="nav-link" data-scroll-target="#teachers-of-previous-iterations">Teachers of previous iterations</a></li>
-  </ul></li>
-  <li><a href="#helper" id="toc-helper" class="nav-link" data-scroll-target="#helper">Helper</a>
-  <ul class="collapse">
-  <li><a href="#helpers-of-previous-iterations" id="toc-helpers-of-previous-iterations" class="nav-link" data-scroll-target="#helpers-of-previous-iterations">Helpers of previous iterations</a></li>
-  </ul></li>
-  <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution">Attribution</a></li>
-  <li><a href="#license-copyright" id="toc-license-copyright" class="nav-link" data-scroll-target="#license-copyright">License &amp; copyright</a></li>
-  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a>
-  <ul class="collapse">
-  <li><a href="#general-learning-outcomes" id="toc-general-learning-outcomes" class="nav-link" data-scroll-target="#general-learning-outcomes">General learning outcomes</a></li>
-  <li><a href="#learning-outcomes-explained" id="toc-learning-outcomes-explained" class="nav-link" data-scroll-target="#learning-outcomes-explained">Learning outcomes explained</a></li>
-  </ul></li>
-  <li><a href="#learning-experiences" id="toc-learning-experiences" class="nav-link" data-scroll-target="#learning-experiences">Learning experiences</a>
-  <ul class="collapse">
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
-  </ul></li>
-  </ul>
-</nav>
+<li><a href="#available-data" id="toc-available-data" class="nav-link active" data-scroll-target="#available-data">Available data</a></li>
+  <li><a href="#project-excercises-and-questions" id="toc-project-excercises-and-questions" class="nav-link" data-scroll-target="#project-excercises-and-questions">Project excercises and questions</a></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">SIB course Single Cell Transcriptomics</h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Project 1</h1>
 </div>
 
 
@@ -287,100 +280,139 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header>
+</header><p>Project 1 is about a single cell sequencing project of zebrafish retina. Photoreceptors were damaged with MNU and the response was investigated with help of transgenic fish that contained contstruct with a non-coding element (careg) regulating attached to a EGFP transcript, that can be used as regenerative activation marker. For single-cell transcriptomics analysis, cell suspensions were created from retinal cells, and processed with the 10x 3’ kit.</p>
+<section id="available-data" class="level2"><h2 class="anchored" data-anchor-id="available-data">Available data</h2>
+<p>Data has been downloaded and prepared for you from <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE202212">GEO GSE202212</a>. The count matrices are created with <code>cellranger</code>. To create the count tables, the EGFP sequence was added to the reference genome. The gene name of EGFP is <code>EGFP</code>.</p>
+<p>In order to download the data, run:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project1.tar.gz</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xvf</span> project1.tar.gz</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> project1.tar.gz </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After extracting, a directory <code>project1</code> appears with the following content:</p>
+<pre><code>.
+├── data
+│   ├── 10dp1
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 10dp2
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 3dp1
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 3dp2
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 7dp1
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── 7dp2
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   ├── ctrl1
+│   │   ├── filtered_feature_bc_matrix
+│   │   │   ├── barcodes.tsv.gz
+│   │   │   ├── features.tsv.gz
+│   │   │   └── matrix.mtx.gz
+│   │   └── web_summary.html
+│   └── ctrl2
+│       ├── filtered_feature_bc_matrix
+│       │   ├── barcodes.tsv.gz
+│       │   ├── features.tsv.gz
+│       │   └── matrix.mtx.gz
+│       └── web_summary.html
+└── paper.pdf
 
-
-<div class="callout callout-style-default callout-caution callout-titled">
+17 directories, 33 files</code></pre>
+<p>Showing us that we have two replicates per treatment, and four treatments:</p>
+<ul>
+<li>ctrl: controls</li>
+<li>3dp: 3 days post injury</li>
+<li>7dp: 7 days post injury</li>
+<li>10dp: 10 days post injury</li>
+</ul>
+<p>Now create a new project in the <code>project1</code> directory (Project (None) &gt; New Project …), and create Seurat object from the count matrices:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># vector of paths to all sample directories</span></span>
+<span><span class="va">datadirs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"data"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># get the sample names</span></span>
+<span><span class="co"># replace underscores with hyphen to correctly extract sample names later on</span></span>
+<span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_"</span>, <span class="st">"-"</span>, x <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># files are in filter_feature_bc_matrix</span></span>
+<span><span class="va">datadirs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">datadirs</span>, <span class="st">"filtered_feature_bc_matrix"</span>, sep <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">datadirs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">samples</span></span>
+<span></span>
+<span><span class="co"># create a large sparse matrix from all count data</span></span>
+<span><span class="va">sparse_matrix</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.org/seurat/reference/Read10X.html">Read10X</a></span><span class="op">(</span>data.dir <span class="op">=</span> <span class="va">datadirs</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create a seurat object from sparse matrix</span></span>
+<span><span class="va">seu</span> <span class="op">&lt;-</span> <span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://satijalab.github.io/seurat-object/reference/CreateSeuratObject.html">CreateSeuratObject</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">sparse_matrix</span>,</span>
+<span>                                  project <span class="op">=</span> <span class="st">"Zebrafish"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Looking for previous material?
+Project exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Are you looking for material of previous versions of the course? Find it at <a href="https://sib-swiss.github.io/single-cell-training-archived">sib-swiss.github.io/single-cell-training-archived</a></p>
+<p>With this dataset, go through the steps we have performed during the course, and try to answer the following questions. Pay specific attention to quality control, clustering and annotation.</p>
 </div>
 </div>
-<figure class="figure">
-<img src="assets/images/umap_nonintegrated_dim50.png" width="500" class="figure-img">
-</figure>
-<section id="teachers" class="level2">
-<h2 class="anchored" data-anchor-id="teachers">Teachers</h2>
+</section><section id="project-excercises-and-questions" class="level2"><h2 class="anchored" data-anchor-id="project-excercises-and-questions">Project excercises and questions</h2>
+<p>Look at the quality of the dataset, understand possible pitfalls and decide how to best filter the data</p>
 <ul>
-<li>Deepak Tanwar <a href="https://orcid.org/0000-0001-8036-1989">ORCiD</a></li>
-<li>Luciano Cascione <a href="https://orcid.org/0000-0002-4606-0637">ORCiD</a></li>
+<li>Have a look at the seurat object before starting your analysis. How many cells and genes are present? Is the data already normalised?</li>
+<li>Assess the quality of the samples. Are there any important issues to consider? Would you remove genes?</li>
 </ul>
-<section id="teachers-of-previous-iterations" class="level3">
-<h3 class="anchored" data-anchor-id="teachers-of-previous-iterations">Teachers of previous iterations</h3>
+<p>Normalise, integrate and visualise the data in order to cluster the cells into biologically meaningful populations</p>
 <ul>
-<li>Joana Carlevaro-Fita <a href="https://orcid.org/0000-0002-1674-2055">ORCiD</a></li>
-<li>Tania Wyss <a href="https://orcid.org/0000-0003-2641-0895">ORCiD</a></li>
-<li>Rachel Marcone-Jeitziner <a href="https://orcid.org/0000-0002-5711-8435">ORCiD</a></li>
-<li>Alex Russell Lederer <a href="https://orcid.org/0000-0001-6381-5088">ORCiD</a></li>
-<li>Luciano Cascione <a href="https://orcid.org/0000-0002-4606-0637">ORCiD</a></li>
-<li>Geert van Geest <a href="https://orcid.org/0000-0002-1561-078X">ORCiD</a></li>
-<li>Patricia Palagi <a href="https://orcid.org/0000-0001-9062-6303">ORCiD</a></li>
+<li>Which clustering resolution would you choose?</li>
+<li>Inspect the clustering (ie. % of mitochondrial, number of features..), would you filter out some populations? do you need to change your resolution?</li>
 </ul>
-</section>
-</section>
-<section id="helper" class="level2">
-<h2 class="anchored" data-anchor-id="helper">Helper</h2>
+<p>Next step will be to identify the different cell types, in particular MG, rods and cons. MG is the cell population where we want to evaluate if EGFP is expressed during regeneration (as a reported of CAREG).</p>
 <ul>
-<li></li>
-<li></li>
+<li>Annotate cells (at least rods, cons and MG) and describe EGFP behavior in the different conditions (Ctr, 3dp, 7dp, 10dp)</li>
+<li>Can you identify a subpopulation of MG cells expression EGFP?</li>
 </ul>
-<section id="helpers-of-previous-iterations" class="level3">
-<h3 class="anchored" data-anchor-id="helpers-of-previous-iterations">Helpers of previous iterations</h3>
+<p>Bonus: can you identify expression profile differences in injured vs uninjured Rods cells? and in Cons cells? How do your results compare to the ones from the paper?</p>
+</section><section id="tips" class="level2"><h2 class="anchored" data-anchor-id="tips">Tips</h2>
 <ul>
-<li>Cassandra Litchfield <a href="https://orcid.org/0000-0001-9374-1681">ORCiD</a></li>
+<li>For mitochondrial genes, ribosomal genes and hemoglobin genes you can use the following patterns: <code>"^mt-"</code>, <code>"^rp[sl]"</code> and <code>"^hb[^(p)]"</code>.</li>
+<li>Work iterative; meaning that based on results of an analsyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution.</li>
+<li>You can plot the samples by condition (keeping the 2 replicates together). For that, try adding a new metadata column that summarises the information you need.</li>
+<li>For cell type annotation, have a look at the methods section from the original paper, they provide a supplementary table with retina gene markers.</li>
 </ul>
-</section>
-</section>
-<section id="attribution" class="level2">
-<h2 class="anchored" data-anchor-id="attribution">Attribution</h2>
-<p>Parts of this course are inspired by the <a href="https://broadinstitute.github.io/2019_scWorkshop/index.html">Broad Institute Single Cell Workshop</a>, the <a href="https://bioinformatics-core-shared-training.github.io/UnivCambridge_ScRnaSeq_Nov2021/">CRUK CI Introduction to single-cell RNA-seq data analysis course</a> and courses previously developed by Walid Gharib at SIB.</p>
-</section>
-<section id="license-copyright" class="level2">
-<h2 class="anchored" data-anchor-id="license-copyright">License &amp; copyright</h2>
-<p><strong>License:</strong> <a href="https://github.com/sib-swiss/single-cell-training/blob/master/LICENSE.md">CC BY 4.0</a></p>
-<p><strong>Copyright:</strong> <a href="https://www.sib.swiss/">SIB Swiss Institute of Bioinformatics</a></p>
-</section>
-<section id="learning-outcomes" class="level2">
-<h2 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h2>
-<section id="general-learning-outcomes" class="level3">
-<h3 class="anchored" data-anchor-id="general-learning-outcomes">General learning outcomes</h3>
-<p>At the end of the course, participants will be able to:</p>
-<ul>
-<li>Distinguish advantages and pitfalls of scRNA-seq, including its applications in experimental design.</li>
-<li>Design their own scRNA-seq experiment, by using common technologies like 10X Genomics.</li>
-<li>Apply quality control (QC) measures and utilize analysis tools to preprocess scRNA-seq data.</li>
-<li>Apply normalization, scaling, dimensionality reduction, and integration and clustering on single-cell transcriptomics data techniques using R.</li>
-<li>Differentiate between cell annotation techniques to identify and characterize cell populations.</li>
-<li>Use differential gene expression analysis methods on single-cell transcriptomics data to gain biological insights.</li>
-<li>Select enrichment analysis methods appropriate to the biological question and data.</li>
-<li>Develop a single-cell transcriptomics data analysis workflow from raw count matrix to differential gene expression with peer support and light guidance.</li>
-</ul>
-</section>
-<section id="learning-outcomes-explained" class="level3">
-<h3 class="anchored" data-anchor-id="learning-outcomes-explained">Learning outcomes explained</h3>
-<p>To reach the general learning outcomes above, we have set a number of smaller learning outcomes. Each chapter starts with these smaller learning outcomes. Use these at the start of a chapter to get an idea what you will learn. Use them also at the end of a chapter to evaluate whether you have learned what you were expected to learn.</p>
-</section>
-</section>
-<section id="learning-experiences" class="level2">
-<h2 class="anchored" data-anchor-id="learning-experiences">Learning experiences</h2>
-<p>To reach the learning outcomes we will use lectures, exercises, polls and group work. During exercises, you are free to discuss with other participants. During lectures, focus on the lecture only.</p>
-<section id="exercises" class="level3">
-<h3 class="anchored" data-anchor-id="exercises">Exercises</h3>
-<p>Each block has practical work involved. Some more than others. The practicals are subdivided into chapters, and we’ll have a (short) discussion after each chapter. All answers to the practicals are incorporated, but they are hidden. Do the exercise first by yourself, before checking out the answer. If your answer is different from the answer in the practicals, try to figure out why they are different.</p>
 
 
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -780,7 +812,6 @@ Looking for previous material?
   });
   </script>
 </div> <!-- /content -->
-
 
 
 
