@@ -248,6 +248,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#required-competences" id="toc-required-competences" class="nav-link active" data-scroll-target="#required-competences">Required competences</a></li>
   <li><a href="#software" id="toc-software" class="nav-link" data-scroll-target="#software">Software</a></li>
+  <li><a href="#project-data-and-memory-considerations" id="toc-project-data-and-memory-considerations" class="nav-link" data-scroll-target="#project-data-and-memory-considerations">Project Data and Memory Considerations</a></li>
   </ul>
 </nav>
     </div>
@@ -275,7 +276,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="required-competences" class="level2">
 <h2 class="anchored" data-anchor-id="required-competences">Required competences</h2>
-<p>Participants should already have a basic knowledge in Next Generation Sequencing (NGS) techniques, or have already followed the course <a href="https://sib-swiss.github.io/NGS-introduction-training/2021.11/">NGS - Quality control, Alignment, Visualisation</a>. Knowledge in RNA sequencing is a plus. A basic knowledge of the R statistical software is required. Test your R skills with the quiz <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIyeuabd_ZOWXgI1MWHapmaOMu20L9ESkLDZiWnpmkpujyOg/viewform?usp=sf_link">here</a>, before registering.</p>
+<p>Participants should already have a basic knowledge in Next Generation Sequencing (NGS) techniques, or have already followed the course <a href="https://sib-swiss.github.io/NGS-introduction-training/">NGS - Quality control, Alignment, Visualisation</a>. Knowledge in RNA sequencing is a plus. A basic knowledge of the R statistical software is required. Test your R skills with the quiz <a href="https://docs.google.com/forms/d/e/1FAIpQLSdIyeuabd_ZOWXgI1MWHapmaOMu20L9ESkLDZiWnpmkpujyOg/viewform?usp=sf_link">here</a>, before registering. If you are not familiar with NGS techniques, we highly recommend reviewing the NGS introduction training materials to ensure a smoother learning experience in this course.</p>
 </section>
 <section id="software" class="level2">
 <h2 class="anchored" data-anchor-id="software">Software</h2>
@@ -284,6 +285,16 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="https://cran.r-project.org/">R</a> version &gt; 4.0.</li>
 <li>Latest RStudio version, the <a href="https://rstudio.com/products/rstudio/download/">free version</a> is perfectly fine.</li>
 <li>The R packages necessary for the course. Find the script to install them <a href="https://github.com/sib-swiss/single-cell-training/blob/master/Docker/install_packages.R">here</a>.</li>
+</ul>
+</section>
+<section id="project-data-and-memory-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="project-data-and-memory-considerations">Project Data and Memory Considerations</h2>
+<p>Some of the project datasets used in this course can be quite large and may require significant computational resources (RAM). If you are running the exercises on your local machine and encounter memory issues, consider the following strategies:</p>
+<ul>
+<li><strong>Downsampling:</strong> For initial exploration and testing of code, you can downsample your dataset to a smaller number of cells or genes. This will reduce memory usage and speed up computations.</li>
+<li><strong>Cloud Resources:</strong> If you consistently face memory limitations, consider utilizing cloud-based computational environments that offer more RAM and processing power.</li>
+<li><strong>Close unnecessary applications:</strong> Ensure that no other memory-intensive applications are running in the background while you are working on the course exercises.</li>
+<li><strong>Monitor memory usage:</strong> Use system monitoring tools to keep an eye on your RAM usage. This can help you identify when and where memory bottlenecks occur.</li>
 </ul>
 
 
