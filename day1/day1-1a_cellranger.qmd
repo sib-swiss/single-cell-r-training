@@ -1,7 +1,6 @@
 ---
-title: "Introduction & cellranger"
+title: "Introduction & cellranger (advanced)"
 ---
-
 
 ## Learning outcomes
 
@@ -131,6 +130,10 @@ You can use the file browser in the bottom right (tab "Files") to open html file
 ::: {.callout-important}
 ## Exercise
 Have a good look inside `web_summary.html`. Anything that draws your attention? Is this report good enough to continue the analysis? 
+:::
+
+::: {.callout-important}
+As we are not running this advanced exercise for the course, you would be looking at previously generated report: [report_file](../assets/web_summary.html)
 :::
 
 ::: {.callout-tip collapse="true"}
