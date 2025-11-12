@@ -109,15 +109,18 @@ Now that we have setup a project and a project directory (it is in `/home/rstudi
 
 ### Downloading the course data
 
-To download and extract the dataset, copy-paste these commands inside the terminal tab:
+To download and extract the dataset, copy-paste these commands in the console:
 
-```{bash}
-#| output: false
-#| eval: false
-wget https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/course_data.tar.gz
-tar -xvf course_data.tar.gz
-rm course_data.tar.gz
+```{r, eval=FALSE}
+download.file(
+  url = "https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/course_data.tar.gz",
+  destfile = "course_data.tar.gz"
+)
+untar("course_data.tar.gz")
+
+file.remove("course_data.tar.gz")
 ```
+
 
 ::: {.callout-note}
 ## If on Windows
