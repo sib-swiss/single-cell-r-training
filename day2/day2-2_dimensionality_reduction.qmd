@@ -127,6 +127,90 @@ Why does `dims = 1:100` not work? When would more precision be needed?
 
 :::
 
+
+## 3D UMAP
+
+Viewing data in 3D could reveal hidden clusters, trajectories, or sample-specific patterns that are not visible in 2D UMAPs — especially in complex single-cell datasets.
+
+```{r, warning=FALSE, message=FALSE}
+library(plotly)
+seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, reduction.name = "umap_3D")
+
+plot_3d_umap <- function(seu,
+                         reduction = "umap_3D",
+                         sample_col = "orig.ident",
+                         point_size = 4,
+                         point_opacity = 0.5) {
+  
+  ## 1. Extract coordinates -------------------------------------------------
+  umap_coords <- as.data.frame(Embeddings(seu, reduction = reduction))
+  umap_coords$Sample <- seu@meta.data[[sample_col]]
+  umap_coords$Cell   <- rownames(umap_coords)   # for hover
+  
+  ## 2. Build Plotly object --------------------------------------------------
+  p <- plot_ly(
+    data = umap_coords,
+    x = ~umap3D_1, y = ~umap3D_2, z = ~umap3D_3,
+    color = ~Sample,                     # default Plotly palette
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(
+      size = point_size,
+      opacity = point_opacity
+    ),
+    text = ~paste("Cell:", Cell, "<br>Sample:", Sample),
+    hovertemplate = "<b>%{text}</b><extra></extra>"
+  ) %>%
+    layout(
+      title = list(
+        text = "<b>3D UMAP of Cells by Sample</b>",
+        font = list(size = 18, family = "Arial, sans-serif"),
+        x = 0.5, xanchor = "center", y = 0.95
+      ),
+      scene = list(
+        xaxis = list(
+          title = "<b>UMAP 1</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        yaxis = list(
+          title = "<b>UMAP 2</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        zaxis = list(
+          title = "<b>UMAP 3</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        camera = list(eye = list(x = 1.5, y = 1.5, z = 1.5)),
+        aspectmode = "cube"
+      ),
+      legend = list(
+        title = list(text = "<b>Sample</b>", font = list(size = 12)),
+        bgcolor = "rgba(255,255,255,0.8)",
+        bordercolor = "gray", borderwidth = 1
+      ),
+      margin = list(l = 0, r = 0, t = 60, b = 0),
+      paper_bgcolor = "rgba(250,250,252,1)",
+      plot_bgcolor  = "rgba(250,250,252,1)"
+    ) %>%
+    config(
+      displayModeBar = TRUE,
+      displaylogo = FALSE,
+      modeBarButtonsToRemove = c("sendDataToCloud", "lasso2d", "select2d")
+    )
+  
+  return(p)
+}
+
+plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
+```
+
+
 ::: {.callout-tip collapse="true"}
 
 ## Answer
@@ -152,6 +236,14 @@ seu <- Seurat::RunUMAP(seu, dims = 1:25, n.neighbors = 5)
 ```{r}
 Seurat::DimPlot(seu, reduction = "umap")
 ```
+
+### Also in 3D
+```{r}
+seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, n.neighbors = 5, reduction.name = "umap_3D")
+
+plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
+```
+
 
 The default number of neighbours is 30. It can be of interest to change the number of neighbors if one has subset the data (for instance in the situation where you would only consider the t-cells in your data set), then maybe the number of neighbors in a cluster would anyway be most of the time lower than 30 then 30 is too much. In the other extreme where your dataset is extremely big an increase in the number of neighbors can be considered.
 
@@ -185,6 +277,7 @@ After having done these exercises, change the UMAP back to a UMAP based on the f
 ```{r}
 #| output: false
 seu <- Seurat::RunUMAP(seu, dims = 1:25)
+seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, reduction.name = "umap_3D")
 ```
 
 :::
