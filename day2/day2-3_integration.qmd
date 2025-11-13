@@ -29,6 +29,87 @@ Let's have a look at the UMAP again. Although cells of different samples are sha
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 
+Let's also make the function again for 3D UMAP
+
+```{r, warning=FALSE, message=FALSE}
+library(plotly)
+seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, reduction.name = "umap_3D")
+
+plot_3d_umap <- function(seu,
+                         reduction = "umap_3D",
+                         sample_col = "orig.ident",
+                         point_size = 4,
+                         point_opacity = 0.5) {
+  
+  ## 1. Extract coordinates -------------------------------------------------
+  umap_coords <- as.data.frame(Embeddings(seu, reduction = reduction))
+  umap_coords$Sample <- seu@meta.data[[sample_col]]
+  umap_coords$Cell   <- rownames(umap_coords)   # for hover
+  
+  ## 2. Build Plotly object --------------------------------------------------
+  p <- plot_ly(
+    data = umap_coords,
+    x = ~umap3D_1, y = ~umap3D_2, z = ~umap3D_3,
+    color = ~Sample,                     # default Plotly palette
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(
+      size = point_size,
+      opacity = point_opacity
+    ),
+    text = ~paste("Cell:", Cell, "<br>Sample:", Sample),
+    hovertemplate = "<b>%{text}</b><extra></extra>"
+  ) %>%
+    layout(
+      title = list(
+        text = "<b>3D UMAP of Cells by Sample</b>",
+        font = list(size = 18, family = "Arial, sans-serif"),
+        x = 0.5, xanchor = "center", y = 0.95
+      ),
+      scene = list(
+        xaxis = list(
+          title = "<b>UMAP 1</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        yaxis = list(
+          title = "<b>UMAP 2</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        zaxis = list(
+          title = "<b>UMAP 3</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        camera = list(eye = list(x = 1.5, y = 1.5, z = 1.5)),
+        aspectmode = "cube"
+      ),
+      legend = list(
+        title = list(text = "<b>Sample</b>", font = list(size = 12)),
+        bgcolor = "rgba(255,255,255,0.8)",
+        bordercolor = "gray", borderwidth = 1
+      ),
+      margin = list(l = 0, r = 0, t = 60, b = 0),
+      paper_bgcolor = "rgba(250,250,252,1)",
+      plot_bgcolor  = "rgba(250,250,252,1)"
+    ) %>%
+    config(
+      displayModeBar = TRUE,
+      displaylogo = FALSE,
+      modeBarButtonsToRemove = c("sendDataToCloud", "lasso2d", "select2d")
+    )
+  
+  return(p)
+}
+
+plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
+```
+
+
 To perform the integration, we split our object by sample, resulting into a set of layers within the `RNA` assay. The layers are integrated and stored in the reduction slot - in our case we call it `integrated.cca`. Then, we re-join the layers
 
 
@@ -87,6 +168,14 @@ Plotting the UMAP:
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 ::: 
+
+
+**Also in 3D**
+```{r}
+seu <- RunUMAP(seu, dims = 1:30, n.components = 3, , reduction = "integrated.cca", reduction.name = "umap_3D")
+
+plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
+```
 
 
 ### Save the dataset and clear environment

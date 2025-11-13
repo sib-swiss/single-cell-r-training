@@ -24,6 +24,8 @@ Load the `seu` dataset you have created earlier today:
 ```{r}
 #| warning: false
 #| message: false
+
+library(Seurat)
 seu <- readRDS("day2/seu_day2-3.rds")
 ```
 
@@ -62,6 +64,89 @@ You can view the UMAP coloring each cell according to a cluster id like this:
 Seurat::DimPlot(seu, group.by = "RNA_snn_res.0.1")
 ```
 
+We could also do it in 3D
+
+```{r, warning=FALSE, message=FALSE}
+library(plotly)
+
+plot_3d_umap <- function(seu,
+                         reduction = "umap_3D",
+                         sample_col = "orig.ident",
+                         point_size = 4,
+                         point_opacity = 0.5) {
+  
+  ## 1. Extract coordinates -------------------------------------------------
+  umap_coords <- as.data.frame(Embeddings(seu, reduction = reduction))
+  umap_coords$Sample <- seu@meta.data[[sample_col]]
+  umap_coords$Cell   <- rownames(umap_coords)   # for hover
+  
+  ## 2. Build Plotly object --------------------------------------------------
+  p <- plot_ly(
+    data = umap_coords,
+    x = ~umap3D_1, y = ~umap3D_2, z = ~umap3D_3,
+    color = ~Sample,                     # default Plotly palette
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(
+      size = point_size,
+      opacity = point_opacity
+    ),
+    text = ~paste("Cell:", Cell, "<br>Sample:", Sample),
+    hovertemplate = "<b>%{text}</b><extra></extra>"
+  ) %>%
+    layout(
+      title = list(
+        text = "<b>3D UMAP of Cells by Sample</b>",
+        font = list(size = 18, family = "Arial, sans-serif"),
+        x = 0.5, xanchor = "center", y = 0.95
+      ),
+      scene = list(
+        xaxis = list(
+          title = "<b>UMAP 1</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        yaxis = list(
+          title = "<b>UMAP 2</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        zaxis = list(
+          title = "<b>UMAP 3</b>", titlefont = list(size = 14),
+          showgrid = TRUE, gridcolor = "rgba(200,200,200,0.5)",
+          backgroundcolor = "rgba(245,245,255,0.9)",
+          zerolinecolor = "rgba(100,100,100,0.3)"
+        ),
+        camera = list(eye = list(x = 1.5, y = 1.5, z = 1.5)),
+        aspectmode = "cube"
+      ),
+      legend = list(
+        title = list(text = "<b>Sample</b>", font = list(size = 12)),
+        bgcolor = "rgba(255,255,255,0.8)",
+        bordercolor = "gray", borderwidth = 1
+      ),
+      margin = list(l = 0, r = 0, t = 60, b = 0),
+      paper_bgcolor = "rgba(250,250,252,1)",
+      plot_bgcolor  = "rgba(250,250,252,1)"
+    ) %>%
+    config(
+      displayModeBar = TRUE,
+      displaylogo = FALSE,
+      modeBarButtonsToRemove = c("sendDataToCloud", "lasso2d", "select2d")
+    )
+  
+  return(p)
+}
+
+```
+
+```{r}
+plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "RNA_snn_res.0.1")
+```
+
+
 ::: {.callout-important}
 ## Exercise
 Visualise clustering based on a few more resolutions. Taking the clustering and the UMAP plots into account what do you consider as a good resolution to perform the clustering?
@@ -74,7 +159,13 @@ Of course, there is no 'optimal' resolution, but based on resolution of 0.3, the
 ```{r}
 Seurat::DimPlot(seu, group.by = "RNA_snn_res.0.3")
 ```
+
+```{r}
+plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "RNA_snn_res.0.3")
+```
+
 :::
+
 
 ::: {.callout-important}
 ## Exercise

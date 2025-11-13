@@ -201,8 +201,6 @@ Clear your environment:
 
 ```{r}
 #| eval: false
-rm(list = ls())
 gc()
-.rs.restartR()
 ```
 
