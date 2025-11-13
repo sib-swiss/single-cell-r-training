@@ -283,6 +283,5 @@ seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, reduction.name = "uma
 :::
 
 ```{r}
-#| echo: false
 saveRDS(seu, "day2/seu_day2-2.rds")
 ```
