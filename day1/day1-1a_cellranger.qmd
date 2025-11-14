@@ -17,7 +17,7 @@ title: "Introduction & cellranger (advanced)"
 
 Introduction to scRNA-seq and techniques: 
 
-{{< downloadthis ../assets/pdf/02_introduction_scRNAseq.pdf dname="02_introduction_scRNAseq" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/03_10x_genomics_single_cell.pdf dname="02_introduction_scRNAseq" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/_ND6pEsf5Kg?si=BXzovujSUkWJ7x4h >}}
 
