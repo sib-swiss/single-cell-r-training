@@ -3,6 +3,10 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5703106.svg)](https://doi.org/10.5281/zenodo.5703106)
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 
+<!-- Matomo Image Tracker-->
+<img referrerpolicy="no-referrer-when-downgrade" src="https://matomo.sib.swiss/matomo.php?idsite=220&amp;rec=1" style="border:0" alt="" />
+<!-- End Matomo -->
+
 This website is hosted at: https://sib-swiss.github.io/single-cell-training/
 
 Please refer to [issues](https://github.com/sib-swiss/single-cell-training/issues) for improvements/bugs for course material or the website. 
