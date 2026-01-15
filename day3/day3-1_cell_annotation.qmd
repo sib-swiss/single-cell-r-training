@@ -6,7 +6,7 @@ editor_options:
 
 ## Material
 
-{{< downloadthis ../assets/pdf/08_cell_type_annotation.pdf dname="CellAnnotation_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/CellAnnotation_SIB.pdf dname="CellAnnotation_SIB" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/dNO7W7qkKBM?si=xkLBHjT8V25AEzIx >}}
 
@@ -17,7 +17,8 @@ editor_options:
 ## Exercises
 
 ```{r}
-#| output: true
+#| warning: false
+#| message: false
 seu <- readRDS("day2/seu_day2-4.rds")
 library(Seurat)
 ```
@@ -25,7 +26,8 @@ library(Seurat)
 Load the following packages:
 
 ```{r}
-#| output: true
+#| warning: false
+#| message: false
 library(celldex)
 library(SingleR)
 ```

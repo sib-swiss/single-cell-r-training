@@ -7,7 +7,7 @@ editor_options:
 
 ## Material
 
-{{< downloadthis ../assets/pdf/202503_differential_analysis.pdf dname="DGE_and_enrichment_analysis" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/DEGs_and_Enrichment_SIB.pdf dname="DGE_and_enrichment_analysis" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/6Y5uCQWRRbg?si=mcV9qJUap1qvFjy3 >}}
 
@@ -22,15 +22,16 @@ editor_options:
 Load the `seu` dataset you have created yesterday:
 
 ```{r}
-#| echo: false
-#| output: false
+#| warning: false
+#| message: false
 seu <- readRDS("day3/seu_day3-1.rds")
 ```
 
 And load the following packages (install them if they are missing):
 
 ```{r}
-#| output: false
+#| warning: false
+#| message: false
 library(Seurat)
 library(edgeR) # BiocManager::install("edgeR")
 library(limma)
@@ -38,7 +39,7 @@ library(dplyr)
 library(scuttle)
 ```
 
-The function `FindAllMarkers` performs a Wilcoxon plot to determine the genes differentially expressed between each cluster and the rest of the cells. Other types of tests than the Wilcoxon test are available. Check it out by running `?Seurat::FindAllMarkers`.
+The function `FindAllMarkers` performs a Wilcoxon test to determine the genes differentially expressed between each cluster and the rest of the cells. Other types of tests than the Wilcoxon test are available. Check it out by running `?Seurat::FindAllMarkers`.
 
 Now run analysis:
 
@@ -284,7 +285,7 @@ Firt, we perform TMM normalization using edgeR, and then `limma` can perform the
 dge <- edgeR::calcNormFactors(y)  
 
 #Do limma
-vm <- limma::voom(dge, design = design, plot = TRUE)
+vm <- limma::voom(dge, design = design)
 fit <- limma::lmFit(vm, design = design)
 fit.contrasts <- limma::contrasts.fit(fit, contrast.mat)
 fit.contrasts <- limma::eBayes(fit.contrasts)
@@ -307,6 +308,61 @@ Seurat::VlnPlot(proB, "S100A9", split.by = "type")
 Seurat::VlnPlot(proB, "SOCS2", split.by = "type")
 ```
 
+## Some QC plots
+
+### Histogram of p-values
+```{r}
+library(ggplot2)
+
+ggplot(limma_de, aes(x = adj.P.Val)) +
+  geom_histogram(binwidth = 0.01, fill = "skyblue", color = "black") +
+  theme_minimal() +
+  labs(
+    title = "Histogram of Adjusted P-values",
+    x = "Adjusted P-value",
+    y = "Frequency (Number of Genes)"
+  ) +
+  geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
+  annotate("text", x = 0.07, y = max(hist(limma_de$adj.P.Val, plot = FALSE)$counts) * 0.9,
+           label = "FDR = 0.05", color = "red", hjust = 0)
+```
+
+A "healthy" histogram is L-shaped, with a high bar at 0 and then relatively flat. If your histogram looks like that, your statistical testing has likely performed well. Read more about distribution of histogram p-value: [How to interpret a p-value histogram](http://varianceexplained.org/statistics/interpreting-pvalue-histogram/)
+
+
+### MA plot
+```{r}
+sig_threshold_adj_p <- 0.05
+sig_threshold_logFC <- 1
+limma_de_ma_plot <- limma_de %>%
+  mutate(
+    is_significant = case_when(
+      adj.P.Val < sig_threshold_adj_p & logFC > sig_threshold_logFC ~ "Upregulated",
+      adj.P.Val < sig_threshold_adj_p & logFC < -sig_threshold_logFC ~ "Downregulated",
+      TRUE ~ "Not Significant"
+    ),
+    gene_label = ifelse(abs(logFC) > 5 | (adj.P.Val < 1e-5 & abs(logFC) > 3), rownames(limma_de), NA)
+  )
+
+ggplot(limma_de_ma_plot, aes(x = AveExpr, y = logFC, color = is_significant)) +
+  geom_point(alpha = 0.6, size = 1) + 
+  scale_color_manual(values = c("Upregulated" = "red", "Downregulated" = "blue", "Not Significant" = "grey")) +
+  theme_minimal() +
+  labs(
+    title = "MA Plot",
+    x = "Average Expression (log2)",
+    y = "Log2 Fold Change",
+    color = "Significance"
+  ) +
+  geom_hline(yintercept = c(-sig_threshold_logFC, sig_threshold_logFC), linetype = "dashed", color = "darkgreen") +
+  geom_hline(yintercept = 0, linetype = "solid", color = "black") +
+  geom_text(aes(label = gene_label), na.rm = TRUE, size = 3, hjust = -0.1, vjust = 0.5, check_overlap = TRUE)
+```
+
+A "healthy" MA plot is symmetrical around the logFC = 0 line, with most points tightly clustered near zero logFC at high average expression (AveExpr), and a wider spread at low average expression. This indicates no systematic biases and effective detection of differential expression.
+
+
+## Differential analysis using `Seurat`
 We can run a similar analysis with `Seurat`, but this will not take into account the paired design. Run the code below.
 
 ```{r}
@@ -314,7 +370,7 @@ tum_vs_norm <- Seurat::FindMarkers(proB,
                                    ident.1 = "ETV6-RUNX1", 
                                    ident.2 = "PBMMC", 
                                    group.by = "type")
-tum_vs_norm <- subset(tum_vs_norm, tum_vs_norm$p_val_adj<0.05)
+tum_vs_norm_s <- subset(tum_vs_norm, tum_vs_norm$p_val_adj<0.05)
 ```
 
 ::: callout-important
@@ -327,13 +383,49 @@ How many genes are significant? How does the fold change of these genes compare 
 ## Answer
 
 ```{r}
-dim(tum_vs_norm) 
+dim(tum_vs_norm_s) 
 ```
+We find 3820 significant genes. 
+:::
 
-We find 3820 significant genes. If we merge the `FindMarkers` and the `limma` results, keep `limma`'s most significant genes and plot:
+::: callout-important
+## Exercise
+
+Can you now try to make histogram of p-values from `Seurat` analysis?
+:::
+
+::: {.callout-tip collapse="true"}
+## Answer
 
 ```{r}
-merge_limma_FindMarkers <- merge(tum_vs_norm, limma_de, by="row.names",
+library(ggplot2)
+
+ggplot(tum_vs_norm, aes(x = p_val_adj)) +
+  geom_histogram(binwidth = 0.01, fill = "skyblue", color = "black") +
+  theme_minimal() +
+  labs(
+    title = "Histogram of Adjusted P-values",
+    x = "Adjusted P-value",
+    y = "Frequency (Number of Genes)"
+  ) +
+  geom_vline(xintercept = 0.05, linetype = "dashed", color = "red") +
+  annotate("text", x = 0.07, y = max(hist(tum_vs_norm$p_val_adj, plot = FALSE)$counts) * 0.9,
+           label = "FDR = 0.05", color = "red", hjust = 0)
+
+```
+
+
+Many differential expression tests (including those implemented in Seurat, like `Wilcoxon Rank Sum test`) will not compute a p-value for genes that are expressed in too few cells in one or both of the groups being compared.
+:::
+
+
+
+## Comparison of results between `Seurat` and `limma`
+
+If we merge the `FindMarkers` and the `limma` results, keep `limma`'s most significant genes and plot:
+
+```{r}
+merge_limma_FindMarkers <- merge(tum_vs_norm_s, limma_de, by="row.names",
                            all.x=T)
 
 par(mar=c(4,4,4,4))
@@ -343,7 +435,7 @@ plot(merge_limma_FindMarkers$avg_log2FC,
     pch=15, cex=0.5)
 abline(a=0, b=1, col="red")
 ```
-:::
+
 
 ::: callout-warning
 ## Keep the object
