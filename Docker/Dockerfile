@@ -1,14 +1,15 @@
-FROM rocker/rstudio:4.5.1
+FROM rocker/rstudio:4.5.2
 
-# Script for to set up multiple users
-# COPY batch_user_creation.sh /rocker_scripts/experimental/batch_user_creation.sh
+# Set project directory
+WORKDIR /project
 
-# CMD [ "sh", "-c", "/rocker_scripts/experimental/batch_user_creation.sh && /init" ]
+# Use multiple threads for renv
+ENV RENV_INSTALL_THREADS=8
+ENV RENV_PATHS_CACHE=/renv_cache
 
-RUN sudo apt-get update
-
-RUN sudo apt-get install -y \
-libxt6 \
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libxt6 \
     libgl1 \
     libcurl4-openssl-dev \
     libglpk-dev \
@@ -18,9 +19,15 @@ libxt6 \
     libgdal-dev \
     tree \
     libcairo2-dev \
-    libxt-dev
-    
-COPY renv.lock ./
+    libxt-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN Rscript -e 'install.packages("renv")'
-RUN Rscript -e 'renv::restore()'
+# Create cache directory
+RUN mkdir -p /renv_cache
+
+# Copy renv lockfile
+COPY renv.lock renv.lock
+
+# Install renv and restore packages
+RUN Rscript -e 'install.packages("renv", repos="https://cloud.r-project.org")'
+RUN Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE)'

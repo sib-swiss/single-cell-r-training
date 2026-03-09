@@ -2,7 +2,11 @@ name: Manual build and push
 
 on:
   workflow_dispatch:
-
+  push:
+    branches:
+    - deepak
+    - main
+    
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -24,6 +28,7 @@ jobs:
           images: |
             sibswiss/training-singlecell-rstudio
           tags: latest
+          ${{ github.ref_name }}
 
       - name: Log in to Docker Hub
         run: |
@@ -31,12 +36,20 @@ jobs:
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
         shell: bash
 
+      - name: Cache R packages
+        uses: actions/cache@v3
+        with:
+          path: /renv_cache
+          key: ${{ runner.os }}-renv-${{ hashFiles('Docker/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+            
       # Step 5: Build and push Docker image to GHCR
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./Docker
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
