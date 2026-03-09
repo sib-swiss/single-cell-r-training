@@ -27,8 +27,9 @@ jobs:
           # list of Docker images to use as base name for tags
           images: |
             sibswiss/training-singlecell-rstudio
-          tags: latest
-          ${{ github.ref_name }}
+          tags: |
+            latest
+            ${{ github.ref_name }}
 
       - name: Log in to Docker Hub
         run: |
