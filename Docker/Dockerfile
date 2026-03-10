@@ -37,5 +37,5 @@ COPY renv.lock renv.lock
 # Install renv and restore packages in a single RUN command
 # Ensures renv is in the system library and works on ARM
 # ----------------------------
-RUN Rscript -e 'install.packages("renv", repos="https://cloud.r-project.org", type="source")' \
-    && Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, clean=TRUE)'
+RUN Rscript -e 'install.packages("renv", repos="https://cloud.r-project.org")' \
+    && Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE)'
