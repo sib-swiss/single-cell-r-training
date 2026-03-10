@@ -15,9 +15,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      # Set up QEMU for multi-platform support
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # # Set up QEMU for multi-platform support
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
 
       # Step 2: Set up Docker Buildx (enables multi-platform builds)
       - name: Set up Docker Buildx
@@ -53,7 +53,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./Docker
-          platforms: linux/arm64,linux/amd64
+          platforms: linux/arm64
+          # platforms: linux/arm64,linux/amd64
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
