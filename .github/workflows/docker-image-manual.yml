@@ -9,9 +9,8 @@ on:
     
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-arm
     steps:
-
       # Step 1: Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v4
@@ -54,7 +53,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./Docker
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64,linux/amd64
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
