@@ -7,7 +7,6 @@ WORKDIR /project
 # ----------------------------
 ENV RENV_INSTALL_THREADS=8
 ENV RENV_PATHS_CACHE=/renv_cache
-ENV RENV_CONFIG_REPOS_OVERRIDE=https://packagemanager.posit.co/cran/latest
 
 # ----------------------------
 # Install system dependencies
