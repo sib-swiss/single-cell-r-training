@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y \
     tree \
     libharfbuzz-dev \
     libfribidi-dev \
+    libgit2 \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /renv_cache
 
@@ -40,5 +41,9 @@ COPY renv.lock renv.lock
 # ----------------------------
 # Install renv and restore packages
 # ----------------------------
-RUN Rscript -e 'install.packages("renv", repos="https://packagemanager.posit.co/cran/latest")' \
-    && Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE)'
+RUN echo 'options(repos = c(CRAN="https://packagemanager.posit.co/cran/latest"))' \
+    >> /usr/local/lib/R/etc/Rprofile.site
+    
+RUN Rscript -e 'install.packages("renv")' \
+ && Rscript -e 'options(repos = c(CRAN="https://packagemanager.posit.co/cran/latest"))' \
+ && Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE)'
