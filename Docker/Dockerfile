@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y \
     tree \
     libharfbuzz-dev \
     libfribidi-dev \
-    libgit2 \
+    libgit2-dev \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /renv_cache
 
