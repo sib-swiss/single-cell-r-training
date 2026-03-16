@@ -10,7 +10,7 @@ on:
     
 jobs:
   docker:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-24.04
     steps:
       # Step 1: Checkout the repository code
       - name: Checkout code
@@ -54,7 +54,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./Docker
-          platforms: linux/arm64
+          platforms: linux/amd64
           # platforms: linux/arm64,linux/amd64
           push: true
           tags: |
