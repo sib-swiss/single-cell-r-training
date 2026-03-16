@@ -8,10 +8,6 @@ project:
     - "!assets/"
     - "!advanced_exercise/"
 
-profiles:
-  - v2025.3
-  - latest
-
 website:
   title: "Single cell transcriptomics"
   favicon: assets/SIB_logo.svg
@@ -50,12 +46,16 @@ website:
           - href: "projects/project3.qmd"
           - href: "projects/project4.qmd"
 
-      # - text: "Versions"
-      #   menu:
-      #     - href: /v2025.3/
-      #       text: "v2025.3"
-      #     - href: /latest/
-      #       text: "Latest"
+      - text: "Versions"
+        menu:
+          - href: /_site/
+            text: "latest"
+          - href: /docs/v2025.11/
+            text: "v2025.11"
+          - href: /docs/v2025.7/
+            text: "v2025.7"
+          - href: /docs/v2025.3/
+            text: "v2025.3"
 
     right:
       - icon: github
