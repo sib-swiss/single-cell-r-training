@@ -184,3 +184,11 @@ plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
 ```{r}
 saveRDS(seu, "day2/seu_day2-3.rds")
 ```
+
+Clear your environment:
+
+```{r}
+#| eval: false
+gc()
+```
+

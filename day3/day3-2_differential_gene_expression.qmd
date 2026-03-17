@@ -450,3 +450,11 @@ saveRDS(tum_vs_norm, "day3/tum_vs_norm_day3-2.rds")
 saveRDS(limma_de, "day3/limma_de_day3-2.rds")
 saveRDS(proB, "day3/proB_day3-2.rds")
 ```
+
+Clear your environment:
+
+```{r}
+#| eval: false
+gc()
+```
+

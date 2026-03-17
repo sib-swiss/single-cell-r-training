@@ -181,13 +181,10 @@ tum_vs_norm_enrich@result[tum_vs_norm_enrich@result$p.adjust < 0.05, 1:7] |>
 
 ```
 
-### Clear environment
 
 Clear your environment:
 
 ```{r}
 #| eval: false
-rm(list = ls())
 gc()
-.rs.restartR()
 ```

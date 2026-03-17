@@ -194,3 +194,11 @@ What should worry us more is the **number of reads per cell** (363) and the **se
 For more info on sequencing saturation, have a look [here](https://kb.10xgenomics.com/s/article/115002474263-How-much-sequencing-saturation-should-I-aim-for). 
 :::
 
+
+Clear your environment:
+
+```{r}
+#| eval: false
+gc()
+```
+

@@ -371,3 +371,11 @@ dir.create("day1")
 
 saveRDS(seu, "day1/seu_day1-2.rds")
 ```
+
+Clear your environment:
+
+```{r}
+#| eval: false
+gc()
+```
+
