@@ -194,6 +194,8 @@ DefaultAssay(seu) <- "RNA"
 Now, save the dataset so you can use it tomorrow:
 
 ```{r}
+dir.create("day2")
+
 saveRDS(seu, "day2/seu_day2-1.rds")
 ```
 

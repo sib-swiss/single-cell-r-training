@@ -367,5 +367,7 @@ Quality control is a critical step in single-cell RNA sequencing analysis. Here 
 
 ```{r}
 #| echo: true
+dir.create("day1")
+
 saveRDS(seu, "day1/seu_day1-2.rds")
 ```

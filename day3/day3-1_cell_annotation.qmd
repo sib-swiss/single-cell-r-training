@@ -271,6 +271,8 @@ Here, you can see that cluster 0 and 8 contain cells annotated as T cells (CD4+ 
 Now, save the dataset so you can use it tomorrow:
 
 ```{r}
+dir.create("day3")
+
 saveRDS(seu, "day3/seu_day3-1.rds")
 ```
 

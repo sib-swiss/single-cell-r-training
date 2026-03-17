@@ -75,8 +75,14 @@ Have a look in the directory `course_data/reads` and `/data/cellranger_index`. I
 The input you need to run `cellranger count` are the sequence reads and a reference. Here, we have prepared a reference only with chromosome 21 and 22, but in 'real life' you would of course get the full reference genome of your species. The reference has a specific format. You can download precomputed human and mouse references from the [10X website](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest). If your species of interest is not one of those, you will have to generate it yourself. For that, have a look [here](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_mr).
 
 We will first download the cellranger
+
+::: {.callout-important}
+In case the download link is not working, please get a new one from [here](https://www.10xgenomics.com/support/software/cell-ranger/downloads/previous-versions)
+:::
+
+
 ```{r, eval=FALSE}
-download.file(url = "https://cf.10xgenomics.com/releases/cell-exp/cellranger-9.0.1.tar.gz?Expires=1773710745&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=nSp6aBMgDbGbbEbVO6BtF1S37~C-G~57WyJgMCdcUN9Xs-5M~3vpbjZutyAQMenM-3BFz4hCwC0plVhaurhQ2gSADOXY-vUGYGA8-sI6VmdYgZt6JRvyaPJdQhxX-OaJ9-FjF5c4sFqo7OL3aBNkAcKQ~qBTtu6p-~xjz5o9x3pioB7szi4csHseXyNPSQnI4ko70SiYsTWmE0PjEjkPp5fxbHbEmAZPQzyREMIqtpzox8uOu899-YK2EHM2PMxFABtN7f4YPBF8kWaZ5pSPwkZmBKUaVF9qH6M~TZoTyKu3EYlecSoKdG0usQ~mRKnaky-nt2qEVsnaL0vWvMtZaA__",
+download.file(url = "https://cf.10xgenomics.com/releases/cell-exp/cellranger-9.0.1.tar.gz?Expires=1773802367&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=YibknQvib9hYyNL55aAbvsZ8KL1wL74Xduv6uYOyeEArlK8UFSjj23GtyC1WJZ6AgIczTbMZBmxXrs5qlk5HrqkHgu9HIMAErg7EPDVPp49~7A-7SEDopQN2ddBfHBqRoBhmsdNwiOVP5SMq3j3bEKBVWOMoY5kmpX5RteI0nkH1M5-waRZkhU2YWbKCT8mNJGuvPEKXroYWce8b6n7KseWXhwyXXn7MU~IxljGNVuNNeE0MIeqKzV8QAdhW59myhLIBX3Uq9d8HSKTAvi4GBAf7r2GAA7Pa824Et9mTP~d-6sM0otX~XRFNyPsu8oLBePHtI36W6HIaIIY~CBvQnA_",
               destfile = "cellranger-9.0.1.tar.gz")
 
 untar("cellranger-9.0.1.tar.gz")
@@ -185,7 +191,6 @@ Not really. First of all there is a warning: `Fraction of RNA read bases with Q-
 
 What should worry us more is the **number of reads per cell** (363) and the **sequencing saturation** (7.9%). In most cases you should aim for 30.000 - 50.000 reads per cell (depending on the application). We therefore don't have enough reads per cell. However, as you might remember, this was a subset of reads (1 million) mapped against chromosome 21 & 22, while the original dataset contains 210,987,037 reads. You can check out the original report at `course_data/count_matrices/ETV6-RUNX1_1/outs/web_summary.html`.
     
-For more info on sequencing saturation, have a look [here](
-https://kb.10xgenomics.com/hc/en-us/articles/115002474263-How-much-sequencing-saturation-should-I-aim-for-). 
+For more info on sequencing saturation, have a look [here](https://kb.10xgenomics.com/s/article/115002474263-How-much-sequencing-saturation-should-I-aim-for). 
 :::
 
