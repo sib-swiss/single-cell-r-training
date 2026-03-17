@@ -183,3 +183,9 @@ The method can be changed with algorithm = 2,3 or 4
 saveRDS(seu, "day2/seu_day2-4.rds")
 ```
 
+```{r}
+getwd()
+list.files()
+list.files("day1")
+```
+
