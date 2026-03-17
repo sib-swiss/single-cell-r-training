@@ -111,7 +111,7 @@ Now that we have setup a project and a project directory (it is in `/home/rstudi
 
 To download and extract the dataset, copy-paste these commands in the console:
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 download.file(
   url = "https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/course_data.tar.gz",
   destfile = "course_data.tar.gz"
