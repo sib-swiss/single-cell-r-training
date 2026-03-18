@@ -3,14 +3,8 @@ name: Render and publish
 on:
     workflow_dispatch:
     push:
-      # only for .qmd file and .yml files
-      paths:
-        - '**.qmd'
-        - '**.yml'
-        - ' _freeze/**'
       branches:
         - main
-        - master
         - deepak
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -30,6 +24,12 @@ jobs:
       - name: Build site
         run: |
           quarto render
+      
+      - name: Cache Quarto
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/quarto
+          key: ${{ runner.os }}-quarto
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
