@@ -18,6 +18,10 @@ jobs:
     container:
       image: sibswiss/training-singlecell-rstudio:latest
 
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
