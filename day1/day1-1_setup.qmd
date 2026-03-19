@@ -106,11 +106,8 @@ Finally, type in the project name. This should be `single_cell_course`. Finish b
 
 Now that we have setup a project and a project directory (it is in `/home/rstudio/single_cell_course`), we can download the data that is required for this course.
 
-::: {.panel-tabset}
 
-## `R` console
-
-To download and extract the dataset, copy-paste these commands in the **Console** tab:
+### To download and extract the dataset, copy-paste these commands in the **Console** tab:
 
 ```{r, eval=TRUE}
 download.file(
@@ -121,14 +118,6 @@ untar("course_data.tar.gz")
 
 file.remove("course_data.tar.gz")
 ```
-
-
-## `R` Terminal
-To download and extract the dataset, copy-paste these commands in the **Terminal** tab:
-
-![](../assets/images/select_terminal_tab.png){width=300}
-:::
-
 
 ::: {.callout-note}
 ## If on Windows
