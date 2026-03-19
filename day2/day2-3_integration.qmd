@@ -159,7 +159,7 @@ Performing the scaling, PCA and UMAP:
 
 ```{r}
 #| output: false
-seu <- RunUMAP(seu, dims = 1:30, reduction = "integrated.cca")
+seu <- RunUMAP(seu, dims = 1:25, reduction = "integrated.cca")
 ```
 
 Plotting the UMAP:
