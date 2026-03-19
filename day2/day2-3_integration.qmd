@@ -172,7 +172,7 @@ Seurat::DimPlot(seu, reduction = "umap")
 
 **Also in 3D**
 ```{r}
-seu <- RunUMAP(seu, dims = 1:30, n.components = 3, , reduction = "integrated.cca", reduction.name = "umap_3D")
+seu <- RunUMAP(seu, dims = 1:25, n.components = 3, , reduction = "integrated.cca", reduction.name = "umap_3D")
 
 plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
 ```
