@@ -112,6 +112,9 @@ plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
 
 To perform the integration, we split our object by sample, resulting into a set of layers within the `RNA` assay. The layers are integrated and stored in the reduction slot - in our case we call it `integrated.cca`. Then, we re-join the layers
 
+::: {.panel-tabset}
+
+## RNA Assay
 
 ```{r}
 #| output: false
@@ -127,23 +130,41 @@ seu <- Seurat::IntegrateLayers(object = seu, method = CCAIntegration,
 seu[["RNA"]] <- JoinLayers(seu[["RNA"]])
 ```
 
-<!-- ```{r} -->
-<!-- #| output: false -->
-<!-- #| eval: false -->
-<!-- #| echo: false -->
-<!-- list <- SplitObject(seu, split.by = "orig.ident") -->
-<!-- features <- SelectIntegrationFeatures(object.list = list, nfeatures = 3000) -->
-<!-- list <- PrepSCTIntegration(object.list = list, anchor.features = features) -->
-<!-- anchors <- FindIntegrationAnchors(object.list = list, normalization.method = "SCT", -->
-<!--     anchor.features = features) -->
-<!-- seu <- IntegrateData(anchorset = anchors, normalization.method = "SCT") -->
+## SCT Assay
+```{r}
+# 1. Ensure default assay & have your HVGs / PCA ready
+DefaultAssay(seu) <- "SCT"
 
-<!-- seu <- RunPCA(seu, verbose = FALSE) -->
-<!-- seu <- RunUMAP(seu, reduction = "pca", dims = 1:30, verbose = FALSE) -->
-<!-- seu <- FindNeighbors(seu, reduction = "pca", dims = 1:30) -->
-<!-- seu <- FindClusters(seu, resolution = 0.3) -->
-<!-- ``` -->
+# If pcaSCT is missing or outdated:
+seu <- RunPCA(seu, reduction.name = "pcaSCT", verbose = FALSE)
 
+# 2. Create a new v5 assay from your current SCT (copies data/counts/scale.data)
+#    → SCT residuals go into 'data' layer; this becomes Assay5 class
+seu[["SCT_v5"]] <- as(object = seu[["SCT"]], Class = "Assay5")
+
+# Confirm class & layers
+class(seu[["SCT_v5"]])          # should be "Assay5"
+Layers(seu[["SCT_v5"]])         # expect "counts", "data", possibly "scale.data"
+
+# Optional: If you want split layers (recommended for integration):
+seu[["SCT_v5"]] <- split(seu[["SCT_v5"]], f = seu$orig.ident)
+Layers(seu[["SCT_v5"]])         # now per-batch layers (counts.PBMMC-1, data.PBMMC-1, etc.)
+
+# 3. Run CCAIntegration on the v5 assay
+seu <- IntegrateLayers(
+  object         = seu,
+  assay          = "SCT_v5",                 # ← use the new v5 assay here
+  method         = CCAIntegration,
+  orig.reduction = "pcaSCT",                 # your existing PCA (computed on SCT)
+  new.reduction  = "SCT.cca",
+  features       = VariableFeatures(seu),    # still good to restrict
+  verbose        = FALSE
+)
+
+DefaultAssay(seu) <- "RNA"
+```
+
+:::
 
 We can then use this new integrated matrix for clustering and visualization. Now, we can re-run and visualize the results with UMAP.
 
