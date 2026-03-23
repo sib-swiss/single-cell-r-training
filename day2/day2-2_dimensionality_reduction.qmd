@@ -7,11 +7,9 @@ editor_options:
 
 ## Material
 
-{{< downloadthis ../assets/pdf/DimensionalityReduction.pdf dname="Dimensionality_Reduction_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/07_DimensionalityReduction.pdf dname="07_DimensionalityReduction" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/QS6ZH_41b4s?si=fvaNGkqjsIcxTEFn >}}
-
-{{< downloadthis ../assets/pdf/scRNAseq_RM_Integration_dimreduction.pdf dname="scRNAseq_RM_Integration_dimreduction" label="Download the presentation from the video" icon="filetype-pdf" >}}
 
 - Making sense of [PCA](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues)
 - Understanding [t-SNE](https://distill.pub/2016/misread-tsne/)

@@ -7,11 +7,9 @@ editor_options:
 
 ## Material
 
-{{< downloadthis ../assets/pdf/Integration_SIB.pdf dname="Integration_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/08_Integration.pdf dname="08_Integration" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/2TsW5A53hTg?si=Bas__YskLl21-YjF >}}
-
-{{< downloadthis ../assets/pdf/scRNAseq_RM_Integration_dimreduction.pdf dname="scRNAseq_RM_Integration_dimreduction" label="Download the presentation from the video" icon="filetype-pdf" >}}
 
 ## Exercises
 

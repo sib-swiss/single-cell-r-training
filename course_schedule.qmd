@@ -10,25 +10,25 @@ title: "Course schedule"
 
 | block   	| start    	| end      	| subject                        	| lecturer |                       | presentation |
 |---------	|----------	|----------	|--------------------------------	|--------------------------------	 | ------------ |
-| introduction 	| 9:00 AM  	| 9:30 AM 	| [Introduction](day1/day1-1_setup.qmd) | Deepak Tanwar       | [pdf](assets/pdf/01_introduction.pdf) |
-| block 1 	| 9:30 AM  	| 10:30 AM 	| Introduction scRNAseq | Nikolai Püllen | [pdf](assets/pdf/SIB_NOV2025_SingleCell.pdf) |
+| introduction 	| 9:00 AM  	| 9:30 AM 	| Introduction | Deepak Tanwar       | [pdf](assets/pdf/01_introduction.pdf) |
+| block 1 	| 9:30 AM  	| 10:30 AM 	| Introduction scRNAseq | Nikolai Püllen | [pdf](assets/pdf/02_sc_workflow.pdf) |
 |         	| 10:30 AM 	| 11:00 AM 	| BREAK                          	| |
-| block 2 	| 11:00 AM 	| 12:00 PM 	| [Setup](day1/day1-1_setup.qmd) and [10X and Cellranger](day1/day1-1a_cellranger.qmd)  | Joana Carlevaro-Fita |  [pdf](assets/pdf/03_10x_genomics_single_cell.pdf) |
+| block 2 	| 11:00 AM 	| 12:00 PM 	| [Setup](day1/day1-1_setup.qmd) and [10X and Cellranger](day1/day1-2_cellranger.qmd)  | Joana Carlevaro-Fita |  [pdf](assets/pdf/03_10x_genomics_single_cell.pdf) |
 |         	| 12:00 PM 	| 1:00 PM  	| BREAK                          	| |
-| block 3 	| 1:00 PM  	| 2:30 PM  	| [Analysis tools and QC](day1/day1-2_analysis_tools_qc.qmd)| Joana Carlevaro-Fita |  [pdf](assets/pdf/04_analysis_tools_qc.pdf) |
-| block 4 	| 2:30 PM  	| 2:45 PM  	| Project pitch     | Joana Carlevaro-Fita & Deepak Tanwar |  [pdf](assets/pdf/introduction_project_work.pdf) |
+| block 3 	| 1:00 PM  	| 2:30 PM  	| [Analysis tools and QC](day1/day1-3_analysis_tools_qc.qmd)| Joana Carlevaro-Fita |  [pdf](assets/pdf/04_analysis_tools_qc.pdf) |
+| block 4 	| 2:30 PM  	| 2:45 PM  	| Project pitch     | Joana Carlevaro-Fita & Deepak Tanwar |  [pdf](assets/pdf/05_introduction_project_work.pdf) |
 |         	| 2:45 PM  	| 3:00 PM  	| BREAK                          	| |
-| block 5 	| 3:00 PM  	| 5:15 PM  	| Group work                |  |  [pdf](assets/pdf/introduction_project_work.pdf) |
+| block 5 	| 3:00 PM  	| 5:15 PM  	| [Group work](projects/introduction.qmd)                |  |  [project1](projects/project1.qmd), [project2](projects/project2.qmd), [project3](projects/project3.qmd), [project4](projects/project4.qmd) |
 
 ## Day 2
 
 | block   	| start    	| end      	| subject                             	| lecturer                        | presentation |
 |---------	|----------	|----------	|-------------------------------------	|--------------------------------	| ------------ |
-| block 1 	| 9:00 AM  	| 10:00 AM  	| [Normalization and scaling](day2/day2-1_normalization_scaling.qmd)  |  Deepak Tanwar |  [pdf](assets/pdf/03_normalization_scaling.pdf) |
+| block 1 	| 9:00 AM  	| 10:00 AM  	| [Normalization and scaling](day2/day2-1_normalization_scaling.qmd)  |  Deepak Tanwar |  [pdf](assets/pdf/06_normalization_scaling.pdf) |
 |         	| 10:00 AM 	| 10:30 AM 	| BREAK                               	| |  |
-| block 2 	| 10:30 AM 	| 12:00 PM 	| [Dimensionality reduction](day2/day2-2_dimensionality_reduction.qmd) and [Integration](day2/day2-3_integration.qmd)  | Deepak Tanwar |  [pdf](assets/pdf/DimensionalityReduction.pdf), [pdf](assets/pdf/Integration_SIB.pdf) |
+| block 2 	| 10:30 AM 	| 12:00 PM 	| [Dimensionality reduction](day2/day2-2_dimensionality_reduction.qmd) and [Integration](day2/day2-3_integration.qmd)  | Deepak Tanwar |  [pdf](assets/pdf/07_DimensionalityReduction.pdf), [pdf](assets/pdf/08_Integration.pdf) |
 |         	| 12:00 PM 	| 1:00 PM  	| BREAK                               	| |
-| block 3 	| 1:00 PM  	| 2:30 PM  	| [Clustering](day2/day2-4_clustering.qmd)     	|  Joana Carlevaro-Fita |  [pdf](assets/pdf/Clustering_SIB.pdf) |
+| block 3 	| 1:00 PM  	| 2:30 PM  	| [Clustering](day2/day2-4_clustering.qmd)     	|  Joana Carlevaro-Fita |  [pdf](assets/pdf/09_Clustering.pdf) |
 |         	| 2:30 PM  	| 2:45 PM  	| BREAK                               	| |
 | block 4 	| 2:45 PM  	| 5:15 PM  	| group work 	| |
 
@@ -36,12 +36,12 @@ title: "Course schedule"
 
 | block   	| start    	| end      	| subject                             	| lecturer                        | presentation |
 |---------	|----------	|----------	|-------------------------------------	|--------------------------------	| ------------ |
-| block 1 	| 9:00 AM  	| 10:30 AM 	| [Cell annotation](day3/day3-1_cell_annotation.qmd) 	| Joana Carlevaro-Fita | [pdf](assets/pdf/CellAnnotation_SIB.pdf) |
+| block 1 	| 9:00 AM  	| 10:30 AM 	| [Cell annotation](day3/day3-1_cell_annotation.qmd) 	| Joana Carlevaro-Fita | [pdf](assets/pdf/10_CellAnnotation.pdf) |
 |         	| 10:30 AM 	| 11:00 AM 	| BREAK                               	| |
-| block 2 	| 11:00 AM 	| 12:30 PM 	| [Differential gene expression](day3/day3-2_differential_gene_expression.qmd) and [Enrichment analysis](day3/day3-3_enrichment_analysis.qmd)            	| Deepak Tanwar | [pdf](assets/pdf/DEGs_and_Enrichment_SIB.pdf) |
+| block 2 	| 11:00 AM 	| 12:30 PM 	| [Differential gene expression](day3/day3-2_differential_gene_expression.qmd) and [Enrichment analysis](day3/day3-3_enrichment_analysis.qmd)            	| Deepak Tanwar | [pdf](assets/pdf/11_DEGs_and_Enrichment.pdf) |
 |         	| 12:30 PM 	| 1:30 PM  	| BREAK                               	| |
 | block 3 	| 1:30 PM  	| 3:00 PM  	| group work | |
 |         	| 3:00 PM  	| 3:15 PM  	| BREAK                         |       	|
 | block 4 	| 3:15 PM  	| 4:00 PM  	| group work presentation preparation | |
 | block 5 	| 4:00 PM  	| 5:00 PM  	| project presentation | |
-| post-course 	| 5:00 PM  	| 5:05 PM  	| [Post-course information](assets/pdf/11_post_course.pdf) 	| Deepak Tanwar |  [pdf](assets/pdf/11_post_course.pdf) |
+| post-course 	| 5:00 PM  	| 5:05 PM  	| Post-course information	| Deepak Tanwar |  [pdf](assets/pdf/12_post_course.pdf) |

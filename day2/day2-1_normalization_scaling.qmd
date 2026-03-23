@@ -18,11 +18,9 @@ editor_options:
 
 ## Material
 
-{{< downloadthis ../assets/pdf/03_normalization_scaling.pdf dname="Dimensionality_Reduction_SIB" label="Download the presentation" icon="filetype-pdf" >}}
+{{< downloadthis ../assets/pdf/06_normalization_scaling.pdf dname="06_normalization_scaling" label="Download the presentation" icon="filetype-pdf" >}}
 
 {{< video https://youtu.be/QS6ZH_41b4s?si=fvaNGkqjsIcxTEFn >}}
-
-{{< downloadthis ../assets/pdf/scRNAseq_RM_Integration_dimreduction.pdf dname="scRNAseq_RM_Integration_dimreduction" label="Download the presentation from the video" icon="filetype-pdf" >}}
 
 - [Seurat vignette](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html)
 
