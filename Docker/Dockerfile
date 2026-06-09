@@ -1,11 +1,11 @@
-FROM rocker/rstudio:4.5.2
+FROM rocker/rstudio:4.6
 
 WORKDIR /project
 
 # ----------------------------
 # renv settings
 # ----------------------------
-ENV RENV_INSTALL_THREADS=8
+ENV RENV_INSTALL_THREADS=16
 ENV RENV_PATHS_CACHE=/renv_cache
 
 # ----------------------------

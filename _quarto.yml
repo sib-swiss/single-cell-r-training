@@ -45,17 +45,17 @@ website:
           - href: "projects/project2.qmd"
           - href: "projects/project3.qmd"
           - href: "projects/project4.qmd"
-
-      - text: "Versions"
-        menu:
-          - href: /_site/
-            text: "latest"
-          - href: /docs/v2025.11/
-            text: "v2025.11"
-          - href: /docs/v2025.7/
-            text: "v2025.7"
-          - href: /docs/v2025.3/
-            text: "v2025.3"
+      # 
+      # - text: "Versions"
+      #   menu:
+      #     - href: /_site/
+      #       text: "latest"
+      #     - href: /docs/v2025.11/
+      #       text: "v2025.11"
+      #     - href: /docs/v2025.7/
+      #       text: "v2025.7"
+      #     - href: /docs/v2025.3/
+      #       text: "v2025.3"
 
     right:
       - icon: github

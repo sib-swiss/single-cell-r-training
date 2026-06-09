@@ -13,10 +13,10 @@ title: "Course schedule"
 | introduction 	| 9:00 AM  	| 9:30 AM 	| Introduction | Deepak Tanwar       | [pdf](assets/pdf/01_introduction.pdf) |
 | block 1 	| 9:30 AM  	| 10:30 AM 	| Introduction scRNAseq | Nikolai Püllen | [pdf](assets/pdf/02_sc_workflow.pdf) |
 |         	| 10:30 AM 	| 11:00 AM 	| BREAK                          	| |
-| block 2 	| 11:00 AM 	| 12:00 PM 	| [Setup](day1/day1-1_setup.qmd) and [10X and Cellranger](day1/day1-2_cellranger.qmd)  | Joana Carlevaro-Fita |  [pdf](assets/pdf/03_10x_genomics_single_cell.pdf) |
+| block 2 	| 11:00 AM 	| 12:00 PM 	| [Setup](day1/day1-1_setup.qmd) and [10X and Cellranger](day1/day1-2_cellranger.qmd)  | Deepak Tanwar |  [pdf](assets/pdf/03_10x_genomics_single_cell.pdf) |
 |         	| 12:00 PM 	| 1:00 PM  	| BREAK                          	| |
-| block 3 	| 1:00 PM  	| 2:30 PM  	| [Analysis tools and QC](day1/day1-3_analysis_tools_qc.qmd)| Joana Carlevaro-Fita |  [pdf](assets/pdf/04_analysis_tools_qc.pdf) |
-| block 4 	| 2:30 PM  	| 2:45 PM  	| Project pitch     | Joana Carlevaro-Fita & Deepak Tanwar |  [pdf](assets/pdf/05_introduction_project_work.pdf) |
+| block 3 	| 1:00 PM  	| 2:30 PM  	| [Analysis tools and QC](day1/day1-3_analysis_tools_qc.qmd)| Deepak Tanwar |  [pdf](assets/pdf/04_analysis_tools_qc.pdf) |
+| block 4 	| 2:30 PM  	| 2:45 PM  	| Project pitch     | Deepak Tanwar |  [pdf](assets/pdf/05_introduction_project_work.pdf) |
 |         	| 2:45 PM  	| 3:00 PM  	| BREAK                          	| |
 | block 5 	| 3:00 PM  	| 5:15 PM  	| [Group work](projects/introduction.qmd)                |  |  [project1](projects/project1.qmd), [project2](projects/project2.qmd), [project3](projects/project3.qmd), [project4](projects/project4.qmd) |
 
