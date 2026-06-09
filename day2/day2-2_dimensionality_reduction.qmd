@@ -25,7 +25,7 @@ editor_options:
 
 Load the `seu` dataset you have created yesterday:
 
-```{r}
+```{r day2-2-dimensionality-reduction-1}
 #| warning: false
 #| message: false
 seu <- readRDS("day2/seu_day2-1.rds")
@@ -33,7 +33,7 @@ seu <- readRDS("day2/seu_day2-1.rds")
 
 And load the following packages:
 
-```{r}
+```{r day2-2-dimensionality-reduction-2}
 #| warning: false
 #| message: false
 library(Seurat)
@@ -42,20 +42,20 @@ library(Seurat)
 Once the data is normalized, scaled and variable features have been identified, we can start to reduce the dimensionality of the data.
 For the PCA, by default, only the previously determined variable features are used as input, but can be defined using features argument if you wish to specify a vector of genes. The PCA will only be run on the variable features, that you can check with `VariableFeatures(seu)`.
 
-```{r}
+```{r day2-2-dimensionality-reduction-3}
 #| output: false
 seu <- Seurat::RunPCA(seu)
 ```
 
 To view the PCA plot:
 
-```{r}
+```{r day2-2-dimensionality-reduction-4}
 Seurat::DimPlot(seu, reduction = "pca")
 ```
 
 We can colour the PCA plot according to any factor that is present in `@meta.data`, or for any gene. For example we can take the column `percent.globin`:
 
-```{r}
+```{r day2-2-dimensionality-reduction-5}
 Seurat::FeaturePlot(seu, reduction = "pca", features = "percent.globin")
 ```
 
@@ -73,7 +73,7 @@ Generate a PCA plot where color is according to counts of a gene (i.e. gene expr
 ## Answer
 Generating a PCA plot coloured according to gene expression (here `HBA1`):
 
-```{r}
+```{r day2-2-dimensionality-reduction-6}
 Seurat::FeaturePlot(seu, reduction = "pca", features = "HBA1")
 ```
 :::
@@ -81,13 +81,13 @@ Seurat::FeaturePlot(seu, reduction = "pca", features = "HBA1")
 
 We can generate heatmaps according to their principal component scores calculated in the rotation matrix:
 
-```{r}
+```{r day2-2-dimensionality-reduction-7}
 Seurat::DimHeatmap(seu, dims = 1:12, cells = 500, balanced = TRUE)
 ```
 
 The elbowplot can help you in determining how many PCs to use for downstream analysis such as UMAP:
 
-```{r}
+```{r day2-2-dimensionality-reduction-8}
 Seurat::ElbowPlot(seu, ndims = 40) +
   ggplot2::geom_vline(xintercept = 25, linetype = "dashed", color = "red", linewidth = 1)
 ```
@@ -98,14 +98,14 @@ Including too many PCs usually does not affect much the result, while including 
 
 **UMAP:** The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space.
 
-```{r}
+```{r day2-2-dimensionality-reduction-9}
 #| output: false
 seu <- Seurat::RunUMAP(seu, dims = 1:25)
 ```
 
 To view the UMAP plot:
 
-```{r}
+```{r day2-2-dimensionality-reduction-10}
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 
@@ -130,7 +130,7 @@ Why does `dims = 1:100` not work? When would more precision be needed?
 
 Viewing data in 3D could reveal hidden clusters, trajectories, or sample-specific patterns that are not visible in 2D UMAPs — especially in complex single-cell datasets.
 
-```{r, warning=FALSE, message=FALSE}
+```{r day2-2-dimensionality-reduction-11, warning=FALSE, message=FALSE}
 library(plotly)
 seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, reduction.name = "umap_3D")
 
@@ -215,7 +215,7 @@ plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
 
 **Answer A** 
 
-```{r}
+```{r day2-2-dimensionality-reduction-12}
 Seurat::FeaturePlot(seu, features = c("HBA1",
                                       "percent.globin",
                                       "IGKC",
@@ -226,17 +226,17 @@ The erythrocytes are probably in the cluster with a higher percentage of globin 
 
 **Answer B**
 
-```{r}
+```{r day2-2-dimensionality-reduction-13}
 #| output: false
 seu <- Seurat::RunUMAP(seu, dims = 1:25, n.neighbors = 5)
 ```
 
-```{r}
+```{r day2-2-dimensionality-reduction-14}
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 
 ### Also in 3D
-```{r}
+```{r day2-2-dimensionality-reduction-15}
 seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, n.neighbors = 5, reduction.name = "umap_3D")
 
 plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
@@ -247,21 +247,21 @@ The default number of neighbours is 30. It can be of interest to change the numb
 
 **Answer C** 
 
-```{r}
+```{r day2-2-dimensionality-reduction-16}
 #| output: false
 seu <- Seurat::RunUMAP(seu, dims = 1:5)
 ```
 
-```{r}
+```{r day2-2-dimensionality-reduction-17}
 Seurat::DimPlot(seu, reduction = "umap")
 ``` 
 
-```{r}
+```{r day2-2-dimensionality-reduction-18}
 #| output: false
 seu <- Seurat::RunUMAP(seu, dims = 1:50) 
 ```
 
-```{r}
+```{r day2-2-dimensionality-reduction-19}
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 
@@ -272,7 +272,7 @@ Taking dims = 1:100 does not work as in the step `RunPCA` by default only 50pcs 
 ::: {callout-warning}
 After having done these exercises, change the UMAP back to a UMAP based on the first 25 PCs, in order to replicate the exercises in the following chapters. Do this by:
 
-```{r}
+```{r day2-2-dimensionality-reduction-20}
 #| output: false
 seu <- Seurat::RunUMAP(seu, dims = 1:25)
 seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, reduction.name = "umap_3D")
@@ -280,13 +280,13 @@ seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, reduction.name = "uma
 
 :::
 
-```{r}
+```{r day2-2-dimensionality-reduction-21}
 saveRDS(seu, "day2/seu_day2-2.rds")
 ```
 
 Clear your environment:
 
-```{r}
+```{r day2-2-dimensionality-reduction-22}
 #| eval: false
 gc()
 ```

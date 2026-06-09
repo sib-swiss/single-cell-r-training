@@ -7,6 +7,19 @@ engine: knitr
 
 {{< downloadthis ../assets/pdf/02_sc_workflow.pdf dname="02_sc_workflow" label="Download the presentation" icon="filetype-pdf" >}}
 
+```{r day1-1-setup-1}
+#| echo: false
+#| output: false
+#| warning: false
+#| message: false
+
+library(yaml)
+library(styler)
+library(namer)
+```
+
+
+
 ## Exercises
 
 ### Login and set up
@@ -28,7 +41,7 @@ Log in to Rstudio server with the provided link, username and password.
 
 Install the required packages using [renv](https://rstudio.github.io/renv/index.html)
 
-```{r}
+```{r day1-1-setup-2}
 #| eval: false
 install.packages("renv")
 
@@ -50,7 +63,7 @@ The command to run the environment required for this course looks like this (in 
 The home directory within the container is mounted to your current directory (`$PWD`), if you want to change this behaviour, modify the path after `-v` to the working directory on your computer before running it.
 :::
 
-```{bash}
+```{bash day1-1-setup-3}
 #| eval: false
 docker run \
 --rm \
@@ -109,7 +122,7 @@ Now that we have setup a project and a project directory (it is in `/home/rstudi
 
 ### To download and extract the dataset, copy-paste these commands in the **Console** tab:
 
-```{r, eval=TRUE}
+```{r day1-1-setup-4, eval=TRUE}
 download.file(
   url = "https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/course_data.tar.gz",
   destfile = "course_data.tar.gz"
@@ -182,7 +195,7 @@ We will use the reads to showcase the use of `cellranger count`. The directory c
 
 Clear your environment:
 
-```{r}
+```{r day1-1-setup-5}
 #| eval: false
 gc()
 ```

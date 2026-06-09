@@ -21,7 +21,7 @@ editor_options:
 
 Load the `seu` dataset you have created yesterday:
 
-```{r}
+```{r day3-2-differential-gene-expression-1}
 #| warning: false
 #| message: false
 seu <- readRDS("day3/seu_day3-1.rds")
@@ -29,7 +29,7 @@ seu <- readRDS("day3/seu_day3-1.rds")
 
 And load the following packages (install them if they are missing):
 
-```{r}
+```{r day3-2-differential-gene-expression-2}
 #| warning: false
 #| message: false
 library(Seurat)
@@ -43,7 +43,7 @@ The function `FindAllMarkers` performs a Wilcoxon test to determine the genes di
 
 Now run analysis:
 
-```{r}
+```{r day3-2-differential-gene-expression-3}
 #| output: false
 de_genes <- Seurat::FindAllMarkers(seu,  min.pct = 0.25,
                                    only.pos = TRUE)
@@ -51,7 +51,7 @@ de_genes <- Seurat::FindAllMarkers(seu,  min.pct = 0.25,
 
 Subset the table to only keep the significant genes, and you can save it as a csv file if you wish to explore it further. Then extract the top 3 markers per cluster:
 
-```{r}
+```{r day3-2-differential-gene-expression-4}
 de_genes <- subset(de_genes, de_genes$p_val_adj < 0.05)
 write.csv(de_genes,
           "day3/de_genes_FindAllMarkers.csv",
@@ -64,7 +64,7 @@ top_specific_markers <- de_genes %>%
 
 And generate e.g. a dotplot:
 
-```{r}
+```{r day3-2-differential-gene-expression-5}
 dittoSeq::dittoDotPlot(seu,
                        vars = unique(top_specific_markers$gene), 
                        group.by = "RNA_snn_res.0.3")
@@ -79,7 +79,7 @@ What are significant marker genes in cluster 0 and 8? Are the T cell genes in th
 ::: callout-hint
 You can re-load the vector with immune genes with:
 
-```{r}
+```{r day3-2-differential-gene-expression-6}
 tcell_genes <- c("IL7R", "LTB", "TRAC", "CD3D")
 ```
 :::
@@ -87,7 +87,7 @@ tcell_genes <- c("IL7R", "LTB", "TRAC", "CD3D")
 ::: {.callout-tip collapse="true"}
 ## Answer
 
-```{r}
+```{r day3-2-differential-gene-expression-7}
 de_genes[de_genes$gene %in% tcell_genes,] |> knitr::kable()
 ```
 
@@ -100,13 +100,13 @@ The `FindMarkers` function allows to test for differential gene expression analy
 
 First we can set the default cell identity to the cell types defined by `SingleR`:
 
-```{r}
+```{r day3-2-differential-gene-expression-8}
 seu <- Seurat::SetIdent(seu, value = "SingleR_annot")
 ```
 
 Run the differential gene expression analysis and subset the table to keep the significant genes:
 
-```{r}
+```{r day3-2-differential-gene-expression-9}
 #| output: false
 deg_cd8_cd4 <- Seurat::FindMarkers(seu,
                                    ident.1 = "CD8+ T cells",
@@ -127,12 +127,12 @@ Are CD8A, CD8B and CD4 in there? What does the sign (i.e. positive or negative) 
 
 You can check out the results with:
 
-```{r}
+```{r day3-2-differential-gene-expression-10}
 #| eval: false
 View(deg_cd8_cd4)
 ```
 
-```{r}
+```{r day3-2-differential-gene-expression-11}
 #| echo: false
 knitr::kable(deg_cd8_cd4)
 ```
@@ -143,7 +143,7 @@ For an explanation of the log fold change have a look at `?Seurat::FindMarkers`.
 
 To view CD8A, CD8B and CD4:
 
-```{r}
+```{r day3-2-differential-gene-expression-12}
 deg_cd8_cd4[c("CD4", "CD8A", "CD8B"),]
 ```
 
@@ -151,7 +151,7 @@ Indeed, because we compared ident.1 = "CD8+ T cells" to ident.2 = "CD4+ T cells"
 
 Plotting the genes in these two T-cell groups only:
 
-```{r}
+```{r day3-2-differential-gene-expression-13}
 Seurat::VlnPlot(seu, 
             features = c("CD4", "CD8A", "CD8B"),
             idents = c("CD8+ T cells", "CD4+ T cells"))
@@ -172,7 +172,7 @@ Please NOTE that in the original design of this data set, the healthy and malign
 
 We can load the object and explore its UMAP and meta.data like this:
 
-```{r}
+```{r day3-2-differential-gene-expression-14}
 proB <- readRDS("course_data/proB.rds")
 
 Seurat::DimPlot(proB, group.by = "orig.ident")
@@ -189,7 +189,7 @@ If you want to know how this pro-B cell subset is generated, have a look at the 
 
 Let's have a look at the UMAP (again), coloured by celltype:
 
-```{r}
+```{r day3-2-differential-gene-expression-15}
 Seurat::DimPlot(proB, group.by = "type")
 ```
 
@@ -203,7 +203,7 @@ Now we will run differential expression analysis between tumor and healthy cells
 
 Prepare the pseudobulk count matrix:
 
-```{r}
+```{r day3-2-differential-gene-expression-16}
 #| output: false
 #taking the proB data 
 Seurat::DefaultAssay(proB) <- "RNA"
@@ -231,7 +231,7 @@ bulk@meta.data <- meta_data[colnames(bulk), ]
 
 ```
 
-```{r}
+```{r day3-2-differential-gene-expression-17}
 ##have a look at the counts
 counts <- Seurat::GetAssayData(bulk, layer = "counts") |> as.matrix()
 
@@ -244,7 +244,7 @@ head(bulk@meta.data)
 
 Generate a `DGEList` object to use as input for `limma` and filter the genes to remove lowly expressed genes. How many are left?
 
-```{r}
+```{r day3-2-differential-gene-expression-18}
 #As in the standard limma analysis generate a DGE object
 
 y <- edgeR::DGEList(counts, samples = bulk@meta.data)
@@ -259,7 +259,7 @@ summary(keep)
 
 Generate a design matrix, including patient ID to model for a paired analysis. If you need help to generate a design matrix, check out the very nice [edgeR User Guide](https://bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf), sections 3.3 and 3.4. Extract the sample ID from the meta.data, then create the design matrix:
 
-```{r}
+```{r day3-2-differential-gene-expression-19}
 ## Create the design matrix and include the technology as a covariate:
 design <- model.matrix(~0 + y$samples$type + y$samples$patient.id)
 
@@ -273,7 +273,7 @@ rownames(design) <- rownames(y$samples)
 
 Specify which contrast to analyse:
 
-```{r}
+```{r day3-2-differential-gene-expression-20}
 contrast.mat <- limma::makeContrasts(ETV6.RUNX1 - PBMMC,
                                      levels = design)
 
@@ -281,7 +281,7 @@ contrast.mat <- limma::makeContrasts(ETV6.RUNX1 - PBMMC,
 
 Firt, we perform TMM normalization using edgeR, and then `limma` can perform the transformation with `voom`, fit the model, compute the contrasts and compute test statistics with `eBayes`:
 
-```{r}
+```{r day3-2-differential-gene-expression-21}
 dge <- edgeR::calcNormFactors(y)  
 
 #Do limma
@@ -293,7 +293,7 @@ fit.contrasts <- limma::eBayes(fit.contrasts)
 
 We can use `topTable` to get the most significantly differentially expressed genes, and save the full DE results to an object. How many genes are significant? Are you suprised by this number?
 
-```{r}
+```{r day3-2-differential-gene-expression-22}
 # Show the top differentially expressed genes:
 limma::topTable(fit.contrasts, number = 10, sort.by = "P")
 limma_de <- limma::topTable(fit.contrasts, number = Inf, sort.by = "P")
@@ -302,7 +302,7 @@ length(which(limma_de$adj.P.Val<0.05))
 
 And we can check whether this corresponds to the counts by generating a violin plot, or a gene downregulated in tumor, or a gene upregulated in tumor:
 
-```{r}
+```{r day3-2-differential-gene-expression-23}
 #| message: false
 Seurat::VlnPlot(proB, "S100A9", split.by = "type")
 Seurat::VlnPlot(proB, "SOCS2", split.by = "type")
@@ -311,7 +311,7 @@ Seurat::VlnPlot(proB, "SOCS2", split.by = "type")
 ## Some QC plots
 
 ### Histogram of p-values
-```{r}
+```{r day3-2-differential-gene-expression-24}
 library(ggplot2)
 
 ggplot(limma_de, aes(x = adj.P.Val)) +
@@ -331,7 +331,7 @@ A "healthy" histogram is L-shaped, with a high bar at 0 and then relatively flat
 
 
 ### MA plot
-```{r}
+```{r day3-2-differential-gene-expression-25}
 sig_threshold_adj_p <- 0.05
 sig_threshold_logFC <- 1
 limma_de_ma_plot <- limma_de %>%
@@ -365,7 +365,7 @@ A "healthy" MA plot is symmetrical around the logFC = 0 line, with most points t
 ## Differential analysis using `Seurat`
 We can run a similar analysis with `Seurat`, but this will not take into account the paired design. Run the code below.
 
-```{r}
+```{r day3-2-differential-gene-expression-26}
 tum_vs_norm <- Seurat::FindMarkers(proB, 
                                    ident.1 = "ETV6-RUNX1", 
                                    ident.2 = "PBMMC", 
@@ -382,7 +382,7 @@ How many genes are significant? How does the fold change of these genes compare 
 ::: {.callout-tip collapse="true"}
 ## Answer
 
-```{r}
+```{r day3-2-differential-gene-expression-27}
 dim(tum_vs_norm_s) 
 ```
 We find 3820 significant genes. 
@@ -397,7 +397,7 @@ Can you now try to make histogram of p-values from `Seurat` analysis?
 ::: {.callout-tip collapse="true"}
 ## Answer
 
-```{r}
+```{r day3-2-differential-gene-expression-28}
 library(ggplot2)
 
 ggplot(tum_vs_norm, aes(x = p_val_adj)) +
@@ -424,7 +424,7 @@ Many differential expression tests (including those implemented in Seurat, like 
 
 If we merge the `FindMarkers` and the `limma` results, keep `limma`'s most significant genes and plot:
 
-```{r}
+```{r day3-2-differential-gene-expression-29}
 merge_limma_FindMarkers <- merge(tum_vs_norm_s, limma_de, by="row.names",
                            all.x=T)
 
@@ -443,7 +443,7 @@ abline(a=0, b=1, col="red")
 Keep the `tum_vs_norm` and `limma_de` objects because we will use this output later for the enrichment analysis in the next section.
 :::
 
-```{r}
+```{r day3-2-differential-gene-expression-30}
 #| echo: false
 
 saveRDS(tum_vs_norm, "day3/tum_vs_norm_day3-2.rds")
@@ -453,7 +453,7 @@ saveRDS(proB, "day3/proB_day3-2.rds")
 
 Clear your environment:
 
-```{r}
+```{r day3-2-differential-gene-expression-31}
 #| eval: false
 gc()
 ```

@@ -13,7 +13,7 @@ editor_options:
 
 ## Exercises
 
-```{r}
+```{r day2-3-integration-1}
 #| warning: false
 #| message: false
 
@@ -23,13 +23,13 @@ seu <- readRDS("day2/seu_day2-2.rds")
 
 Let's have a look at the UMAP again. Although cells of different samples are shared amongst 'clusters', you can still see seperation within the clusters:
 
-```{r}
+```{r day2-3-integration-2}
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 
 Let's also make the function again for 3D UMAP
 
-```{r, warning=FALSE, message=FALSE}
+```{r day2-3-integration-3, warning=FALSE, message=FALSE}
 library(plotly)
 seu <- Seurat::RunUMAP(seu, dims = 1:25, n.components = 3, reduction.name = "umap_3D")
 
@@ -114,7 +114,7 @@ To perform the integration, we split our object by sample, resulting into a set 
 
 ## RNA Assay
 
-```{r}
+```{r day2-3-integration-4}
 #| output: false
 
 seu[["RNA"]] <- split(seu[["RNA"]], f = seu$orig.ident)
@@ -129,7 +129,7 @@ seu[["RNA"]] <- JoinLayers(seu[["RNA"]])
 ```
 
 ## SCT Assay
-```{r}
+```{r day2-3-integration-5}
 # 1. Ensure default assay & have your HVGs / PCA ready
 DefaultAssay(seu) <- "SCT"
 
@@ -176,21 +176,21 @@ Create the UMAP again on the `integrated.cca` reduction (using the function `Run
 
 Performing the scaling, PCA and UMAP:
 
-```{r}
+```{r day2-3-integration-6}
 #| output: false
 seu <- RunUMAP(seu, dims = 1:25, reduction = "integrated.cca")
 ```
 
 Plotting the UMAP:
 
-```{r}
+```{r day2-3-integration-7}
 Seurat::DimPlot(seu, reduction = "umap")
 ```
 ::: 
 
 
 **Also in 3D**
-```{r}
+```{r day2-3-integration-8}
 seu <- RunUMAP(seu, dims = 1:25, n.components = 3, , reduction = "integrated.cca", reduction.name = "umap_3D")
 
 plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
@@ -200,13 +200,13 @@ plot_3d_umap(seu = seu, reduction = "umap_3D", sample_col = "orig.ident")
 ### Save the dataset and clear environment
 
 
-```{r}
+```{r day2-3-integration-9}
 saveRDS(seu, "day2/seu_day2-3.rds")
 ```
 
 Clear your environment:
 
-```{r}
+```{r day2-3-integration-10}
 #| eval: false
 gc()
 ```

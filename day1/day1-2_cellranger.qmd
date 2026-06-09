@@ -41,7 +41,7 @@ The exercises below assume that you are enrolled in the course, and have access 
 ::: {.panel-tabset}
 
 ## R
-```{r, eval=FALSE}
+```{r day1-2-cellranger-1, eval=FALSE}
 download.file(
   url = "https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/cellranger_index.tar.gz",
   destfile = "cellranger_index.tar.gz"
@@ -79,7 +79,7 @@ In case the download link is not working, please get a new one from [here](https
 :::
 
 
-```{r, eval=FALSE}
+```{r day1-2-cellranger-2, eval=FALSE}
 download.file(url = "https://cf.10xgenomics.com/releases/cell-exp/cellranger-9.0.1.tar.gz?Expires=1773802367&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=YibknQvib9hYyNL55aAbvsZ8KL1wL74Xduv6uYOyeEArlK8UFSjj23GtyC1WJZ6AgIczTbMZBmxXrs5qlk5HrqkHgu9HIMAErg7EPDVPp49~7A-7SEDopQN2ddBfHBqRoBhmsdNwiOVP5SMq3j3bEKBVWOMoY5kmpX5RteI0nkH1M5-waRZkhU2YWbKCT8mNJGuvPEKXroYWce8b6n7KseWXhwyXXn7MU~IxljGNVuNNeE0MIeqKzV8QAdhW59myhLIBX3Uq9d8HSKTAvi4GBAf7r2GAA7Pa824Et9mTP~d-6sM0otX~XRFNyPsu8oLBePHtI36W6HIaIIY~CBvQnA_",
               destfile = "cellranger-9.0.1.tar.gz")
 
@@ -104,7 +104,7 @@ Fill out the missing arguments (at `FIXME`) in the script below, and run it:
 
 ### R console
 
-```{r, eval=FALSE}
+```{r day1-2-cellranger-3, eval=FALSE}
 system(command = "cellranger-9.0.1/cellranger count --id=FIXME --sample=FIXME  --transcriptome=FIXME --fastqs=FIXME --localcores=4  --create-bam=true")
 ```
 
@@ -142,7 +142,7 @@ You can run a bash script or command using the terminal tab in Rstudio server:
 
 ### R console
 
-```{r, eval=FALSE}
+```{r day1-2-cellranger-4, eval=FALSE}
 system(command = "cellranger-9.0.1/cellranger count --id=ETV6-RUNX1_1 --sample=ETV6-RUNX1_1  --transcriptome=cellranger_index --fastqs=course_data/reads --localcores=4  --create-bam=true")
 ```
 
@@ -195,7 +195,7 @@ For more info on sequencing saturation, have a look [here](https://kb.10xgenomic
 
 Clear your environment:
 
-```{r}
+```{r day1-2-cellranger-5}
 #| eval: false
 gc()
 ```
