@@ -14,6 +14,8 @@ ENV RENV_PATHS_CACHE=/renv_cache
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
+    curl \
+    libnode-dev \
     libnlopt-dev \
     libxt6 \
     libgl1 \
