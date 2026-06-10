@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     curl \
-    libnode-dev \
+    libv8-dev \
     libnlopt-dev \
     libxt6 \
     libgl1 \
@@ -35,6 +35,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /renv_cache
 
+# Set environment variable for V8 package to download static library if needed
+ENV DOWNLOAD_STATIC_LIBV8=1
+
 # ----------------------------
 # Copy renv lockfile
 # ----------------------------
@@ -45,8 +48,7 @@ COPY renv.lock renv.lock
 # ----------------------------
 RUN echo 'options(repos = c(CRAN="https://packagemanager.posit.co/cran/latest"))' \
     >> /usr/local/lib/R/etc/Rprofile.site
-    
-RUN Rscript -e 'install.packages("remotes")' \
- && Rscript -e 'remotes::install_version("renv", version = "1.2.3", repos = "https://packagemanager.posit.co/cran/latest")' \
- && Rscript -e 'options(repos = c(CRAN="https://packagemanager.posit.co/cran/latest"))' \
- && Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE)'
+
+RUN Rscript -e 'install.packages("renv")'
+
+RUN Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE)'
