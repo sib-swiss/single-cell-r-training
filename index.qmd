@@ -31,10 +31,11 @@ Are you looking for material of previous versions of the course? Find it at [sib
 
 ## Helper
 
-- Geert van Geest [ORCiD](https://orcid.org/0000-0002-1561-078X)
+- Wandrille Duchemin [ORCiD](https://orcid.org/0000-0001-8854-7235)
 
 ### Helpers of previous iterations
 
+- Geert van Geest [ORCiD](https://orcid.org/0000-0002-1561-078X)
 - Serena Zambarbieri
 - Cassandra Litchfield [ORCiD](https://orcid.org/0000-0001-9374-1681)
 

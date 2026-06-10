@@ -46,6 +46,7 @@ COPY renv.lock renv.lock
 RUN echo 'options(repos = c(CRAN="https://packagemanager.posit.co/cran/latest"))' \
     >> /usr/local/lib/R/etc/Rprofile.site
     
-RUN Rscript -e 'install.packages("renv")' \
+RUN Rscript -e 'install.packages("remotes")' \
+ && Rscript -e 'remotes::install_version("renv", version = "1.2.3", repos = "https://packagemanager.posit.co/cran/latest")' \
  && Rscript -e 'options(repos = c(CRAN="https://packagemanager.posit.co/cran/latest"))' \
  && Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE)'
