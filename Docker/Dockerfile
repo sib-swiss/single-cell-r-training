@@ -1,32 +1,18 @@
 FROM rocker/rstudio:4.6
 
-WORKDIR /project
+# Script for to set up multiple users
+# COPY batch_user_creation.sh /rocker_scripts/experimental/batch_user_creation.sh
+# CMD [ "sh", "-c", "/rocker_scripts/experimental/batch_user_creation.sh && /init" ]
 
-# ----------------------------
-# renv and system settings
-# ----------------------------
-ENV RENV_INSTALL_THREADS=16
-ENV RENV_PATHS_CACHE=/renv_cache
-ENV RENV_DOWNLOAD_FILE_METHOD=libcurl
-ENV RENV_CONFIG_PAK_ENABLED=FALSE
-
-# Ensure V8 can always find its library
-ENV DOWNLOAD_STATIC_LIBV8=1
-
-# ----------------------------
-# Install system dependencies
-# ----------------------------
-# Merged dependencies from project and user reference
+# Install system dependencies required for R packages
 RUN apt-get update && apt-get install -y \
     build-essential \
-    cmake \
     git \
     openssh-client \
     curl \
     ca-certificates \
     tar \
     gzip \
-    libv8-dev \
     libxt6 \
     libgl1 \
     libcurl4-openssl-dev \
@@ -49,31 +35,36 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libabsl-dev \
     libfftw3-dev \
-    libnlopt-dev \
-    libgit2-dev \
+    libhdf5-dev \
+    libnode-dev \
     tree \
+    cmake \
     gdal-bin \
     fonts-dejavu \
     fontconfig \
     default-jdk \
     r-cran-rjava \
     && R CMD javareconf \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir -p /renv_cache
+    && rm -rf /var/lib/apt/lists/*
 
-# ----------------------------
-# Copy renv lockfile
-# ----------------------------
-COPY renv.lock renv.lock
+COPY renv.lock ./
 
-# ----------------------------
-# Install renv and restore packages
-# ----------------------------
-RUN echo 'options(repos = c(CRAN="https://packagemanager.posit.co/cran/latest"))' \
-    >> /usr/local/lib/R/etc/Rprofile.site
+ENV RENV_INSTALL_THREADS=16
+ENV RENV_DOWNLOAD_FILE_METHOD=libcurl
+ENV RENV_CONFIG_PAK_ENABLED=FALSE
 
-# Install specific renv version
-RUN Rscript -e 'install.packages("remotes")' \
- && Rscript -e 'remotes::install_version("renv", version = "1.2.3")'
+RUN Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
+RUN Rscript -e 'remotes::install_version("renv", version = "1.2.3", repos="https://cloud.r-project.org")'
 
-RUN Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, exclude = "renv")'
+# install xgboost first (required by BayesSpace)
+RUN Rscript -e 'install.packages("xgboost", repos = c("https://dmlc.r-universe.dev", "https://cloud.r-project.org"))'
+
+# restore everything except renv, xgboost, and the two that collide in staging
+RUN Rscript -e 'renv::restore(exclude = c("renv", "xgboost", "BPCells", "monocle3"))'
+
+# install the stragglers explicitly (BPCells must build before monocle3)
+RUN Rscript -e 'renv::restore(packages = "BPCells")'
+RUN Rscript -e 'renv::restore(packages = "monocle3")'
+
+EXPOSE 8787
+CMD ["/init"]
