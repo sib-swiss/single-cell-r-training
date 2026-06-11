@@ -60,11 +60,12 @@ RUN Rscript -e 'remotes::install_version("renv", version = "1.2.3", repos="https
 RUN Rscript -e 'install.packages("xgboost", repos = c("https://dmlc.r-universe.dev", "https://cloud.r-project.org"))'
 
 # restore everything except renv, xgboost, and the two that collide in staging
-RUN Rscript -e 'renv::restore(exclude = c("renv", "xgboost", "BPCells", "monocle3"))'
+RUN Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, exclude = c("renv", "xgboost", "BPCells", "monocle3"))'
 
 # install the stragglers explicitly (BPCells must build before monocle3)
-RUN Rscript -e 'renv::restore(packages = "BPCells")'
-RUN Rscript -e 'renv::restore(packages = "monocle3")'
+RUN rm -rf /tmp/Rtmp*/renv-graph-staging-* 2>/dev/null; \
+    Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, packages = "BPCells")'
+RUN Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, packages = "monocle3")'
 
 EXPOSE 8787
 CMD ["/init"]
