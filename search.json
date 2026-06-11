@@ -60,7 +60,7 @@
     "href": "projects/introduction.html",
     "title": "Introduction",
     "section": "",
-    "text": "Project based learning is about learning by doing, but also about peer instruction. This means that you will be both a learner and a teacher. There will be differences in levels among participants, but because of that, some will learn efficiently from people that have just learned, and others will teach and increase their understanding.\nEach project has hints and guiding questions. However, if interesting questions pop up during the project, you are encouraged to work on those. Also, you don’t have to perform all the tasks and answer all the questions.\nYou will get to know each other, define how you like to collaborate and start on the project. On day 2 and 3 you can work on the project, and apply the skills and knowlege you have learned during these days. We will conclude the projects on day 3 with a 10-minute presentation of each group.\n\n\n\nEach group has access to a shared working directory, which is mounted at the root level as /group_work/groupX (replace X with your group number).\nIn RStudio Server, you can view the contents of your group’s directory in the Files pane (bottom left). Click on the three dots (...) to navigate to /group_work/groupX and access or manage your project files."
+    "text": "Download the presentation \n\n\nProject based learning is about learning by doing, but also about peer instruction. This means that you will be both a learner and a teacher. There will be differences in levels among participants, but because of that, some will learn efficiently from people that have just learned, and others will teach and increase their understanding.\nEach project has hints and guiding questions. However, if interesting questions pop up during the project, you are encouraged to work on those. Also, you don’t have to perform all the tasks and answer all the questions.\nYou will get to know each other, define how you like to collaborate and start on the project. On day 2 and 3 you can work on the project, and apply the skills and knowlege you have learned during these days. We will conclude the projects on day 3 with a 10-minute presentation of each group.\n\n\n\nEach group has access to a shared working directory, which is mounted at the root level as /group_work/groupX (replace X with your group number).\nIn RStudio Server, you can view the contents of your group’s directory in the Files pane (bottom left). Click on the three dots (...) to navigate to /group_work/groupX and access or manage your project files."
   },
   {
     "objectID": "projects/introduction.html#roles-organisation",
@@ -95,7 +95,7 @@
     "href": "index.html#helper",
     "title": "SIB course Single Cell Transcriptomics",
     "section": "Helper",
-    "text": "Helper\n\nGeert van Geest ORCiD\n\n\nHelpers of previous iterations\n\nSerena Zambarbieri\nCassandra Litchfield ORCiD"
+    "text": "Helper\n\nWandrille Duchemin ORCiD\n\n\nHelpers of previous iterations\n\nGeert van Geest ORCiD\nSerena Zambarbieri\nCassandra Litchfield ORCiD"
   },
   {
     "objectID": "index.html#attribution",
@@ -438,7 +438,7 @@
     "href": "precourse_preparations.html#software",
     "title": "Precourse preparations",
     "section": "Software",
-    "text": "Software\nAttendees should have a Wi-Fi enabled computer. An online R and RStudio environment will be provided. In order to access that environment your computer needs to be able to access http websites (not https). You can check this by browsing to http://www.httpforever.com. However, in case you wish to perform the practical exercises on your own computer, please take a moment to install the following before the course:\n\nR version &gt; 4.0.\nLatest RStudio version, the free version is perfectly fine.\nThe R packages necessary for the course. Find the script to install them here."
+    "text": "Software\nAttendees should have a Wi-Fi enabled computer. An online R and RStudio environment will be provided. In order to access that environment your computer needs to be able to access http websites (not https). You can check this by browsing to http://www.httpforever.com. However, in case you wish to perform the practical exercises on your own computer, please take a moment to install the following before the course:\n\nR version &gt; 4.6.\nLatest RStudio version, the free version is perfectly fine.\nThe R packages necessary for the course. Find the script to install them here."
   },
   {
     "objectID": "precourse_preparations.html#project-data-and-memory-considerations",
