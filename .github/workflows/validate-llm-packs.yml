@@ -1,0 +1,121 @@
+name: validate LLM packs
+
+on:
+  push:
+    paths:
+      - 'llm-packs/**'
+      - 'scripts/**'
+      - '.github/workflows/validate-llm-packs.yml'
+  pull_request:
+    paths:
+      - 'llm-packs/**'
+  schedule:
+    # Weekly. The point is to fail when the ecosystem moves, not when we do.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+
+  # Fast, no container: the pack's own rules must hold on plain R.
+  lint:
+    runs-on: ubuntu-latest
+    container: rocker/r-ver:4.6
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install test deps
+        run: Rscript -e 'install.packages(c("testthat","yaml"), repos="https://cloud.r-project.org")'
+
+      - name: Linter self-tests
+        run: Rscript llm-packs/scrnaseq-qc-filtering/validate/test-lint.R
+
+      - name: Rules file parses and every rule is enforceable
+        run: |
+          Rscript -e '
+            r <- yaml::read_yaml("llm-packs/scrnaseq-qc-filtering/rules/qc-filtering.rules.yml")$rules
+            bad <- Filter(function(x) is.null(x$lint) && is.null(x$post_condition) &&
+                                      !identical(x$enforced, "manual") &&
+                                      !("manual" %in% x$enforced), r)
+            if (length(bad)) {
+              cat("Rules with no enforcement mechanism and not marked manual:\n")
+              for (b in bad) cat(" -", b$id, "\n")
+              quit(status = 1)
+            }
+            cat(length(r), "rules, all enforceable or explicitly manual\n")'
+
+      - name: pack.yml parses and declares a maintainer
+        run: |
+          Rscript -e '
+            p <- yaml::read_yaml("llm-packs/scrnaseq-qc-filtering/pack.yml")
+            stopifnot(!is.null(p$validity$stale_after_days))
+            if (grepl("TODO", p$provenance$maintainer$name %||% "TODO")) {
+              cat("::warning::pack.yml has no named maintainer yet\n")
+            }'
+
+      # Advisory: the course scripts are not required to pass the pack rules,
+      # but we want to see when they drift. Remove continue-on-error once the
+      # known findings in scripts/ are resolved.
+      - name: Lint course scripts (advisory)
+        continue-on-error: true
+        run: |
+          Rscript llm-packs/scrnaseq-qc-filtering/validate/lint_code.R \
+            scripts/run_analysis.R scripts/project1.R scripts/project2.R
+
+  # Slow, needs Seurat: runtime post-conditions against synthetic fixtures.
+  validate:
+    runs-on: ubuntu-latest
+    needs: lint
+    container: sibswiss/training-singlecell-rstudio:2026.6
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build fixtures
+        run: Rscript llm-packs/scrnaseq-qc-filtering/validate/make_fixtures.R
+
+      - name: Run full validation
+        run: Rscript llm-packs/scrnaseq-qc-filtering/validate/run_all.R
+
+      # Only a green run may write this stamp - it is the pack's entire claim
+      # to being current.
+      - name: Stamp last_validated
+        if: success() && github.ref == 'refs/heads/main'
+        run: |
+          Rscript -e '
+            f <- "llm-packs/scrnaseq-qc-filtering/pack.yml"
+            l <- readLines(f)
+            i <- grep("^  last_validated:", l)
+            l[i] <- sprintf("  last_validated: %s", format(Sys.Date()))
+            j <- grep("^    R:", l)[1]
+            l[j] <- sprintf("    R: \"%s\"", getRversion())
+            k <- grep("^    Seurat:", l)[1]
+            l[k] <- sprintf("    Seurat: \"%s\"", packageVersion("Seurat"))
+            writeLines(l, f)'
+          if ! git diff --quiet; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -am "CI: stamp llm-pack validation date"
+            git push
+          fi
+
+  # Surface staleness as a visible failure rather than a silent decay.
+  staleness:
+    runs-on: ubuntu-latest
+    container: rocker/r-ver:4.6
+    steps:
+      - uses: actions/checkout@v4
+      - run: Rscript -e 'install.packages("yaml", repos="https://cloud.r-project.org")'
+      - name: Fail if the pack is past its stale_after_days
+        run: |
+          Rscript -e '
+            p <- yaml::read_yaml("llm-packs/scrnaseq-qc-filtering/pack.yml")
+            lv <- p$validity$last_validated
+            if (is.null(lv)) {
+              cat("::warning::pack has never been validated\n"); quit(status = 0)
+            }
+            age <- as.numeric(Sys.Date() - as.Date(as.character(lv)))
+            cat(sprintf("last validated %d days ago (limit %d)\n",
+                        age, p$validity$stale_after_days))
+            if (age > p$validity$stale_after_days) {
+              cat("::error::pack is stale - revalidate or unpublish it\n")
+              quit(status = 1)
+            }'

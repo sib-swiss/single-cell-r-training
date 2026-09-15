@@ -1,0 +1,161 @@
+# Machine-checkable assertions for scRNA-seq QC and filtering.
+#
+# Two consumers read this file:
+#   1. An LLM, as instructions (via SKILL.md).
+#   2. validate/lint_code.R and validate/checks.R, as tests.
+#
+# A rule without at least one of `lint` or `post_condition` is a rule that
+# cannot be enforced. Those are allowed but must be marked enforced: manual.
+#
+# severity:
+#   block  - do not produce the analysis; explain the problem to the user
+#   warn   - proceed, but state the caveat in the output
+#   inform - mention where relevant
+
+rules:
+
+  - id: R-001
+    severity: block
+    title: "Mitochondrial gene pattern must match the species"
+    when: "emitting PercentageFeatureSet with a mitochondrial pattern"
+    require: "species confirmed before the pattern is chosen"
+    correct:
+      human: '"^MT-"'
+      mouse: '"^mt-"'
+    rationale: >
+      Mouse mitochondrial genes are lowercase-prefixed (mt-Nd1, mt-Co1, mt-Atp6).
+      "^MT-" matches zero mouse genes. PercentageFeatureSet does not error on an
+      empty match - it returns 0 for every cell. The downstream filter
+      percent.mito < 8 then retains 100% of cells, and the analysis completes
+      carrying a percent.mito column that looks like QC was performed.
+    enforced: [lint, runtime]
+    lint: L-001
+    post_condition: "max(seu$percent.mito, na.rm = TRUE) > 0"
+
+  - id: R-002
+    severity: block
+    title: "Every feature-pattern match must be asserted non-empty"
+    when: "emitting any PercentageFeatureSet call"
+    require: "a guard proving the pattern matched at least one feature"
+    template: |
+      mito_genes <- grep("^MT-", rownames(seu), value = TRUE)
+      stopifnot("no mitochondrial genes matched - check species and gene ID type" =
+                  length(mito_genes) > 0)
+      seu <- Seurat::PercentageFeatureSet(seu, pattern = "^MT-",
+                                          col.name = "percent.mito")
+    rationale: >
+      Generalises R-001. The same silent-zero failure occurs when features are
+      Ensembl IDs rather than symbols, when a custom reference prefixes gene
+      names (GRCh38-MT-ND1), or when the default assay is ADT rather than RNA in
+      a CITE-seq object.
+    enforced: [lint]
+    lint: L-002
+
+  - id: R-003
+    severity: warn
+    title: "Haemoglobin pattern is approximate"
+    when: "computing a haemoglobin percentage"
+    note: >
+      The course uses "^HB[^(P)]". The character class excludes the literal
+      characters ( P and ), so it drops HBP1 (a transcription factor). It still
+      matches HBEGF, HBS1L, HBQ1 and HBD-adjacent loci that are not haemoglobin
+      subunits. Prefer an explicit list.
+    prefer: |
+      hb_genes <- c("HBA1","HBA2","HBB","HBD","HBE1","HBG1","HBG2","HBM","HBZ")
+      hb_genes <- intersect(hb_genes, rownames(seu))
+    forbid: >
+      Simplifying the regex to "^HB". That silently adds unrelated genes, and is
+      a plausible-looking "cleanup" an LLM will make unprompted.
+    enforced: [lint]
+    lint: L-004
+
+  - id: R-004
+    severity: warn
+    title: "Seurat 5 uses layer=, not slot=, and splits counts across layers"
+    when: "emitting Seurat assay accessors"
+    note: >
+      slot= is deprecated in Seurat 5. Separately, a v5 object built from several
+      samples keeps counts in per-sample layers (counts.PBMMC-1, counts.PBMMC-2,
+      ...) until JoinLayers() is called. Code assuming a single counts matrix
+      operates on one sample's cells while appearing to cover all of them.
+    correct: |
+      seu[["RNA"]] <- SeuratObject::JoinLayers(seu[["RNA"]])
+      cts <- SeuratObject::GetAssayData(seu, assay = "RNA", layer = "counts")
+      stopifnot(ncol(cts) == ncol(seu))
+    known_instance: >
+      scripts/run_analysis.R in this repo still uses slot = "counts" inside
+      most_expressed_boxplot(). day1-3_analysis_tools_qc.qmd has been updated to
+      layer =. The script and the chapter disagree.
+    enforced: [lint]
+    lint: L-003
+
+  - id: R-005
+    severity: warn
+    title: "Multi-sample objects need per-sample QC distributions"
+    when: "length(unique(seu$orig.ident)) > 1"
+    require: >
+      QC distributions plotted split by sample, and an explicit statement of
+      whether thresholds were set globally or per sample.
+    rationale: >
+      One global threshold across samples of differing capture quality removes
+      cells preferentially from the worst sample. The resulting composition
+      difference is technical and will later be read as biology.
+    enforced: [manual]
+
+  - id: R-010
+    severity: block
+    title: "No QC threshold may be presented as a default"
+    when: "emitting a numeric QC threshold"
+    forbid: "calling a value standard, default, recommended, or typical"
+    require:
+      - "show the distribution before choosing"
+      - "state that the value is a decision"
+      - "name where the value came from"
+    rationale: >
+      Optimal thresholds vary by tissue, protocol and dissociation method. The
+      values in this pack (nFeature_RNA 200-5000, percent.mito < 8) are the
+      values Caron et al. 2020 used for paediatric bone marrow mononuclear
+      cells. They are an example of a justified choice. In cardiac tissue a < 8%
+      mitochondrial cutoff deletes cardiomyocytes - the most abundant cell type -
+      and what remains looks clean.
+    enforced: [lint]
+    lint: L-005
+
+  - id: R-011
+    severity: warn
+    title: "Report the filtering effect"
+    when: "cells are removed"
+    require: "n before, n after, and percent removed, per sample"
+    post_condition: "fraction_removed < 0.40"
+    on_violation: >
+      Stop and ask the user whether the thresholds are right, rather than
+      proceeding with a heavily truncated dataset.
+    enforced: [runtime]
+
+  - id: R-012
+    severity: block
+    title: "Count-based filtering is not doublet detection"
+    when: "the request mentions doublets, multiplets, or cell hashing"
+    forbid: "presenting an nFeature_RNA upper bound as doublet removal"
+    require: >
+      State that count-based filtering is a crude proxy, and route to a doublet
+      caller run per sample, before merging and before integration.
+    route_to:
+      available_in_course_container: "DoubletFinder 2.0.6 (in renv.lock)"
+      preferred_if_added: "scDblFinder - NOT currently in renv.lock, see pack.yml"
+    rationale: >
+      A homotypic doublet (two B cells) has a normal feature count and is
+      invisible to this filter. A large, transcriptionally active singlet
+      exceeds it and is wrongly removed.
+    enforced: [manual]
+
+  - id: R-013
+    severity: block
+    title: "QC filtering belongs before integration"
+    when: "an object already carrying an integrated reduction is being filtered"
+    forbid: "running cell filtering after IntegrateLayers"
+    rationale: >
+      Removing cells after integration invalidates the learned correction. QC and
+      doublet removal run per sample, before normalisation.
+    enforced: [runtime]
+    post_condition: "!any(grepl('integrated|harmony|cca', names(seu@reductions)))"
