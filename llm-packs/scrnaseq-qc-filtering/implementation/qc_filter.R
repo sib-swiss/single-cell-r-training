@@ -165,5 +165,87 @@ filter_cells <- function(seu, min_features, max_features, max_mito,
   attr(seu_f, "qc_thresholds") <- list(min_features = min_features,
                                        max_features = max_features,
                                        max_mito = max_mito)
-  seu_f
+  stamp_provenance(seu_f)
+}
+
+# --- Attribution -------------------------------------------------------------
+#
+# The attribution problem for an LLM pack is that provenance is stripped at
+# every hop: pack -> model -> generated code -> the user's script -> the
+# methods section. By the time a paper is written, the researcher may not know
+# the pack existed - they asked an assistant a question and got an answer.
+#
+# So attribution has to ride with the ARTIFACT rather than the human's memory,
+# and has to be something the researcher actively wants. Hence: a machine
+# -readable stamp on the object, and a ready-to-paste methods sentence.
+
+PACK_CITATION <- list(
+  pack       = "sib/scrnaseq-qc-filtering",
+  version    = "0.1.0",
+  title      = "Course material: Single cell transcriptomics with R",
+  authors    = "Wyss T, Marcone R, van Geest G, Cascione L, Palagi P",
+  publisher  = "SIB Swiss Institute of Bioinformatics",
+  doi        = "10.5281/zenodo.5703106",
+  url        = "https://github.com/sib-swiss/single-cell-r-training",
+  license    = "CC-BY-4.0"
+)
+
+#' Record which pack, version and parameters produced this object
+#'
+#' Stored as an attribute and, where possible, in the Seurat object's own
+#' command log, so it survives saveRDS() and travels into whatever the
+#' researcher deposits alongside their paper.
+stamp_provenance <- function(seu) {
+  prov <- list(
+    pack        = PACK_CITATION$pack,
+    version     = PACK_CITATION$version,
+    doi         = PACK_CITATION$doi,
+    species     = attr(seu, "qc_species"),
+    thresholds  = attr(seu, "qc_thresholds"),
+    n_cells     = ncol(seu),
+    run_at      = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
+    R           = as.character(getRversion()),
+    Seurat      = as.character(utils::packageVersion("Seurat"))
+  )
+  existing <- attr(seu, "provenance")
+  attr(seu, "provenance") <- c(existing, list(prov))
+  seu
+}
+
+#' A methods sentence the researcher can paste into a manuscript
+#'
+#' Deliberately useful rather than merely dutiful. A pre-written, accurate,
+#' parameter-filled sentence is something people want to copy; an obligation
+#' to cite is something they forget.
+qc_methods_sentence <- function(seu) {
+  p <- utils::tail(attr(seu, "provenance"), 1)[[1]]
+  if (is.null(p)) stop("No provenance recorded on this object.")
+  t <- p$thresholds
+  sprintf(paste0(
+    "Quality control and cell filtering were performed in Seurat v%s ",
+    "following the %s workflow (%s; %s, %s, DOI: %s). ",
+    "Cells were retained with %d < nFeature_RNA < %d and mitochondrial ",
+    "transcript content < %g%% (%s mitochondrial gene set), leaving %d cells."),
+    p$Seurat, PACK_CITATION$pack, PACK_CITATION$title,
+    PACK_CITATION$authors, PACK_CITATION$publisher, p$doi,
+    t$min_features, t$max_features, t$max_mito,
+    p$species %||% "species-specific", p$n_cells)
+}
+
+# base R gained %||% in 4.4.0; define it only if absent
+if (!exists("%||%")) `%||%` <- function(a, b) if (is.null(a)) b else a
+
+#' Write a provenance sidecar next to the analysis outputs
+#'
+#' JSON so that it is greppable and machine-readable - this is what makes
+#' downstream detection of pack use possible at all (see llm-packs/README.md).
+write_provenance <- function(seu, path = "provenance.json") {
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    warning("jsonlite not available; provenance not written"); return(invisible(NULL))
+  }
+  jsonlite::write_json(list(provenance = attr(seu, "provenance"),
+                            citation = PACK_CITATION),
+                       path, auto_unbox = TRUE, pretty = TRUE)
+  message("Provenance written to ", path)
+  invisible(path)
 }
