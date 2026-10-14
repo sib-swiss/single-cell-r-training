@@ -122,12 +122,16 @@ without downloading the whole course repository:
    llm-packs/_dev, which is authoring material, not a pack), using
    `git clone --filter=blob:none --sparse` followed by
    `git sparse-checkout set llm-packs` and then excluding llm-packs/_dev.
-2. Copy each pack subfolder (everything directly under llm-packs/ except
-   _dev and README.md) into the location where you look for reusable
-   skills/tools/context packs in this project (create that location if it
-   doesn't exist yet) - one pack per subfolder there, not merged together.
+2. In the location where you look for reusable skills/tools/context packs
+   in this project (create that location if it doesn't exist yet):
+   - Copy each pack subfolder (every directory directly under llm-packs/
+     except _dev) in as its own subfolder there, not merged together.
+   - Also copy llm-packs/ENVIRONMENT.md as a plain file directly into that
+     SAME location (a sibling of the pack subfolders, not nested inside any
+     one of them) - each pack's SKILL.md links to it with a relative path
+     (../ENVIRONMENT.md) that only resolves correctly if it lands there.
 3. Remove the temporary clone.
-4. Confirm the packs are in place by listing that location.
+4. Confirm the packs and ENVIRONMENT.md are in place by listing that location.
 ```
 
 Your assistant will likely ask you to approve the commands it runs (clone,
@@ -141,10 +145,11 @@ hand, but you never had to type a `git` command yourself.
 If you genuinely only ever need a single pack (say, you're only doing QC on
 someone else's already-processed data), you can ask for just that one
 instead — substitute step 1's `git sparse-checkout set llm-packs` with
-`git sparse-checkout set llm-packs/<pack-name>`, and copy only that one
-folder in step 2. This fetches less, at the cost of having to repeat the
-whole fetch-and-copy process again the next time you need a different
-stage.
+`git sparse-checkout set llm-packs/<pack-name> llm-packs/ENVIRONMENT.md`,
+and copy both that one pack folder and `ENVIRONMENT.md` (as a sibling of
+it, same placement rule as above) in step 2. This fetches less, at the cost
+of having to repeat the whole fetch-and-copy process again the next time
+you need a different stage.
 :::
 
 ### 3. Describe your task in plain language
