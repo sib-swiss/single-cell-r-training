@@ -13,13 +13,18 @@ the human artifact; packs are generated alongside, not instead.
 | Pack | Source chapter | Status |
 |---|---|---|
 | [`scrnaseq-qc-filtering`](scrnaseq-qc-filtering) | `day1/day1-3_analysis_tools_qc.qmd` | pilot, unreleased |
+| [`scrnaseq-normalization-scaling`](scrnaseq-normalization-scaling) | `day2/day2-1_normalization_scaling.qmd` | pilot, unreleased |
+| [`scrnaseq-dimensionality-reduction`](scrnaseq-dimensionality-reduction) | `day2/day2-2_dimensionality_reduction.qmd` | pilot, unreleased |
 | [`scrnaseq-integration`](scrnaseq-integration) | `day2/day2-3_integration.qmd` | pilot, unreleased |
+| [`scrnaseq-clustering`](scrnaseq-clustering) | `day2/day2-4_clustering.qmd` | pilot, unreleased |
+| [`scrnaseq-cell-annotation`](scrnaseq-cell-annotation) | `day3/day3-1_cell_annotation.qmd` | pilot, unreleased |
 | [`scrnaseq-differential-expression`](scrnaseq-differential-expression) | `day3/day3-2_differential_gene_expression.qmd` | pilot, unreleased |
+| [`scrnaseq-enrichment-analysis`](scrnaseq-enrichment-analysis) | `day3/day3-3_enrichment_analysis.qmd` | pilot, unreleased |
 
-Candidates for the next round, by course order: normalization/scaling
-(`day2-1`), dimensionality reduction (`day2-2`), clustering (`day2-4`), cell
-annotation (`day3-1`), enrichment analysis (`day3-3`), and trajectory/advanced
-analysis (`advanced_exercise/`).
+Every course analysis chapter now has a pack except trajectory/advanced
+analysis (`advanced_exercise/`), deliberately left out for now - it's
+taught as a bonus overview (`eval: false`) plus one hands-on vignette,
+lower pitfall density than the rest.
 
 Course lecture recordings are mined for guidance not written in the slides or
 exercises (see `pack.yml:provenance.derived_from` for each pack). Raw

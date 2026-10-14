@@ -65,3 +65,44 @@ references:
       automated citation tooling can resolve a reference to the pack.
     url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-differential-expression"
     license: CC-BY-4.0
+  - type: software
+    title: "scrnaseq-normalization-scaling LLM pack"
+    notes: >
+      Machine-readable normalization and scaling pack derived from this
+      course. Cite the course above; this entry records the component so
+      that automated citation tooling can resolve a reference to the pack.
+    url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-normalization-scaling"
+    license: CC-BY-4.0
+  - type: software
+    title: "scrnaseq-dimensionality-reduction LLM pack"
+    notes: >
+      Machine-readable dimensionality reduction (PCA/t-SNE/UMAP) pack
+      derived from this course. Cite the course above; this entry records
+      the component so that automated citation tooling can resolve a
+      reference to the pack.
+    url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-dimensionality-reduction"
+    license: CC-BY-4.0
+  - type: software
+    title: "scrnaseq-clustering LLM pack"
+    notes: >
+      Machine-readable graph-based clustering pack derived from this course.
+      Cite the course above; this entry records the component so that
+      automated citation tooling can resolve a reference to the pack.
+    url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-clustering"
+    license: CC-BY-4.0
+  - type: software
+    title: "scrnaseq-cell-annotation LLM pack"
+    notes: >
+      Machine-readable cell type annotation pack derived from this course.
+      Cite the course above; this entry records the component so that
+      automated citation tooling can resolve a reference to the pack.
+    url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-cell-annotation"
+    license: CC-BY-4.0
+  - type: software
+    title: "scrnaseq-enrichment-analysis LLM pack"
+    notes: >
+      Machine-readable gene set enrichment analysis pack derived from this
+      course. Cite the course above; this entry records the component so
+      that automated citation tooling can resolve a reference to the pack.
+    url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-enrichment-analysis"
+    license: CC-BY-4.0
