@@ -29,6 +29,10 @@ old, say so before giving advice from this pack.
 
 ## Procedure
 
+> **Missing a package?** See [`../ENVIRONMENT.md`](../ENVIRONMENT.md) before
+> installing anything ad hoc - don't resolve missing dependencies one at a
+> time as you discover them.
+
 ```r
 seu <- Seurat::RunPCA(seu, verbose = FALSE)           # uses VariableFeatures by default
 Seurat::ElbowPlot(seu, ndims = 40)                    # inspect before choosing dims

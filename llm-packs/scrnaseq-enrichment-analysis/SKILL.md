@@ -30,6 +30,10 @@ days old, say so before giving advice from this pack.
 
 ## Procedure
 
+> **Missing a package?** See [`../ENVIRONMENT.md`](../ENVIRONMENT.md) before
+> installing anything ad hoc - don't resolve missing dependencies one at a
+> time as you discover them.
+
 ```r
 tum_down_genes <- rownames(subset(limma_de, logFC < -1 & adj.P.Val < 0.05))
 

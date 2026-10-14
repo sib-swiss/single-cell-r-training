@@ -29,6 +29,10 @@ days old, say so before giving advice from this pack.
 
 ## Procedure
 
+> **Missing a package?** See [`../ENVIRONMENT.md`](../ENVIRONMENT.md) before
+> installing anything ad hoc - don't resolve missing dependencies one at a
+> time as you discover them.
+
 ```r
 seu <- Seurat::FindNeighbors(seu, dims = 1:25, reduction = "integrated.cca")  # name the reduction explicitly
 seu <- Seurat::FindClusters(seu, resolution = seq(0.1, 0.8, by = 0.1))        # sweep, don't guess one value

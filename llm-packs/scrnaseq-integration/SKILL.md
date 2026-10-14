@@ -40,6 +40,10 @@ Do not proceed on a default. Ask the user if any is unknown.
 
 ## Procedure
 
+> **Missing a package?** See [`../ENVIRONMENT.md`](../ENVIRONMENT.md) before
+> installing anything ad hoc - don't resolve missing dependencies one at a
+> time as you discover them.
+
 Use the tested reference implementation rather than writing this from scratch:
 
 ```r

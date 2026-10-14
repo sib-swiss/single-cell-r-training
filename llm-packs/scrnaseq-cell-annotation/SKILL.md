@@ -30,6 +30,10 @@ days old, say so before giving advice from this pack.
 
 ## Procedure
 
+> **Missing a package?** See [`../ENVIRONMENT.md`](../ENVIRONMENT.md) before
+> installing anything ad hoc - don't resolve missing dependencies one at a
+> time as you discover them.
+
 ```r
 ref <- celldex::NovershternHematopoieticData()     # or another suitable reference
 seu_SingleR <- SingleR::SingleR(test = Seurat::GetAssayData(seu),  # default layer="data", not slot=
