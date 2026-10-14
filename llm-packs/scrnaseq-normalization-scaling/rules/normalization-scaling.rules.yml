@@ -1,0 +1,64 @@
+# Machine-checkable assertions for scRNA-seq normalization and scaling.
+#
+# severity: block | warn | inform
+
+rules:
+
+  - id: R-NORM-001
+    severity: warn
+    title: "ScaleData() with no features= only scales variable features"
+    when: "ScaleData() is called with no features= argument, and a later step needs scaled values for a gene outside VariableFeatures(seu)"
+    forbid: "assuming scale.data covers every gene after a bare ScaleData(seu) call"
+    require: >
+      If scaled values are needed for specific genes outside the variable
+      set (e.g. for DoHeatmap on a marker panel), pass them explicitly:
+      ScaleData(seu, features = union(VariableFeatures(seu), my_genes)).
+    rationale: >
+      Seurat's ScaleData() defaults to scaling only VariableFeatures(seu),
+      not every gene in the assay. The course's own exercise calls
+      ScaleData(seu) with no features= argument - correct for the PCA step
+      that follows, since PCA only uses variable features anyway, but easy
+      to misread as "scale everything."
+    enforced: [lint]
+    lint: L-NORM-001
+
+  - id: R-NORM-002
+    severity: warn
+    title: "Variable feature count is a convention, not a standard"
+    when: "nfeatures is set in FindVariableFeatures()"
+    forbid: "describing nfeatures = 2000 (or any value) as the standard/default/recommended count"
+    require: "state that it is a convention, adjustable per dataset complexity"
+    enforced: [manual]
+
+  - id: R-NORM-003
+    severity: warn
+    title: "scale.factor is a convention, not a standard"
+    when: "scale.factor is set in NormalizeData()"
+    forbid: "describing scale.factor = 10000 as a universal standard"
+    require: "state that it only needs to be large relative to typical per-cell library size"
+    enforced: [manual]
+
+  - id: R-NORM-004
+    severity: warn
+    title: "SCTransform changes DefaultAssay to SCT"
+    when: "SCTransform() is called"
+    require: >
+      State that DefaultAssay(seu) is now "SCT", and reset it explicitly
+      (DefaultAssay(seu) <- "RNA") before any step that expects the RNA
+      assay (e.g. this course's QC or DE packs).
+    rationale: >
+      Mixing RNA-assay and SCT-assay steps without noticing the active
+      assay changed is a common source of "it ran, but used the wrong data"
+      errors - same hazard family as the Integration pack's R-INT-005.
+    enforced: [lint]
+    lint: L-NORM-002
+
+  - id: R-NORM-005
+    severity: block
+    title: "Normalize only a QC-filtered object"
+    when: "NormalizeData()/SCTransform() is called"
+    require: "the object has already been through QC filtering (scrnaseq-qc-filtering)"
+    rationale: >
+      Low-quality cells influence both the per-cell scale factor and which
+      genes look "variable", before they are ever removed.
+    enforced: [manual]
