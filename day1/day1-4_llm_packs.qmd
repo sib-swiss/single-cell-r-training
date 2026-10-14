@@ -53,11 +53,17 @@ directory of the course repository. Each pack bundles:
 | Pack | Covers | Source chapter |
 |---|---|---|
 | [`scrnaseq-qc-filtering`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-qc-filtering) | Loading 10x data, QC metrics, cell filtering | [Analysis tools and QC](day1-3_analysis_tools_qc.qmd) |
+| [`scrnaseq-normalization-scaling`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-normalization-scaling) | Normalization, variable features, scaling | [Normalization and scaling](../day2/day2-1_normalization_scaling.qmd) |
+| [`scrnaseq-dimensionality-reduction`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-dimensionality-reduction) | PCA, t-SNE, UMAP | [Dimensionality reduction](../day2/day2-2_dimensionality_reduction.qmd) |
 | [`scrnaseq-integration`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-integration) | Multi-sample integration (Seurat 5, CCA) | [Integration](../day2/day2-3_integration.qmd) |
+| [`scrnaseq-clustering`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-clustering) | Graph-based clustering, resolution selection | [Clustering](../day2/day2-4_clustering.qmd) |
+| [`scrnaseq-cell-annotation`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-cell-annotation) | Manual and automated (SingleR) cell type annotation | [Cell annotation](../day3/day3-1_cell_annotation.qmd) |
 | [`scrnaseq-differential-expression`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-differential-expression) | Cluster markers and cross-condition DE | [Differential gene expression](../day3/day3-2_differential_gene_expression.qmd) |
+| [`scrnaseq-enrichment-analysis`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-enrichment-analysis) | ORA and GSEA (clusterProfiler) | [Enrichment analysis](../day3/day3-3_enrichment_analysis.qmd) |
 
-More packs are planned, covering the remaining chapters of the course. Check
-the [`llm-packs/README.md`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs)
+Every analysis chapter has a pack except trajectory/advanced analysis,
+left out as lower-priority bonus material. Check the
+[`llm-packs/README.md`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs)
 for the current status of each.
 
 ::: {.callout-warning}
@@ -93,34 +99,53 @@ skills/tools/context packs, and where it expects to find them in a project —
 look for terms like "skills", "custom tools", "project rules" or "context
 packs". You'll need that answer for the next step.
 
-### 2. Ask your assistant to fetch the pack
+### 2. Ask your assistant to fetch the packs
 
 The packs live in this course's GitHub repository, but you don't need to
 clone the whole course material yourself, or even know any `git` commands.
-In the project directory where **your own data** lives, start your assistant
-and paste in a prompt like this one (substitute the pack name for the one you
-want):
+A real analysis usually moves through most of the pipeline — QC, then
+normalization, then dimensionality reduction, and so on — so the packs are
+designed to be fetched **all at once**: each one stays independently
+triggered by its own description, so having all of them in place just means
+your assistant automatically reaches for whichever one matches the step
+you're on, with nothing extra to re-fetch as you move to the next step.
+
+In the project directory where **your own data** lives, start your
+assistant and paste in this prompt:
 
 ```
-Set up the "scrnaseq-qc-filtering" LLM pack from the SIB single-cell
-transcriptomics course (https://github.com/sib-swiss/single-cell-r-training)
-in this project, without downloading the whole course repository:
+Set up all of the LLM packs from the SIB single-cell transcriptomics course
+(https://github.com/sib-swiss/single-cell-r-training) in this project,
+without downloading the whole course repository:
 
-1. In a temporary directory, sparse-clone only the llm-packs/scrnaseq-qc-filtering
-   folder, using `git clone --filter=blob:none --sparse` followed by
-   `git sparse-checkout set llm-packs/scrnaseq-qc-filtering`.
-2. Copy that folder into the location where you look for reusable
+1. In a temporary directory, sparse-clone only the llm-packs folder (not
+   llm-packs/_dev, which is authoring material, not a pack), using
+   `git clone --filter=blob:none --sparse` followed by
+   `git sparse-checkout set llm-packs` and then excluding llm-packs/_dev.
+2. Copy each pack subfolder (everything directly under llm-packs/ except
+   _dev and README.md) into the location where you look for reusable
    skills/tools/context packs in this project (create that location if it
-   doesn't exist yet).
+   doesn't exist yet) - one pack per subfolder there, not merged together.
 3. Remove the temporary clone.
-4. Confirm the pack is in place by listing its new location.
+4. Confirm the packs are in place by listing that location.
 ```
 
 Your assistant will likely ask you to approve the commands it runs (clone,
 copy, delete) along the way — that's expected, and worth reading before you
-approve them. The end result is the same as copying the folder by hand, but
-only the one pack's files are ever downloaded, and you never had to type a
-`git` command yourself.
+approve them. The end result is the same as copying every pack folder by
+hand, but you never had to type a `git` command yourself.
+
+::: {.callout-note}
+## Only need one stage?
+
+If you genuinely only ever need a single pack (say, you're only doing QC on
+someone else's already-processed data), you can ask for just that one
+instead — substitute step 1's `git sparse-checkout set llm-packs` with
+`git sparse-checkout set llm-packs/<pack-name>`, and copy only that one
+folder in step 2. This fetches less, at the cost of having to repeat the
+whole fetch-and-copy process again the next time you need a different
+stage.
+:::
 
 ### 3. Describe your task in plain language
 
@@ -142,8 +167,9 @@ assistant writes:
 
 - Read `reference/pitfalls.md` yourself. It describes, in the pack's own
   words, exactly what can go wrong.
-- Run the pack's linter on the code you were given (adjust the path to
-  wherever the pack ended up in step 2):
+- Run the relevant pack's linter on the code you were given — and remember
+  rule 1: that code has to exist as a file first (adjust the path to
+  wherever the packs ended up in step 2):
 
   ```{bash day1-4-llm-packs-1}
   #| eval: false
@@ -167,11 +193,11 @@ losing track of where your methodology actually came from.
 ## Exercise
 
 You already created a QC-filtered `seu` object earlier today, in [Analysis
-tools and QC](day1-3_analysis_tools_qc.qmd). Set up the
-`scrnaseq-qc-filtering` pack as described above, and ask your assistant to
-redo the QC and filtering step **from the raw count matrices**, without
-telling it the thresholds you used manually. Compare what it asks you, and
-what it produces, to what you did by hand.
+tools and QC](day1-3_analysis_tools_qc.qmd). With the packs set up as
+described above, ask your assistant to redo the QC and filtering step
+**from the raw count matrices**, without telling it the thresholds you used
+manually — it should reach for `scrnaseq-qc-filtering` on its own. Compare
+what it asks you, and what it produces, to what you did by hand.
 :::
 
 ::: {.callout-tip collapse="true"}
