@@ -227,13 +227,20 @@ PACK_CITATION <- list(
 #' Stored as an attribute and, where possible, in the Seurat object's own
 #' command log, so it survives saveRDS() and travels into whatever the
 #' researcher deposits alongside their paper.
-stamp_provenance <- function(seu) {
+#' @param species    Species used for the QC patterns. Optional - falls back
+#'                   to attr(seu, "qc_species") if add_qc_metrics() set it.
+#'                   Pass it explicitly when calling this after writing the
+#'                   PercentageFeatureSet()/subset() steps inline rather than
+#'                   through add_qc_metrics()/filter_cells().
+#' @param thresholds Named list(min_features=, max_features=, max_mito=).
+#'                   Same fallback as species.
+stamp_provenance <- function(seu, species = NULL, thresholds = NULL) {
   prov <- list(
     pack        = PACK_CITATION$pack,
     version     = PACK_CITATION$version,
     doi         = PACK_CITATION$doi,
-    species     = attr(seu, "qc_species"),
-    thresholds  = attr(seu, "qc_thresholds"),
+    species     = species %||% attr(seu, "qc_species"),
+    thresholds  = thresholds %||% attr(seu, "qc_thresholds"),
     n_cells     = ncol(seu),
     run_at      = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
     R           = as.character(getRversion()),

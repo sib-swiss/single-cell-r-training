@@ -79,15 +79,27 @@ integrate_samples <- function(seu, assay, batch_var = "orig.ident",
     new_reduction <- if (assay == "SCT") "SCT.cca" else "integrated.cca"
   }
 
-  seu[[assay]] <- split(seu[[assay]], f = batches)
+  # The course's own exercise converts "SCT" to a plain Assay5 under its own
+  # name before splitting it - splitting the legacy SCTAssay class directly
+  # produces a "subscript out of bounds" error from a scale.data layer-naming
+  # mismatch. The RNA assay is already a plain Assay5 in Seurat 5 and needs no
+  # such conversion.
+  integrate_assay <- assay
+  if (assay == "SCT") {
+    seu[["SCT_v5"]] <- as(object = seu[["SCT"]], Class = "Assay5")
+    integrate_assay <- "SCT_v5"
+  }
+
+  seu[[integrate_assay]] <- split(seu[[integrate_assay]], f = batches)
 
   seu <- Seurat::IntegrateLayers(
-    object = seu, assay = assay, method = method,
+    object = seu, assay = integrate_assay, method = method,
     orig.reduction = orig_reduction, new.reduction = new_reduction,
+    features = if (assay == "SCT") Seurat::VariableFeatures(seu, assay = "SCT") else NULL,
     verbose = FALSE)
 
   # R-INT-004: re-join before anything downstream reads a single matrix.
-  seu[[assay]] <- SeuratObject::JoinLayers(seu[[assay]])
+  seu[[integrate_assay]] <- SeuratObject::JoinLayers(seu[[integrate_assay]])
 
   attr(seu, "integration_method") <- "CCA"
   attr(seu, "integration_assay")  <- assay
@@ -151,15 +163,19 @@ PACK_CITATION <- list(
   license    = "CC-BY-4.0"
 )
 
-stamp_provenance <- function(seu) {
+#' Explicit arguments let this be called directly after an inline
+#' split()/IntegrateLayers()/JoinLayers() sequence, using the same
+#' assay/batch_var/reduction just used - not only after integrate_samples().
+stamp_provenance <- function(seu, method = NULL, assay = NULL,
+                             batch_var = NULL, reduction = NULL) {
   prov <- list(
     pack       = PACK_CITATION$pack,
     version    = PACK_CITATION$version,
     doi        = PACK_CITATION$doi,
-    method     = attr(seu, "integration_method"),
-    assay      = attr(seu, "integration_assay"),
-    batch_var  = attr(seu, "integration_batch_var"),
-    reduction  = attr(seu, "integration_reduction"),
+    method     = method %||% attr(seu, "integration_method") %||% "CCA",
+    assay      = assay %||% attr(seu, "integration_assay"),
+    batch_var  = batch_var %||% attr(seu, "integration_batch_var"),
+    reduction  = reduction %||% attr(seu, "integration_reduction"),
     n_cells    = ncol(seu),
     run_at     = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
     R          = as.character(getRversion()),

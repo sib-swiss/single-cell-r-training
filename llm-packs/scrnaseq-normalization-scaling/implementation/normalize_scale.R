@@ -67,15 +67,19 @@ PACK_CITATION <- list(
   license    = "CC-BY-4.0"
 )
 
-stamp_provenance <- function(seu) {
+#' Explicit arguments let this be called directly after inline
+#' NormalizeData()/FindVariableFeatures()/ScaleData() calls, using the same
+#' values just passed to them - not only after scale_variable_features().
+stamp_provenance <- function(seu, method = NULL, nfeatures = NULL,
+                             scale_factor = NULL, n_scaled_genes = NULL) {
   prov <- list(
     pack        = PACK_CITATION$pack,
     version     = PACK_CITATION$version,
     doi         = PACK_CITATION$doi,
-    method      = attr(seu, "norm_method") %||% "LogNormalize",
-    nfeatures   = attr(seu, "norm_nfeatures"),
-    scale_factor = attr(seu, "norm_scale_factor"),
-    n_scaled_genes = attr(seu, "norm_scaled_genes"),
+    method      = method %||% attr(seu, "norm_method") %||% "LogNormalize",
+    nfeatures   = nfeatures %||% attr(seu, "norm_nfeatures"),
+    scale_factor = scale_factor %||% attr(seu, "norm_scale_factor"),
+    n_scaled_genes = n_scaled_genes %||% attr(seu, "norm_scaled_genes"),
     run_at      = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
     R           = as.character(getRversion()),
     Seurat      = as.character(utils::packageVersion("Seurat"))

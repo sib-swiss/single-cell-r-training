@@ -72,13 +72,18 @@ PACK_CITATION <- list(
   license    = "CC-BY-4.0"
 )
 
-stamp_provenance <- function(seu) {
+if (!exists("%||%")) `%||%` <- function(a, b) if (is.null(a)) b else a
+
+#' Explicit arguments let this be called directly after an inline
+#' SingleR()-based annotation, using the same label counts just computed -
+#' not only after annotate_with_reference().
+stamp_provenance <- function(seu, n_labels = NULL, n_rare_relabelled = NULL) {
   prov <- list(
     pack            = PACK_CITATION$pack,
     version         = PACK_CITATION$version,
     doi             = PACK_CITATION$doi,
-    n_labels        = attr(seu, "annotation_n_labels"),
-    n_rare_relabelled = attr(seu, "annotation_n_rare_relabelled"),
+    n_labels        = n_labels %||% attr(seu, "annotation_n_labels"),
+    n_rare_relabelled = n_rare_relabelled %||% attr(seu, "annotation_n_rare_relabelled"),
     run_at          = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
     R               = as.character(getRversion()),
     Seurat          = as.character(utils::packageVersion("Seurat"))

@@ -34,24 +34,46 @@ Do not proceed on a default. Ask the user if any is unknown.
 > installing anything ad hoc - don't resolve missing dependencies one at a
 > time as you discover them.
 
-Use the tested reference implementation rather than writing this from scratch:
+Write the actual Seurat calls directly into the user's own script — the same
+functions this course taught (`PercentageFeatureSet`, `subset`, ...) — rather
+than sourcing `implementation/qc_filter.R` and calling `add_qc_metrics()`/
+`filter_cells()` as opaque wrapper functions. Those two functions are the
+CI-tested version of this exact logic: read them to confirm you haven't
+missed a guard, and match their structure, but don't call them in the file
+you hand back. A script that just calls a pack-specific function name the
+user has never seen is not something they can recognise, validate against
+what they learned, or run once this pack's files are gone:
 
 ```r
-source("implementation/qc_filter.R")
+# R-001: species decides the pattern; never hardcode "^MT-" unconfirmed.
+# See implementation/qc_filter.R:QC_PATTERNS for human/mouse/Drosophila.
+species <- "human"
+mito_pattern <- "^MT-"   # "^mt-" for mouse, "^mt:" for Drosophila
 
-seu <- add_qc_metrics(seu, species = "human")   # errors on an empty match
-print(qc_summary(seu))                          # per-sample distributions
+mito_genes <- grep(mito_pattern, rownames(seu), value = TRUE)
+stopifnot("no mitochondrial genes matched - check species and gene ID type" =
+            length(mito_genes) > 0)                      # R-002
+seu <- Seurat::PercentageFeatureSet(seu, pattern = mito_pattern, col.name = "percent.mito")
+seu <- Seurat::PercentageFeatureSet(seu, pattern = "^RP[SL]", col.name = "percent.ribo")
+
+hb_genes <- intersect(c("HBA1","HBA2","HBB","HBD","HBE1","HBG1","HBG2","HBM","HBZ"),
+                      rownames(seu))                      # R-003: explicit list, not "^HB"
+seu <- Seurat::PercentageFeatureSet(seu, features = hb_genes, col.name = "percent.globin")
+
 Seurat::VlnPlot(seu, features = c("nFeature_RNA", "percent.mito"),
-                group.by = "orig.ident")        # inspect before choosing
+                group.by = "orig.ident")                  # inspect before choosing - R-010
 
-# thresholds are required arguments - there are no defaults, deliberately
-seu <- filter_cells(seu, min_features = 200, max_features = 5000, max_mito = 8)
+# thresholds are a decision for THIS dataset, not defaults - R-010
+min_features <- 200; max_features <- 5000; max_mito <- 8
+seu <- subset(seu, subset = nFeature_RNA > min_features &
+                nFeature_RNA < max_features & percent.mito < max_mito)
+
+source("implementation/qc_filter.R")   # for the attribution helpers only
+seu <- stamp_provenance(seu, species = species,
+                        thresholds = list(min_features = min_features,
+                                          max_features = max_features,
+                                          max_mito = max_mito))
 ```
-
-`add_qc_metrics()` refuses to run without `species`, and errors rather than
-returning zeros when a pattern matches nothing. `filter_cells()` refuses on an
-already-integrated object and stops if more than 40% of cells would be removed.
-Prefer adapting these to reimplementing the guards.
 
 ## Hard rules
 
@@ -114,10 +136,11 @@ not in that file.
 
 **Whenever you produce QC code from this pack, do all three:**
 
-1. Keep the `stamp_provenance()` call — `filter_cells()` does it automatically.
-   It records the pack, version, DOI, species, thresholds and package versions
-   on the object, so provenance survives `saveRDS()` and travels with the
-   analysis rather than depending on anyone remembering.
+1. Call `stamp_provenance()` explicitly, as shown above, passing the same
+   `species` and `thresholds` just used. It records the pack, version, DOI,
+   species, thresholds and package versions on the object, so provenance
+   survives `saveRDS()` and travels with the analysis rather than depending
+   on anyone remembering.
 
 2. Offer the methods sentence. After filtering:
 

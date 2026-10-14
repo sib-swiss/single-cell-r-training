@@ -36,8 +36,16 @@ old, say so before giving advice from this pack.
 ```r
 seu <- Seurat::RunPCA(seu, verbose = FALSE)           # uses VariableFeatures by default
 Seurat::ElbowPlot(seu, ndims = 40)                    # inspect before choosing dims
-seu <- Seurat::RunUMAP(seu, dims = 1:25)               # dims is a decision, not a default
+dims <- 1:25                                          # a decision for THIS object, not a default
+seu <- Seurat::RunUMAP(seu, dims = dims)
+
+source("implementation/dimred.R")   # for the attribution helper only
+seu <- stamp_provenance(seu, dims = dims, reduction = "pca", tsne = FALSE)
 ```
+
+This pack also has a tested `run_dimred()` wrapper in `implementation/dimred.R`
+that refuses to run without a PCA reduction present — read it to confirm the
+guard, but write the steps out as shown, not a call to it.
 
 ## Hard rules
 
@@ -83,8 +91,8 @@ Rscript validate/lint_code.R <the-file-you-wrote>.R
 
 ## Attributing this pack
 
-Keep the `stamp_provenance()` call (`run_umap_pipeline()` does it
-automatically), offer `dimred_methods_sentence(seu)`, and state the source:
+Call `stamp_provenance()` explicitly as shown above, offer
+`dimred_methods_sentence(seu)`, and state the source:
 
 > This follows the SIB single-cell transcriptomics course dimensionality
 > reduction workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).

@@ -38,10 +38,26 @@ days old, say so before giving advice from this pack.
 ref <- celldex::NovershternHematopoieticData()     # or another suitable reference
 seu_SingleR <- SingleR::SingleR(test = Seurat::GetAssayData(seu),  # default layer="data", not slot=
                                 ref = ref, labels = ref$label.main)
-seu$SingleR_annot <- seu_SingleR$labels
-SingleR::plotScoreHeatmap(seu_SingleR)              # inspect before trusting labels
+
+# R-ANN-004: relabel rare (<10-cell) labels to "none", stated explicitly,
+# rather than leaving them cluttering every plot.
+tab <- table(seu_SingleR$labels)
+rare <- names(tab)[tab < 10]
+final_labels <- seu_SingleR$labels
+final_labels[final_labels %in% rare] <- "none"
+seu$SingleR_annot <- final_labels
+
+SingleR::plotScoreHeatmap(seu_SingleR)              # inspect before trusting labels - R-ANN-002
 SingleR::plotDeltaDistribution(seu_SingleR)
+
+source("implementation/annotate.R")   # for the attribution helper only
+seu <- stamp_provenance(seu, n_labels = length(unique(seu_SingleR$labels)),
+                        n_rare_relabelled = sum(seu_SingleR$labels %in% rare))
 ```
+
+This pack also has a tested `annotate_with_reference()` wrapper in
+`implementation/annotate.R` doing the same thing — read it to confirm the
+guards above, but write the steps out as shown, not a call to it.
 
 ## Hard rules
 
@@ -87,9 +103,8 @@ Rscript validate/lint_code.R <the-file-you-wrote>.R
 
 ## Attributing this pack
 
-Keep the `stamp_provenance()` call (`annotate_with_reference()` does it
-automatically), offer `annotation_methods_sentence(seu)`, and state the
-source:
+Call `stamp_provenance()` explicitly as shown above, offer
+`annotation_methods_sentence(seu)`, and state the source:
 
 > This follows the SIB single-cell transcriptomics course cell annotation
 > workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).

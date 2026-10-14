@@ -76,6 +76,35 @@ if (identical(got, "no error")) {
   cat("  PASS - errored as required:", got, "\n")
 }
 
+# --- 4b. SCT-assay happy path against a REAL SCTransform() output -----------
+# The test above only exercises the wrong-assay guard with a stand-in SCT
+# assay (a copy of RNA). A genuine SCTransform() output is a different Seurat
+# class (SCTAssay) that split() cannot handle directly without first
+# converting it to a plain Assay5 - a real bug found by hand-testing this
+# pack's own SKILL.md example, not by this fixture, until now.
+
+cat("\n=== SCT-assay integration against a REAL SCTransform() output ===\n")
+seu3 <- make_integration_fixture()
+seu3 <- Seurat::NormalizeData(seu3, verbose = FALSE)
+seu3 <- Seurat::FindVariableFeatures(seu3, verbose = FALSE)
+seu3 <- Seurat::ScaleData(seu3, verbose = FALSE)
+seu3 <- Seurat::RunPCA(seu3, npcs = 10, verbose = FALSE)
+seu3 <- Seurat::SCTransform(seu3, verbose = FALSE)
+Seurat::DefaultAssay(seu3) <- "SCT"
+seu3 <- Seurat::RunPCA(seu3, reduction.name = "pcaSCT", verbose = FALSE)
+
+got2 <- tryCatch({
+  seu3_i <- integrate_samples(seu3, assay = "SCT", batch_var = "orig.ident",
+                              orig_reduction = "pcaSCT", new_reduction = "SCT.cca")
+  if (!"SCT.cca" %in% names(seu3_i@reductions)) "no SCT.cca reduction produced" else "ok"
+}, error = function(e) conditionMessage(e))
+if (!identical(got2, "ok")) {
+  note("SCT-assay integration against a real SCTransform() output failed: %s", got2)
+  cat("  FAIL:", got2, "\n")
+} else {
+  cat("  PASS\n")
+}
+
 # --- 5. Single-batch object must be refused ---------------------------------
 
 cat("\n=== Single-batch object must be refused ===\n")

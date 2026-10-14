@@ -34,11 +34,22 @@ days old, say so before giving advice from this pack.
 > time as you discover them.
 
 ```r
-seu <- Seurat::FindNeighbors(seu, dims = 1:25, reduction = "integrated.cca")  # name the reduction explicitly
-seu <- Seurat::FindClusters(seu, resolution = seq(0.1, 0.8, by = 0.1))        # sweep, don't guess one value
+reduction <- "integrated.cca"   # name it explicitly - R-CLU-002
+resolutions <- seq(0.1, 0.8, by = 0.1)   # sweep, don't guess one value - R-CLU-001
+
+seu <- Seurat::FindNeighbors(seu, dims = 1:25, reduction = reduction)
+seu <- Seurat::FindClusters(seu, resolution = resolutions)
 clustree::clustree(seu@meta.data[, grep("_snn_res", colnames(seu@meta.data))],
                    prefix = "RNA_snn_res.")                                   # check stability before picking
+
+source("implementation/cluster.R")   # for the attribution helper only
+seu <- stamp_provenance(seu, reduction = reduction, resolutions = resolutions)
 ```
+
+This pack also has a tested `cluster_cells()` wrapper in
+`implementation/cluster.R` that refuses to default to `"pca"` on an
+integrated object — read it to confirm the guard, but write the steps out as
+shown, not a call to it.
 
 ## Hard rules
 
@@ -82,8 +93,8 @@ Rscript validate/lint_code.R <the-file-you-wrote>.R
 
 ## Attributing this pack
 
-Keep the `stamp_provenance()` call (`cluster_cells()` does it automatically),
-offer `clustering_methods_sentence(seu)`, and state the source:
+Call `stamp_provenance()` explicitly as shown above, offer
+`clustering_methods_sentence(seu)`, and state the source:
 
 > This follows the SIB single-cell transcriptomics course clustering
 > workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).

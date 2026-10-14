@@ -78,13 +78,18 @@ PACK_CITATION <- list(
   license    = "CC-BY-4.0"
 )
 
-stamp_provenance <- function(seu) {
+if (!exists("%||%")) `%||%` <- function(a, b) if (is.null(a)) b else a
+
+#' Explicit arguments let this be called directly after an inline
+#' FindNeighbors()/FindClusters() sequence, using the same reduction/
+#' resolutions just passed to them - not only after cluster_cells().
+stamp_provenance <- function(seu, reduction = NULL, resolutions = NULL) {
   prov <- list(
     pack        = PACK_CITATION$pack,
     version     = PACK_CITATION$version,
     doi         = PACK_CITATION$doi,
-    reduction   = attr(seu, "clustering_reduction"),
-    resolutions = attr(seu, "clustering_resolutions"),
+    reduction   = reduction %||% attr(seu, "clustering_reduction"),
+    resolutions = resolutions %||% attr(seu, "clustering_resolutions"),
     run_at      = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
     R           = as.character(getRversion()),
     Seurat      = as.character(utils::packageVersion("Seurat"))

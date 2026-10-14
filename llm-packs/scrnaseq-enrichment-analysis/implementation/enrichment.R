@@ -92,14 +92,17 @@ PACK_CITATION <- list(
   license    = "CC-BY-4.0"
 )
 
-stamp_provenance <- function(res) {
+#' Explicit arguments let this be called directly after an inline
+#' enrichGO()/gseGO() call, using the same genes/universe/ontology just
+#' used - not only after run_ora()/run_gsea().
+stamp_provenance <- function(res, n_genes = NULL, n_universe = NULL, ontology = NULL) {
   prov <- list(
     pack       = PACK_CITATION$pack,
     version    = PACK_CITATION$version,
     doi        = PACK_CITATION$doi,
-    n_genes    = attr(res, "ora_n_genes") %||% attr(res, "gsea_n_genes"),
-    n_universe = attr(res, "ora_n_universe"),
-    ontology   = attr(res, "ora_ontology"),
+    n_genes    = n_genes %||% attr(res, "ora_n_genes") %||% attr(res, "gsea_n_genes"),
+    n_universe = n_universe %||% attr(res, "ora_n_universe"),
+    ontology   = ontology %||% attr(res, "ora_ontology"),
     run_at     = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
     R          = as.character(getRversion())
   )

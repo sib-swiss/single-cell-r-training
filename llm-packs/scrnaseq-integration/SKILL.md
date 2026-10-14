@@ -44,23 +44,50 @@ Do not proceed on a default. Ask the user if any is unknown.
 > installing anything ad hoc - don't resolve missing dependencies one at a
 > time as you discover them.
 
-Use the tested reference implementation rather than writing this from scratch:
+Write the actual Seurat calls directly into the user's own script — the same
+functions this course taught (`IntegrateLayers`, `JoinLayers`, ...) — rather
+than sourcing `implementation/integrate.R` and calling `integrate_samples()`
+as an opaque wrapper function. That function is the CI-tested version of
+this exact logic: read it to confirm you haven't missed a guard, but don't
+call it in the file you hand back — a script built from the course's own
+functions is something the user can recognise and validate; a call to a
+pack-specific function name is not.
 
 ```r
-source("implementation/integrate.R")
-
 # RNA-assay workflow
-seu <- integrate_samples(seu, assay = "RNA", batch_var = "orig.ident")
+seu[["RNA"]] <- split(seu[["RNA"]], f = seu$orig.ident)
+seu <- Seurat::IntegrateLayers(seu, method = Seurat::CCAIntegration,
+                               orig.reduction = "pca", new.reduction = "integrated.cca",
+                               verbose = FALSE)
+seu[["RNA"]] <- SeuratObject::JoinLayers(seu[["RNA"]])   # required after integrating - R-INT-004
 
-# SCT-assay workflow (requires PCA already run on the SCT assay as "pcaSCT")
-seu <- integrate_samples(seu, assay = "SCT", batch_var = "orig.ident",
-                         orig_reduction = "pcaSCT", new_reduction = "SCT.cca")
+source("implementation/integrate.R")   # for the attribution helpers only
+seu <- stamp_provenance(seu, method = "CCA", assay = "RNA",
+                        batch_var = "orig.ident", reduction = "integrated.cca")
 ```
 
-`integrate_samples()` refuses to run on a single sample, refuses to run on an
-object that doesn't already carry the PCA reduction it needs, and calls
-`JoinLayers()` automatically afterwards. Prefer adapting this to
-reimplementing the guards.
+```r
+# SCT-assay workflow (needs a PCA computed on the SCT assay ITSELF - R-INT-005,
+# not the RNA assay's "pca")
+Seurat::DefaultAssay(seu) <- "SCT"
+seu <- Seurat::RunPCA(seu, reduction.name = "pcaSCT", verbose = FALSE)
+
+# "SCT" is the legacy SCTAssay class, not a plain Assay5 - split() errors on
+# it directly ("subscript out of bounds" from a scale.data layer mismatch).
+# Convert it under its own name first, exactly as the course's own exercise
+# does, and integrate THAT.
+seu[["SCT_v5"]] <- as(object = seu[["SCT"]], Class = "Assay5")
+seu[["SCT_v5"]] <- split(seu[["SCT_v5"]], f = seu$orig.ident)
+seu <- Seurat::IntegrateLayers(seu, assay = "SCT_v5", method = Seurat::CCAIntegration,
+                               orig.reduction = "pcaSCT", new.reduction = "SCT.cca",
+                               features = Seurat::VariableFeatures(seu, assay = "SCT"),
+                               verbose = FALSE)
+seu[["SCT_v5"]] <- SeuratObject::JoinLayers(seu[["SCT_v5"]])
+
+source("implementation/integrate.R")   # for the attribution helpers only
+seu <- stamp_provenance(seu, method = "CCA", assay = "SCT",
+                        batch_var = "orig.ident", reduction = "SCT.cca")
+```
 
 ## Hard rules
 
@@ -124,9 +151,10 @@ citation.
 
 **Whenever you produce integration code from this pack, do all three:**
 
-1. Keep the `stamp_provenance()` call — `integrate_samples()` does it
-   automatically. It records the pack, version, DOI, method, assay and batch
-   variable on the object, so provenance survives `saveRDS()`.
+1. Call `stamp_provenance()` explicitly, as shown above, passing the same
+   `assay`/`batch_var`/`reduction` just used. It records the pack, version,
+   DOI, method, assay and batch variable on the object, so provenance
+   survives `saveRDS()`.
 
 2. Offer the methods sentence. After integrating:
 

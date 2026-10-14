@@ -38,6 +38,29 @@ if (truede_found < 7) note("pseudobulk_de failed to recover the planted true-DE 
 
 noise_fp <- sum(grepl("^NOISE", de$gene[de$adj.P.Val < 0.05]))
 cat(sprintf("NOISE genes called significant (false positives): %d / 10\n", noise_fp))
+
+# --- 2b. Happy path: pseudobulk_de() with a GENUINE paired design -----------
+# The only other replicate_col test in this file deliberately corrupts the
+# mapping to test the guard (see below) - the paired branch itself, with a
+# real cross-condition-matched replicate_col, was never exercised until now.
+
+cat("\n=== pseudobulk_de(): genuinely paired design (replicate_col set) ===\n")
+seu_paired <- make_de_fixture(c("A", "B"), n_samples_per_cond = 3)
+# Cross-condition-matched "patient" id, same construction as the course's own
+# fabricated-pairing example: strip the condition prefix so "A-P1"/"B-P1"
+# both become "P1".
+seu_paired$patient.id <- sub("^[AB]-", "", seu_paired$orig.ident)
+de_paired <- pseudobulk_de(seu_paired, sample_col = "orig.ident", condition_col = "type",
+                           replicate_col = "patient.id", contrast = c("B", "A"))
+r_paired <- check_pseudobulk_design(de_paired)
+if (!report(r_paired, "pseudobulk_de() paired: design post-conditions")) {
+  note("paired pseudobulk_de() post-conditions failed")
+}
+truede_paired <- sum(grepl("^TRUEDE", de_paired$gene[de_paired$adj.P.Val < 0.05]))
+cat(sprintf("TRUEDE genes called significant (paired): %d / 10\n", truede_paired))
+if (truede_paired < 7) {
+  note("paired pseudobulk_de() failed to recover the planted true-DE genes (found %d/10)", truede_paired)
+}
 if (noise_fp > 3) note("pseudobulk_de called an implausible number of patient-noise genes significant (%d/10) - check aggregation", noise_fp)
 
 cat(de_methods_sentence(de), "\n")

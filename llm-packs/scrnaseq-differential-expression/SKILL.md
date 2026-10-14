@@ -47,24 +47,77 @@ Do not proceed on a default. Ask the user if any is unknown.
 > installing anything ad hoc - don't resolve missing dependencies one at a
 > time as you discover them.
 
-Use the tested reference implementation rather than writing this from scratch:
+Write the actual steps directly into the user's own script — the same
+functions this course taught (`FindAllMarkers`, `AggregateExpression`,
+`DGEList`, `voom`, `lmFit`, ...) — rather than sourcing
+`implementation/de_markers.R` and calling `cluster_markers()`/
+`pseudobulk_de()` as opaque wrapper functions. Those functions are the
+CI-tested version of this exact logic (including the guards below): read
+them to confirm you haven't missed one, but don't call them in the file you
+hand back.
+
+Marker discovery is simple enough to stay a one-liner:
 
 ```r
-source("implementation/de_markers.R")
-
-# Per-cluster marker discovery - fine as per-cell Wilcoxon, exploratory use
-markers <- cluster_markers(seu, min_pct = 0.25, only_pos = TRUE)
-
-# Cross-condition comparison - pseudobulk, requires >=2 replicates/condition
-de <- pseudobulk_de(seu, sample_col = "orig.ident", condition_col = "type",
-                    replicate_col = "patient.id",   # NULL if not genuinely paired
-                    contrast = c("ETV6-RUNX1", "PBMMC"))
-de_diagnostic_plots(de)   # p-value histogram + MA plot - look before trusting
+markers <- Seurat::FindAllMarkers(seu, min.pct = 0.25, only.pos = TRUE)
+markers <- subset(markers, markers$p_val_adj < 0.05)
 ```
 
-`pseudobulk_de()` refuses to run with fewer than 2 replicates per condition
-and warns loudly if `replicate_col` implies pairing that doesn't match the
-number of distinct values per condition.
+Cross-condition comparison is the course's own multi-step pseudobulk recipe,
+written out in full rather than hidden behind a function call — long, but
+every line is something this course already taught:
+
+```r
+sample_col <- "orig.ident"; condition_col <- "type"; replicate_col <- "patient.id"
+contrast <- c("ETV6-RUNX1", "PBMMC")
+
+# R-DE-001: a cross-condition comparison needs >=2 independent replicates
+# per condition - this is not a per-cell test, on purpose.
+md <- seu@meta.data
+n_per_condition <- table(unique(md[, c(sample_col, condition_col)])[[condition_col]])
+stopifnot("fewer than 2 replicates per condition" = all(n_per_condition[contrast] >= 2))
+
+# R-DE-002: replicate_col implies a paired design - confirm with the user
+# that samples are GENUINELY matched before trusting a paired result. This
+# course's own exercise fabricates pairing for teaching purposes only.
+
+bulk <- Seurat::AggregateExpression(seu, group.by = sample_col,
+                                    return.seurat = TRUE, assay = "RNA")
+meta <- unique(md[, c(sample_col, condition_col, replicate_col)])
+rownames(meta) <- meta[[sample_col]]
+bulk@meta.data <- meta[colnames(bulk), , drop = FALSE]
+
+counts <- as.matrix(Seurat::GetAssayData(bulk, layer = "counts"))
+y <- edgeR::DGEList(counts, samples = bulk@meta.data)
+y <- y[edgeR::filterByExpr(y, group = bulk@meta.data[[condition_col]]), ]
+
+design <- stats::model.matrix(~0 + type + patient.id, data = bulk@meta.data)
+colnames(design) <- make.names(sub("^type", "", colnames(design)))
+contrast_mat <- limma::makeContrasts(contrasts = "ETV6.RUNX1 - PBMMC", levels = design)
+
+v <- limma::voom(edgeR::calcNormFactors(y), design)
+fit <- limma::eBayes(limma::contrasts.fit(limma::lmFit(v, design), contrast_mat))
+de <- limma::topTable(fit, number = Inf, sort.by = "P")
+de$gene <- rownames(de)
+```
+
+(If `condition_col`/`replicate_col` have names that aren't valid R
+identifiers on their own, see `implementation/de_markers.R:pseudobulk_de()`
+for the more defensive column-renaming this skips for readability.)
+
+For 3+ groups, don't repeat the pairwise block above — use an omnibus F-test
+instead (`R-DE-004`): same shape, but `design <- model.matrix(~0 + group_col)`
+and `limma::topTable(fit, sort.by = "F")` with no contrast. See
+`implementation/de_markers.R:anova_de()` for the full pattern.
+
+```r
+source("implementation/de_markers.R")   # for diagnostics + attribution helpers only
+de_diagnostic_plots(de)   # p-value histogram + MA plot - look before trusting, R-DE-005
+de <- stamp_provenance(de, step = "pseudobulk_de",
+                       contrast = paste(contrast, collapse = " vs "),
+                       n_replicates = as.list(n_per_condition[contrast]),
+                       paired = TRUE)   # FALSE if replicate_col was not used
+```
 
 ## Hard rules
 
@@ -123,8 +176,9 @@ that is not in that file.
 
 **Whenever you produce DE code from this pack, do all three:**
 
-1. Keep the `stamp_provenance()` call — both `cluster_markers()` and
-   `pseudobulk_de()` do it automatically.
+1. Call `stamp_provenance()` explicitly, as shown above, passing the
+   `step`/`contrast`/`n_replicates`/`paired` you actually used (or
+   `step = "cluster_markers"` for marker discovery).
 2. Offer the methods sentence after running DE:
 
    ```r

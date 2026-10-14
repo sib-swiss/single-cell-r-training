@@ -62,14 +62,20 @@ PACK_CITATION <- list(
   license    = "CC-BY-4.0"
 )
 
-stamp_provenance <- function(seu) {
+if (!exists("%||%")) `%||%` <- function(a, b) if (is.null(a)) b else a
+
+#' Explicit arguments let this be called directly after an inline
+#' RunPCA()/RunUMAP() sequence, using the same dims/reduction just passed to
+#' them - not only after run_dimred().
+stamp_provenance <- function(seu, dims = NULL, reduction = NULL, tsne = NULL) {
+  dims_use <- dims %||% attr(seu, "dimred_dims")
   prov <- list(
     pack      = PACK_CITATION$pack,
     version   = PACK_CITATION$version,
     doi       = PACK_CITATION$doi,
-    dims      = paste(range(attr(seu, "dimred_dims")), collapse = "-"),
-    reduction = attr(seu, "dimred_reduction"),
-    tsne      = attr(seu, "dimred_tsne"),
+    dims      = paste(range(dims_use), collapse = "-"),
+    reduction = reduction %||% attr(seu, "dimred_reduction"),
+    tsne      = if (!is.null(tsne)) tsne else attr(seu, "dimred_tsne"),
     run_at    = format(Sys.time(), "%Y-%m-%dT%H:%M:%S%z"),
     R         = as.character(getRversion()),
     Seurat    = as.character(utils::packageVersion("Seurat"))

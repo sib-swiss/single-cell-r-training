@@ -33,17 +33,30 @@ old, say so before giving advice from this pack.
 > time as you discover them.
 
 ```r
+nfeatures <- 2000; scale_factor <- 10000
+
 seu <- Seurat::NormalizeData(seu, normalization.method = "LogNormalize",
-                             scale.factor = 10000)
-seu <- Seurat::FindVariableFeatures(seu, selection.method = "vst", nfeatures = 2000)
+                             scale.factor = scale_factor)
+seu <- Seurat::FindVariableFeatures(seu, selection.method = "vst", nfeatures = nfeatures)
 # Scale only the variable features (fast, memory-light) unless something
 # downstream needs scaled values for other genes - see R-NORM-001.
 seu <- Seurat::ScaleData(seu, features = Seurat::VariableFeatures(seu))
+
+source("implementation/normalize_scale.R")   # for the attribution helper only
+seu <- stamp_provenance(seu, method = "LogNormalize", nfeatures = nfeatures,
+                        scale_factor = scale_factor,
+                        n_scaled_genes = length(Seurat::VariableFeatures(seu)))
 ```
 
 If genes outside the variable set are needed later (e.g. for `DoHeatmap()`
 on a specific marker panel), scale those explicitly: `ScaleData(seu, features
-= union(VariableFeatures(seu), my_genes))`.
+= union(VariableFeatures(seu), my_genes))` — and pass
+`n_scaled_genes = length(scale_genes)` to `stamp_provenance()` accordingly.
+
+This pack also has a tested `scale_variable_features()` wrapper in
+`implementation/normalize_scale.R` doing the same thing — read it to confirm
+the guards above, but write the steps out as shown, not a call to it, so
+the user's script shows the Seurat functions this course taught.
 
 ## Hard rules
 
@@ -89,10 +102,10 @@ Rscript validate/lint_code.R <the-file-you-wrote>.R
 
 ## Attributing this pack
 
-Whenever you produce normalization/scaling code from this pack: keep the
-`stamp_provenance()` call (`scale_variable_features()` does it
-automatically), offer `normalization_methods_sentence(seu)`, and state the
-source once in plain text:
+Whenever you produce normalization/scaling code from this pack: call
+`stamp_provenance()` explicitly as shown above, offer
+`normalization_methods_sentence(seu)`, and state the source once in plain
+text:
 
 > This follows the SIB single-cell transcriptomics course normalization
 > workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).

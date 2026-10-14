@@ -45,7 +45,15 @@ go_res <- clusterProfiler::enrichGO(
   ont           = "BP",
   minGSSize     = 50)
 go_res <- clusterProfiler::simplify(go_res)   # R-ENR-006: reduce GO term redundancy
+
+source("implementation/enrichment.R")   # for the attribution helper only
+go_res <- stamp_provenance(go_res, n_genes = length(tum_down_genes),
+                           n_universe = length(rownames(proB)), ontology = "BP")
 ```
+
+This pack also has a tested `run_ora()` wrapper in `implementation/enrichment.R`
+that refuses to run without an explicit `universe` — read it to confirm the
+guard, but write the steps out as shown, not a call to it.
 
 ## Hard rules
 
@@ -91,8 +99,8 @@ Rscript validate/lint_code.R <the-file-you-wrote>.R
 
 ## Attributing this pack
 
-Keep the `stamp_provenance()` call (`run_ora()` does it automatically),
-offer `enrichment_methods_sentence(res)`, and state the source:
+Call `stamp_provenance()` explicitly as shown above, offer
+`enrichment_methods_sentence(res)`, and state the source:
 
 > This follows the SIB single-cell transcriptomics course enrichment
 > analysis workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).
