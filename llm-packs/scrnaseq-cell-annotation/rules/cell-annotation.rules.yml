@@ -1,0 +1,96 @@
+# Machine-checkable assertions for scRNA-seq cell type annotation.
+#
+# severity: block | warn | inform
+
+rules:
+
+  - id: R-ANN-001
+    severity: warn
+    title: "Seurat 5 uses layer=, not slot=, for assay accessors"
+    when: "emitting GetAssayData() (e.g. as SingleR's test= argument)"
+    note: >
+      slot= is deprecated in Seurat 5. Same failure family as the QC pack's
+      R-004.
+    known_instance: >
+      scripts/run_analysis.R:209,296 still call
+      SingleR::SingleR(test = Seurat::GetAssayData(seu_int, slot = "data"), ...).
+      day3-1_cell_annotation.qmd correctly uses the layer-implicit default
+      (Seurat::GetAssayData(seu), no slot=). The script and the chapter
+      disagree.
+    correct: |
+      Seurat::GetAssayData(seu, layer = "data")   # or just GetAssayData(seu)
+    enforced: [lint]
+    lint: L-ANN-001
+
+  - id: R-ANN-002
+    severity: block
+    title: "SingleR labels every cell, even ones absent from the reference"
+    when: "presenting SingleR annotation results as complete/trustworthy with no caveat"
+    forbid: "treating every SingleR label as equally reliable with no quality check"
+    require: >
+      Generate and inspect plotScoreHeatmap()/plotDeltaDistribution() before
+      trusting labels, and state that SingleR has no "rejection" option -
+      a cell whose true type is absent from the reference still receives
+      the best-available (wrong) label.
+    rationale: >
+      Source: course lecture, stated directly: with SingleR "all of your
+      cells will receive a label even though... these cells are not part of
+      the reference." Other annotation tools (e.g. scPred, scID mentioned in
+      the evaluation paper the course links) do have a rejection option;
+      SingleR does not.
+    enforced: [lint]
+    lint: L-ANN-002
+
+  - id: R-ANN-003
+    severity: warn
+    title: "Surface marker protein level does not always track mRNA level"
+    when: "annotating by a single marker gene's mRNA expression where a surface protein (e.g. flow cytometry) definition is implied"
+    note: >
+      Source: course lecture with a concrete example: CD4 surface protein
+      can be clearly present on CITE-seq-tagged cells while the CD4 mRNA
+      level in the same cells is low. Don't assume absence of a marker's
+      mRNA means absence of the corresponding surface protein/cell identity.
+    require: "use multiple marker genes, not a single one, for a cell type call"
+    enforced: [manual]
+
+  - id: R-ANN-004
+    severity: inform
+    title: "State when rare annotation labels were filtered out"
+    when: "cell-type labels with very few assigned cells are removed/relabelled to 'none' before plotting"
+    note: >
+      Not a bug - the course's own exercise does this (labels with <10 cells
+      relabelled "none") because they clutter plots and are usually
+      uninformative. State that it was done, so it isn't mistaken for the
+      complete label set.
+    enforced: [manual]
+
+  - id: R-ANN-005
+    severity: block
+    title: "Cell-type abundance differences across conditions need replication"
+    when: "reporting that one condition has more/fewer cells of a given annotated type than another"
+    forbid: "reporting a cell-type abundance difference as a validated biological finding from a single sample per condition"
+    require: >
+      State how many biological replicates support the difference, and that
+      ideally it is validated with an orthogonal method (e.g. flow
+      cytometry).
+    rationale: >
+      Source: course lecture, a direct caution: "it's not always the case
+      that the frequencies you have in your dataset... [are] a good image of
+      what you had in your actual sample... I would give a word of caution
+      about interpreting differences in abundance in single-cell RNA-seq
+      data - you always have to validate if your differences are actually
+      true." The course's own example that trusted such a difference did so
+      only because it held across 3 biological replicates per condition and
+      was confirmed by flow cytometry.
+    enforced: [manual]
+
+  - id: R-ANN-006
+    severity: inform
+    title: "AddModuleScore cannot score 'genes that should be absent'"
+    when: "a signature score needs to penalise expression of genes that should NOT be present"
+    note: >
+      Source: course lecture: Seurat's AddModuleScore() only supports a
+      positive gene list; it cannot include genes whose expression should
+      count against a match. Other scoring methods (e.g. UCell, mentioned in
+      the lecture) support this, but are not in this course's renv.lock.
+    enforced: [manual]
