@@ -1,0 +1,54 @@
+id: sib/scrnaseq-clustering
+title: "Graph-based clustering (Seurat 5, Louvain/SLM)"
+version: 0.1.0
+status: pilot
+
+scope: >
+  Building the SNN graph and clustering cells (FindNeighbors + FindClusters),
+  choosing a resolution, and checking cluster stability across resolutions
+  with clustree. Starts from a PCA/UMAP'd (and, if applicable, integrated)
+  Seurat object. Ends at a per-cell cluster assignment in `@meta.data`. Does
+  not cover cell type annotation of the resulting clusters - separate pack.
+
+provenance:
+  repo: https://github.com/sib-swiss/single-cell-r-training
+  derived_from:
+    - day2/day2-4_clustering.qmd
+    - llm-packs/_dev/transcripts/kqcvqqZp3Jo.clean.txt   # lecture recording for this chapter
+  course: "SIB: Single-cell transcriptomics with R"
+  dataset: "Caron et al. 2020, paediatric B-ALL and PBMMC bone marrow (10x 3' GEX)"
+  maintainer:
+    name: "TODO: named individual, not a team alias"
+    email: "TODO@sib.swiss"
+  license: CC-BY-4.0
+
+validity:
+  last_validated: null
+  validated_against:
+    R: "4.6.0"
+    Seurat: "5.5.0"
+    SeuratObject: "5.4.0"
+    clustree: "check against renv.lock at validation time"
+    container: "sibswiss/training-singlecell-rstudio:2026.6"
+    renv_lock: "renv.lock@incorporate-skill-md"
+  validation_entrypoint: validate/run_all.R
+  stale_after_days: 120
+  on_stale: >
+    Tell the user, before giving any advice from this pack, that it has not
+    been re-tested against current package versions and may be out of date.
+
+applies_when:
+  object: "Seurat >= 5.0, with a PCA (and, if multi-sample, an integrated) reduction"
+
+not_applicable_to:
+  - what: "Presenting a single resolution's clustering as the objectively correct/optimal one"
+    why: "There is no ground truth number of clusters - see reference/pitfalls.md#p-clu-001."
+  - what: "Clustering on the raw/unintegrated PCA of a multi-sample object that was integrated"
+    why: "FindNeighbors() defaults reduction= to \"pca\"; on an integrated object this silently ignores the batch correction unless reduction= is set explicitly. See reference/pitfalls.md#p-clu-002."
+
+depends_on:
+  in_lockfile:
+    - Seurat
+    - SeuratObject
+    - clustree
+  recommended_but_absent: []
