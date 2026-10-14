@@ -1,0 +1,79 @@
+# Machine-checkable assertions for scRNA-seq enrichment analysis.
+#
+# severity: block | warn | inform
+
+rules:
+
+  - id: R-ENR-001
+    severity: block
+    title: "ORA universe must be the genes actually tested, not the whole genome"
+    when: "enrichGO()/enricher()/enrichKEGG() is called for over-representation analysis"
+    forbid: "omitting universe= and relying on clusterProfiler's whole-annotation-database default"
+    require: "universe= set to the genes actually detectable/tested in this experiment (e.g. rownames(the Seurat/DE object))"
+    rationale: >
+      Source: a direct inconsistency within the course's own material. The
+      written chapter explains GeneRatio/BgRatio and why the background
+      matters, then its own enrichGO() call for this exact chapter omits
+      universe= (defaulting to every gene annotated in org.Hs.eg.db) - while
+      its own later enricher() call in the SAME chapter correctly sets
+      universe = rownames(proB). scRNA-seq only detects a subset of the
+      genome per cell type due to dropout; testing against the whole genome
+      as background systematically biases which gene sets look enriched.
+    enforced: [lint]
+    lint: L-ENR-001
+
+  - id: R-ENR-002
+    severity: warn
+    title: "Test up- and down-regulated genes separately"
+    when: "running ORA/GSEA on a differential expression result"
+    forbid: "pooling up- and down-regulated genes into one undirected 'differentially expressed' gene set for ORA with no direction information"
+    require: "test up-regulated and down-regulated genes as separate gene sets, or otherwise preserve direction"
+    rationale: >
+      scripts/run_analysis.R in this repository runs enrichGO() separately
+      for tum_down_genes and tum_up_genes; the written chapter only
+      demonstrates the down-regulated direction as its single worked example.
+      Pooling both directions loses whether an enriched pathway is being
+      turned up or down - a result that is "enriched for differential
+      expression" with no direction is a much weaker finding.
+    enforced: [manual]
+
+  - id: R-ENR-003
+    severity: block
+    title: "GSEA requires the full ranked gene list, ranked manually"
+    when: "a GSEA-family function (GSEA(), gseGO(), gseKEGG()) is called"
+    forbid: "passing only significant genes, or an unranked list, to a GSEA function"
+    require: >
+      Pass every tested gene with its statistic (fold change or test
+      statistic), pre-sorted in decreasing order, before calling the GSEA
+      function.
+    rationale: >
+      Source: course lecture, stated directly: "the GSEA function will not
+      rank your fold changes automatically... you have to do that manually
+      before you use the function." GSEA's enrichment score calculation
+      needs the position of every gene in the ranked list, including
+      non-significant ones - it is not a drop-in replacement for enrichGO()
+      that happens to accept a longer gene list.
+    enforced: [lint]
+    lint: L-ENR-002
+
+  - id: R-ENR-004
+    severity: warn
+    title: "Gene-set size and significance cutoffs are decisions, not defaults"
+    when: "minGSSize/maxGSSize/pvalueCutoff/qvalueCutoff are set"
+    forbid: "describing these cutoffs as the standard/default values"
+    require: "state them as decisions (e.g. excluding gene sets too small/large to be informative)"
+    enforced: [manual]
+
+  - id: R-ENR-005
+    severity: inform
+    title: "GO term results are redundant; simplify or group before reporting"
+    when: "presenting a raw enrichGO() result as a list of independent findings"
+    note: >
+      Many enriched GO terms share most of their genes (parent/child terms
+      in the ontology), which is why the course chapter calls
+      clusterProfiler::simplify() before reporting results, and the lecture
+      separately discusses tools like REVIGO and GO-Figure! for the same
+      purpose. A long raw GO hit list is not a list of independent
+      discoveries.
+    enforced: [lint]
+    lint: L-ENR-003

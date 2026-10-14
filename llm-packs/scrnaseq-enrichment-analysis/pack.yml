@@ -1,0 +1,57 @@
+id: sib/scrnaseq-enrichment-analysis
+title: "Gene set enrichment analysis: ORA and GSEA (clusterProfiler)"
+version: 0.1.0
+status: pilot
+
+scope: >
+  Over-representation analysis (ORA, via clusterProfiler::enrichGO/enricher)
+  and gene set enrichment analysis (GSEA) of a differential expression
+  result. Starts from a gene list (with or without per-gene statistics) from
+  the scrnaseq-differential-expression pack. Ends at an enrichment result
+  table/plot. Does not cover differential expression itself - separate pack.
+  The course's own slide deck and video for this chapter cover both DE and
+  enrichment together; this pack only covers the enrichment half.
+
+provenance:
+  repo: https://github.com/sib-swiss/single-cell-r-training
+  derived_from:
+    - day3/day3-3_enrichment_analysis.qmd
+    - scripts/run_analysis.R
+    - llm-packs/_dev/transcripts/6Y5uCQWRRbg.clean.txt   # lecture recording, shared with the DE pack
+  course: "SIB: Single-cell transcriptomics with R"
+  dataset: "Caron et al. 2020 pro-B cell subset (PBMMC vs ETV6-RUNX1)"
+  maintainer:
+    name: "TODO: named individual, not a team alias"
+    email: "TODO@sib.swiss"
+  license: CC-BY-4.0
+
+validity:
+  last_validated: null
+  validated_against:
+    R: "4.6.0"
+    clusterProfiler: "check against renv.lock at validation time"
+    container: "sibswiss/training-singlecell-rstudio:2026.6"
+    renv_lock: "renv.lock@incorporate-skill-md"
+  validation_entrypoint: validate/run_all.R
+  stale_after_days: 120
+  on_stale: >
+    Tell the user, before giving any advice from this pack, that it has not
+    been re-tested against current package versions and may be out of date.
+
+applies_when:
+  input: "A gene list (ORA) or a full ranked gene list with per-gene statistics (GSEA)"
+  species: ["Homo sapiens (org.Hs.eg.db in this course container)"]
+
+not_applicable_to:
+  - what: "GSEA with only the significant genes, not the full ranked list"
+    why: "GSEA needs every gene's statistic, including non-significant ones, to calculate the enrichment score. See reference/pitfalls.md#p-enr-003."
+  - what: "ORA with the whole genome as the implicit background"
+    why: "The universe must be genes actually detectable/tested in the experiment, not every annotated gene. See reference/pitfalls.md#p-enr-001."
+
+depends_on:
+  in_lockfile:
+    - clusterProfiler
+    - org.Hs.eg.db
+    - msigdbr
+    - enrichplot
+  recommended_but_absent: []
