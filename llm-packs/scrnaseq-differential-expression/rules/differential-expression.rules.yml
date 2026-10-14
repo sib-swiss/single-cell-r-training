@@ -1,0 +1,105 @@
+# Machine-checkable assertions for scRNA-seq differential gene expression.
+#
+# Two consumers read this file:
+#   1. An LLM, as instructions (via SKILL.md).
+#   2. validate/lint_code.R and validate/checks.R, as tests.
+#
+# severity:
+#   block  - do not produce the analysis; explain the problem to the user
+#   warn   - proceed, but state the caveat in the output
+#   inform - mention where relevant
+
+rules:
+
+  - id: R-DE-001
+    severity: block
+    title: "Cross-condition DE must not be run as a naive per-cell test"
+    when: "comparing two or more conditions/groups that span multiple samples/patients using FindMarkers or FindAllMarkers"
+    forbid: "treating each cell as an independent replicate when the true independent unit is the sample/patient"
+    require: >
+      State how many independent biological replicates exist per condition,
+      and route to pseudobulk aggregation + edgeR/limma for the actual
+      hypothesis test. A per-cell test may still be shown for exploration, but
+      must be labelled as such, not as the trustworthy result.
+    rationale: >
+      Source: course exercise (day3/day3-2_differential_gene_expression.qmd)
+      and lecture. Thousands of cells from a handful of patients are not
+      independent samples - the lecture's own analogy: comparing forest vs.
+      grassland species counts by pooling every quadrat sampled within one
+      forest site as if it were a separate replicate overstates confidence;
+      the actual independent replicate is the site (here: the patient). The
+      course's own worked numbers: FindMarkers on tum_vs_norm (pro-B cells,
+      tumor vs. healthy, pooled across patients) returns 3820 significant
+      genes; the patient-aware pseudobulk limma analysis of the identical
+      comparison returns far fewer.
+    enforced: [lint, manual]
+    lint: L-DE-001
+
+  - id: R-DE-002
+    severity: block
+    title: "Do not assume a paired/matched design without confirming it"
+    when: "a paired/matched statistical design is used (e.g. patient ID as a blocking covariate implying 1:1 pairing across conditions)"
+    forbid: "copying a paired-design code template onto data without confirming the pairing is real"
+    rationale: >
+      The course's own exercise contains an explicit callout: the
+      PBMMC/ETV6-RUNX1 samples used were NOT patient-matched in reality, but
+      the exercise treats PBMMC-1 and ETV6-RUNX1-1 as the same patient "for
+      demonstration purposes." A model reusing this code pattern on a new
+      dataset must not silently inherit that fiction - fabricated pairing
+      invents statistical power (a paired test is more powerful than an
+      unpaired one) that the data does not actually have.
+    enforced: [manual]
+
+  - id: R-DE-003
+    severity: warn
+    title: "Pseudobulk aggregation must be within-replicate, not across replicates"
+    when: "aggregating single-cell counts into pseudobulk samples"
+    require: "one pseudobulk profile per (biological replicate x condition x cell type), never pooling several replicates of the same condition into one profile"
+    rationale: >
+      Collapsing replicates together before testing removes the ability to
+      estimate between-replicate variance, which defeats the entire purpose
+      of moving to pseudobulk in the first place (R-DE-001).
+    enforced: [lint]
+    lint: L-DE-002
+
+  - id: R-DE-004
+    severity: warn
+    title: "Repeated pairwise FindMarkers across >2 groups under-corrects for multiple testing"
+    when: "comparing more than 2 groups by running FindMarkers multiple times (once per pair)"
+    forbid: "reporting each pairwise call's own p_val_adj as if it controlled the error rate across the whole set of comparisons"
+    require: >
+      Either use an omnibus/ANOVA-style test (limma's F-test across all
+      groups at once, which adjusts correctly) or explicitly re-adjust the
+      combined p-values across all pairwise comparisons performed.
+    rationale: >
+      Source: course lecture, not written in the exercise itself. Each
+      FindMarkers call adjusts p-values only among the genes tested within
+      that one comparison. Running k pairwise comparisons and reporting each
+      one's adjusted p-value is not equivalent to a single test that accounts
+      for all k comparisons at once.
+    enforced: [lint, manual]
+    lint: L-DE-005
+
+  - id: R-DE-005
+    severity: warn
+    title: "Diagnostics are required before a DE gene list is reported as trustworthy"
+    when: "reporting a final DE gene list, especially for publication"
+    require: >
+      Generate and inspect a p-value histogram (expect roughly L-shaped: a
+      spike near 0, flat elsewhere) and an MA plot (expect symmetry around
+      logFC = 0) before trusting the result. A p-value histogram that is not
+      L-shaped (e.g. a hump away from 0) indicates a miscalibrated test.
+    enforced: [lint]
+    lint: L-DE-003
+
+  - id: R-DE-006
+    severity: warn
+    title: "State fold-change direction explicitly (ident.1 vs ident.2)"
+    when: "reporting a log fold-change sign from FindMarkers/FindMarkers-style output"
+    require: "state which group was ident.1 and which was ident.2 whenever the sign of a fold change is reported"
+    rationale: >
+      Source: course exercise's own CD4/CD8 worked example - it is easy to
+      misread a positive log2FC as "upregulated in the condition I care
+      about" when it is actually defined relative to ident.1, not a fixed
+      reference.
+    enforced: [manual]
