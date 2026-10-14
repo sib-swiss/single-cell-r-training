@@ -1,0 +1,86 @@
+id: sib/scrnaseq-integration
+title: "Multi-sample integration (10x Genomics, Seurat 5, layer-based CCA)"
+version: 0.1.0
+status: pilot
+
+scope: >
+  Integrating multiple samples/batches of 10x Genomics scRNA-seq in a Seurat 5
+  layer-based object, using IntegrateLayers (CCA) on the RNA or SCT assay, to
+  obtain a single low-dimensional embedding for joint clustering and
+  visualisation. Starts from a QC-filtered, per-sample-normalised Seurat
+  object. Ends at an integrated reduction (e.g. `integrated.cca`); it does not
+  produce an integrated/corrected expression matrix for differential
+  expression - that is explicitly out of scope, not an oversight (see
+  reference/pitfalls.md#p-int-001). Marker/DE testing and enrichment are
+  separate packs.
+
+provenance:
+  repo: https://github.com/sib-swiss/single-cell-r-training
+  derived_from:
+    - day2/day2-3_integration.qmd
+    - llm-packs/_dev/transcripts/2TsW5A53hTg.clean.txt   # lecture recording for this chapter
+  course: "SIB: Single-cell transcriptomics with R"
+  dataset: "Caron et al. 2020, paediatric B-ALL and PBMMC bone marrow (10x 3' GEX)"
+  maintainer:
+    name: "TODO: named individual, not a team alias"
+    email: "TODO@sib.swiss"
+  license: CC-BY-4.0
+
+# The validity contract. CI enforces this; see .github/workflows/validate-llm-packs.yml
+validity:
+  last_validated: null            # set by CI on a green run
+  validated_against:
+    R: "4.6.0"
+    Seurat: "5.5.0"
+    SeuratObject: "5.4.0"
+    container: "sibswiss/training-singlecell-rstudio:2026.6"
+    renv_lock: "renv.lock@incorporate-skill-md"
+  validation_entrypoint: validate/run_all.R
+  stale_after_days: 120
+  on_stale: >
+    Tell the user, before giving any advice from this pack, that it has not
+    been re-tested against current package versions and may be out of date.
+
+applies_when:
+  assay: ["10x 3' GEX v2", "10x 3' GEX v3", "10x 3' GEX v4", "10x 5' GEX"]
+  object: "Seurat >= 5.0 (layer-based assay), 2 or more samples/batches"
+  input_state: "QC-filtered and normalised (RNA LogNormalize or SCTransform) per sample"
+
+not_applicable_to:
+  - what: "A single sample with no batch structure"
+    why: "There is nothing to integrate. Proceed directly to dimensionality reduction."
+  - what: "Using the resulting integrated data for differential expression"
+    why: >
+      IntegrateLayers corrects the embedding used for clustering/visualisation,
+      not the gene expression values. Using it for DE gives the batch more
+      statistical weight than the biology. See reference/pitfalls.md#p-int-001.
+    severity_note: "This is the headline rule of this pack - stated directly by the course instructor, not inferred."
+  - what: "Harmony-based integration"
+    why: >
+      `harmony` is present in renv.lock but is NOT taught in this course - the
+      course teaches Seurat's native CCA (IntegrateLayers). Mention it only as
+      an untaught alternative available in the course container, the same way
+      the QC pack treats SoupX/scDblFinder.
+  - what: "Seurat v4 objects / pre-v5 'integrated assay' workflows"
+    why: >
+      Older Seurat tutorials produce a corrected expression assay
+      (`seu[["integrated"]]`) that IS used for everything downstream including
+      DE. That workflow is superseded by the v5 layer/reduction-based approach
+      this pack teaches, and the two must not be mixed.
+
+# Packages this pack's advice depends on, checked against renv.lock by CI.
+depends_on:
+  in_lockfile:
+    - Seurat
+    - SeuratObject
+  recommended_but_absent:
+    - name: STACAS
+      note: >
+        Semi-supervised integration (anchor correction using known cell-type
+        labels), developed by SIB colleagues. Mentioned in the course lecture
+        as an option once cell types are already known, but not in renv.lock
+        and not exercised in the course container. Do not present as the
+        default; name it only when the user already has reliable cell-type
+        labels for all samples being integrated.
+    - name: batchelor
+      note: "Provides the mutual nearest neighbours (MNN) method discussed in lecture as a popular alternative to CCA; not in renv.lock."
