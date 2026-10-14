@@ -13,9 +13,19 @@ the human artifact; packs are generated alongside, not instead.
 | Pack | Source chapter | Status |
 |---|---|---|
 | [`scrnaseq-qc-filtering`](scrnaseq-qc-filtering) | `day1/day1-3_analysis_tools_qc.qmd` | pilot, unreleased |
+| [`scrnaseq-integration`](scrnaseq-integration) | `day2/day2-3_integration.qmd` | pilot, unreleased |
+| [`scrnaseq-differential-expression`](scrnaseq-differential-expression) | `day3/day3-2_differential_gene_expression.qmd` | pilot, unreleased |
 
-Candidates for packs 2 and 3, in order of pitfall density: integration
-(`day2-3`) and differential expression (`day3-2`).
+Candidates for the next round, by course order: normalization/scaling
+(`day2-1`), dimensionality reduction (`day2-2`), clustering (`day2-4`), cell
+annotation (`day3-1`), enrichment analysis (`day3-3`), and trajectory/advanced
+analysis (`advanced_exercise/`).
+
+Course lecture recordings are mined for guidance not written in the slides or
+exercises (see `pack.yml:provenance.derived_from` for each pack). Raw
+auto-generated captions for all 10 course videos live under
+[`_dev/transcripts/`](_dev/transcripts) as authoring material - not part of
+any pack, not validated by CI.
 
 ## What a pack is
 
@@ -49,11 +59,12 @@ AI-assisted analysis more trustworthy" is a hypothesis.
 
 ## Running the checks
 
+The same commands apply to every pack - substitute the pack directory.
 Static linting needs no Seurat and runs anywhere:
 
 ```bash
-Rscript llm-packs/scrnaseq-qc-filtering/validate/test-lint.R
-Rscript llm-packs/scrnaseq-qc-filtering/validate/lint_code.R scripts/run_analysis.R
+Rscript llm-packs/<pack>/validate/test-lint.R
+Rscript llm-packs/<pack>/validate/lint_code.R scripts/run_analysis.R
 ```
 
 Full validation needs the course container:
@@ -61,11 +72,12 @@ Full validation needs the course container:
 ```bash
 docker run --rm -v "$PWD":/work -w /work \
   sibswiss/training-singlecell-rstudio:2026.6 \
-  Rscript llm-packs/scrnaseq-qc-filtering/validate/run_all.R
+  Rscript llm-packs/<pack>/validate/run_all.R
 ```
 
-CI runs both weekly and on changes under `llm-packs/` — see
-`.github/workflows/validate-llm-packs.yml`.
+CI discovers every pack under `llm-packs/` automatically (anything with a
+`pack.yml`) and runs this for each one, weekly and on changes under
+`llm-packs/` — see `.github/workflows/validate-llm-packs.yml`.
 
 ## Maintenance rule
 

@@ -49,3 +49,19 @@ references:
       automated citation tooling can resolve a reference to the pack.
     url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-qc-filtering"
     license: CC-BY-4.0
+  - type: software
+    title: "scrnaseq-integration LLM pack"
+    notes: >
+      Machine-readable multi-sample integration pack derived from this course.
+      Cite the course above; this entry records the component so that
+      automated citation tooling can resolve a reference to the pack.
+    url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-integration"
+    license: CC-BY-4.0
+  - type: software
+    title: "scrnaseq-differential-expression LLM pack"
+    notes: >
+      Machine-readable differential expression pack derived from this course.
+      Cite the course above; this entry records the component so that
+      automated citation tooling can resolve a reference to the pack.
+    url: "https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-differential-expression"
+    license: CC-BY-4.0
