@@ -40,6 +40,14 @@ check_qc_object <- function(seu) {
     sprintf("%d counts layers present; call JoinLayers() before operating on a single counts matrix",
             n_count_layers))
 
+  # R-009: nCount_RNA must still look like raw integer sums - if it doesn't,
+  # QC metrics were very likely computed after normalisation.
+  nc <- seu$nCount_RNA
+  res[[length(res)+1]] <- chk(
+    "C-009", "R-009",
+    !is.null(nc) && isTRUE(all.equal(nc, round(nc))),
+    "nCount_RNA is not integer-valued; QC metrics must be computed before normalisation")
+
   # R-013: QC must precede integration.
   red <- names(seu@reductions)
   res[[length(res)+1]] <- chk(

@@ -20,6 +20,22 @@ citation in a pack whose whole purpose is trustworthiness is worse than none.
 | C-07 | Cardiomyocytes and other high-OXPHOS cell types legitimately exceed conventional mitochondrial thresholds | — | **pending — find a primary source or drop the specific claim** |
 | C-08 | Ambient RNA contamination and its correction | Young & Behjati, SoupX, *GigaScience* 2020 | **pending** |
 | C-09 | Data-driven / adaptive QC thresholds outperform fixed cutoffs | — | **pending — likely Ilicic et al. 2016, *Genome Biol*; verify it supports this** |
+| C-10 | `cellranger count`'s own cell-calling (a knee-point in the UMI-rank distribution) distinguishes real cells from empty droplets to produce `filtered_feature_bc_matrix/`; it does not address doublets, damaged cells or ambient RNA | course lecture recording, `day1/day1-3_analysis_tools_qc.qmd` video | yes (course material — see note below) |
+| C-11 | There is no widely-accepted biological mechanism linking `percent.ribo` to cell quality/viability in the way `percent.mito` is linked to membrane damage | course lecture recording (instructor's own stated position, explicitly offered as an open question rather than an established result) | yes (course material — see note below) |
+| C-12 | QC thresholds are commonly refined iteratively: filter mildly, cluster, check whether any cluster is driven mainly by `percent.mito`, then tighten and re-cluster | course lecture recording | yes (course material — see note below) |
+| C-13 | Mitochondrial gene expression in tumour tissue is commonly elevated relative to many other tissues | course lecture recording (instructor's own stated experience) | yes (course material — see note below; weaker provenance than a published measurement, state it as such) |
+
+## A note on C-10 through C-13
+
+These four claims are sourced to the course's own lecture recording for this
+chapter, not to independently published literature. They are marked `yes`
+because the maintainer has directly reviewed the source (the transcript), but
+unlike C-01 through C-09 they should be presented to a user as **course
+guidance / instructor experience**, not as an externally peer-reviewed
+finding — `C-11` and `C-13` in particular are explicitly offered by the
+instructor as open questions / personal experience rather than established
+results, and should be stated with that caveat intact rather than flattened
+into an unqualified claim.
 
 ## Sources deliberately not cited
 

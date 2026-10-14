@@ -104,3 +104,63 @@ tasks:
     rubric:
       must_not:
         - "Uses the bare pattern ^HB, which also matches HBEGF, HBS1L and HBP1"
+
+  - id: E-009
+    type: trap
+    prompt: >
+      Here's my QC plot showing MALAT1 as the top expressed gene again. Just
+      remove it like everyone does.
+    rubric:
+      must:
+        - "Asks whether the rest of the QC metrics show any other sign of stressed/dying cells before removing it"
+        - "States that MALAT1 can carry real biological signal (not a default cleanup target)"
+      must_not:
+        - "Removes MALAT1 with no connection to the rest of the QC picture"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-010
+    type: trap
+    prompt: >
+      I pointed Read10X at the raw_feature_bc_matrix folder from cellranger
+      instead of the filtered one by mistake. Can I still use your usual QC
+      thresholds on it?
+    rubric:
+      must:
+        - "Explains that the raw matrix has not had cellranger's own empty-droplet cell-calling applied"
+        - "States that this pack's thresholds assume the filtered matrix, or that a cell-calling step (e.g. emptyDrops()) is needed first"
+      must_not:
+        - "Applies the pack's usual thresholds to the raw matrix without comment"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-011
+    type: trap
+    prompt: >
+      I already normalized my data with SCTransform. Now add the QC metrics
+      (percent.mito etc.) so I can filter cells.
+    rubric:
+      must:
+        - "States that QC metrics must be computed before normalisation, not after"
+        - "Does not treat a percent.mito computed on normalised data as correct"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-012
+    type: trap
+    prompt: >
+      My cells with low ribosomal percentage look weird. Filter out anything
+      below 5% ribosomal content along with the usual mito/feature thresholds.
+    rubric:
+      must:
+        - "States there is no widely-accepted mechanism linking percent.ribo to cell quality, unlike percent.mito"
+        - "Does not add percent.ribo as a filtering criterion without a specific stated reason for this dataset"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-013
+    type: trap
+    prompt: >
+      I picked my mitochondrial threshold from the violin plot and filtered.
+      QC is done, right? Let's move on to normalization.
+    rubric:
+      must:
+        - "Recommends checking after a first clustering pass for a cluster driven mainly by percent.mito before treating QC as finished"
+      must_not:
+        - "Confirms QC is finished without mentioning this check"

@@ -53,16 +53,24 @@ Prefer adapting these to reimplementing the guards.
 
 `rules/qc-filtering.rules.yml`. Apply every rule whose `when` clause matches.
 `severity: block` means do not produce the analysis — explain the problem
-instead. The three that cause the most silent damage:
+instead. The ones that cause the most silent damage:
 
 - **`R-001`** — never emit `pattern = "^MT-"` without having confirmed the
   species is human. On mouse data it matches zero genes, `percent.mito` becomes
   0 for every cell, the filter removes nothing, and the analysis completes
   looking healthy.
+- **`R-009`** — QC metrics must be computed before normalisation.
+  `PercentageFeatureSet()` run after `NormalizeData()`/`SCTransform()` does not
+  error; it produces a column that looks exactly like a correct
+  `percent.mito`, computed on the wrong scale.
 - **`R-010`** — never present a threshold as a default, including the values in
   this pack. They are Caron et al. 2020's decisions for paediatric bone marrow.
 - **`R-012`** — an `nFeature_RNA` ceiling is not doublet removal. If the user
   says "remove doublets", say so and route to a dedicated caller.
+- **`R-014`** — `percent.ribo` is reported, not filtered on, unless a specific
+  reason for this dataset is stated. There is no equivalent of `R-001`'s
+  membrane-damage mechanism establishing it as a quality threshold — this is
+  the course instructor's own stated position, not an inference.
 
 ## Check your own output
 

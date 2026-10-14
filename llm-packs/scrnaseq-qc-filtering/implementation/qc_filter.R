@@ -54,6 +54,26 @@ add_qc_metrics <- function(seu, species) {
   species <- match.arg(species, names(QC_PATTERNS))
   p <- QC_PATTERNS[[species]]
 
+  # R-009: QC metrics must be computed on raw counts, before normalisation.
+  # PercentageFeatureSet() reads the assay's current "data" layer, which
+  # CreateSeuratObject() initialises identical to "counts" - so non-integer
+  # values there mean NormalizeData()/SCTransform() has already run. Sampled
+  # rather than checked in full, since this only needs to catch "the whole
+  # layer was rescaled", not find a single stray value.
+  assay_name <- SeuratObject::DefaultAssay(seu)
+  layers <- SeuratObject::Layers(seu[[assay_name]])
+  if ("data" %in% layers) {
+    probe <- as.numeric(SeuratObject::LayerData(seu, assay = assay_name, layer = "data")[
+      seq_len(min(50, nrow(seu))), seq_len(min(20, ncol(seu))), drop = FALSE])
+    if (length(probe) && any(probe != 0) && !isTRUE(all.equal(probe, round(probe)))) {
+      stop("The '", assay_name, "' assay's 'data' layer does not look like raw ",
+           "counts (non-integer values found). Rule R-009: QC metrics must be ",
+           "computed before normalisation. Call add_qc_metrics() before running ",
+           "NormalizeData or SCTransform, or recompute metrics explicitly from ",
+           "the 'counts' layer.")
+    }
+  }
+
   # R-002: assert the match is non-empty BEFORE trusting the result.
   mito_genes <- grep(p$mito, rownames(seu), value = TRUE)
   if (!length(mito_genes)) {
@@ -126,6 +146,18 @@ filter_cells <- function(seu, min_features, max_features, max_mito,
   }
   if (is.null(seu$percent.mito)) {
     stop("percent.mito is absent; call add_qc_metrics() first.")
+  }
+  # R-004/P-012: subset()-style filtering on an unjoined v5 object does not
+  # error - it can silently operate within a single layer rather than across
+  # every sample.
+  assay_name <- SeuratObject::DefaultAssay(seu)
+  layers <- tryCatch(SeuratObject::Layers(seu[[assay_name]]), error = function(e) character(0))
+  n_count_layers <- sum(grepl("^counts", layers))
+  if (n_count_layers > 1) {
+    stop(sprintf(paste0(
+      "%d unjoined 'counts' layers found on assay '%s' (%s). Call ",
+      "SeuratObject::JoinLayers() before filtering - rule R-004/P-012."),
+      n_count_layers, assay_name, paste(grep("^counts", layers, value = TRUE), collapse = ", ")))
   }
   # R-001 runtime post-condition.
   if (all(seu$percent.mito == 0, na.rm = TRUE)) {

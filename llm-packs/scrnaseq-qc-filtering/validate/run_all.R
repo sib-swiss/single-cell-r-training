@@ -90,6 +90,34 @@ if (identical(got3, "no error")) {
   cat("  PASS - errored as required\n")
 }
 
+# --- 5. R-009: QC metrics computed after normalisation must be refused ------
+
+cat("\n=== R-009: add_qc_metrics() on an already-normalised object must error ===\n")
+norm <- make_fixture("human")
+norm <- Seurat::NormalizeData(norm, verbose = FALSE)
+got4 <- tryCatch({ add_qc_metrics(norm, species = "human"); "no error" },
+                 error = function(e) conditionMessage(e))
+if (identical(got4, "no error")) {
+  note("R-009 REGRESSION: add_qc_metrics() did not notice the object was already normalised")
+  cat("  FAIL - this is the failure the pack exists to prevent\n")
+} else {
+  cat("  PASS - errored as required:", got4, "\n")
+}
+
+# --- 6. R-004/P-012: filter_cells() on unjoined multi-sample layers ---------
+
+cat("\n=== R-004/P-012: filter_cells() on unjoined layers must error, not silently cover one sample ===\n")
+unjoined <- add_qc_metrics(make_fixture("human"), species = "human")
+unjoined[["RNA"]] <- split(unjoined[["RNA"]], f = unjoined$orig.ident)
+got5 <- tryCatch({ filter_cells(unjoined, 50, 5000, 25); "no error" },
+                 error = function(e) conditionMessage(e))
+if (identical(got5, "no error")) {
+  note("R-004/P-012 REGRESSION: filter_cells() accepted an object with unjoined per-sample layers")
+  cat("  FAIL - this is the failure the pack exists to prevent\n")
+} else {
+  cat("  PASS - errored as required:", got5, "\n")
+}
+
 # --- verdict -----------------------------------------------------------------
 
 cat("\n", strrep("-", 60), "\n", sep = "")

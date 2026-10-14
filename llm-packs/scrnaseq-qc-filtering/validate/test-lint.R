@@ -132,4 +132,91 @@ test_that("a hardcoded literal threshold with no plot is flagged by L-005", {
   expect_true(has(f, "L-005"))
 })
 
+# --- L-006 (R-004): subset() after split() with no JoinLayers() --------------
+
+test_that("subset() after split() with no JoinLayers() is flagged", {
+  f <- lint_qc_code('
+    seu[["RNA"]] <- split(seu[["RNA"]], f = seu$orig.ident)
+    seu <- subset(seu, subset = nFeature_RNA > 200 & percent.mito < 8)
+  ')
+  expect_true(has(f, "L-006"))
+})
+
+test_that("subset() after split() AND JoinLayers() is not flagged", {
+  f <- lint_qc_code('
+    seu[["RNA"]] <- split(seu[["RNA"]], f = seu$orig.ident)
+    seu[["RNA"]] <- JoinLayers(seu[["RNA"]])
+    seu <- subset(seu, subset = nFeature_RNA > 200 & percent.mito < 8)
+  ')
+  expect_false(has(f, "L-006"))
+})
+
+test_that("subset() with no split() anywhere is not flagged by L-006", {
+  f <- lint_qc_code('seu <- subset(seu, subset = nFeature_RNA > 200 & percent.mito < 8)')
+  expect_false(has(f, "L-006"))
+})
+
+# --- L-007 (R-006): MALAT1 removed with no stated reason ----------------------
+
+test_that("MALAT1 removed with no nearby justification is flagged", {
+  f <- lint_qc_code('seu <- seu[rownames(seu) != "MALAT1", ]')
+  expect_true(has(f, "L-007"))
+})
+
+test_that("MALAT1 removed with a stated QC-evidence reason nearby is not flagged", {
+  f <- lint_qc_code('
+    # percent.mito is also elevated in these cells, consistent with stress
+    seu <- seu[rownames(seu) != "MALAT1", ]
+  ')
+  expect_false(has(f, "L-007"))
+})
+
+test_that("MALAT1 merely mentioned, not removed, is not flagged", {
+  f <- lint_qc_code('cat("Most expressed gene is MALAT1, consistent with poly-A selection.\\n")')
+  expect_false(has(f, "L-007"))
+})
+
+# --- L-008 (R-007): raw (not filtered) CellRanger matrix ----------------------
+
+test_that("reading raw_feature_bc_matrix is flagged", {
+  f <- lint_qc_code('sparse_matrix <- Seurat::Read10X(data.dir = "outs/raw_feature_bc_matrix")')
+  expect_true(has(f, "L-008"))
+})
+
+test_that("reading filtered_feature_bc_matrix is not flagged", {
+  f <- lint_qc_code('sparse_matrix <- Seurat::Read10X(data.dir = "outs/filtered_feature_bc_matrix")')
+  expect_false(has(f, "L-008"))
+})
+
+# --- L-009 (R-009): PercentageFeatureSet after NormalizeData/SCTransform -----
+
+test_that("PercentageFeatureSet after NormalizeData is a blocking finding", {
+  f <- lint_qc_code('
+    seu <- Seurat::NormalizeData(seu)
+    seu <- Seurat::PercentageFeatureSet(seu, pattern = "^MT-", col.name = "percent.mito")
+  ')
+  expect_true(has(f, "L-009"))
+  expect_equal(f$severity[f$lint == "L-009"], "block")
+})
+
+test_that("PercentageFeatureSet before NormalizeData is not flagged", {
+  f <- lint_qc_code('
+    seu <- Seurat::PercentageFeatureSet(seu, pattern = "^MT-", col.name = "percent.mito")
+    seu <- Seurat::NormalizeData(seu)
+  ')
+  expect_false(has(f, "L-009"))
+})
+
+# --- L-010 (R-014): percent.ribo used as a filtering threshold ----------------
+
+test_that("percent.ribo used in a filter threshold is flagged", {
+  f <- lint_qc_code('seu <- subset(seu, subset = percent.ribo > 5)')
+  expect_true(has(f, "L-010"))
+})
+
+test_that("percent.ribo merely reported (VlnPlot) is not flagged", {
+  f <- lint_qc_code('Seurat::VlnPlot(seu, features = "percent.ribo")')
+  expect_false(has(f, "L-010"))
+})
+
 cat("all lint tests passed\n")

@@ -118,6 +118,66 @@ lint_qc_code <- function(text) {
       "QC threshold applied without plotting the distribution first. Thresholds are dataset-specific decisions, not defaults.")
   }
 
+  # L-006 (R-004): subset() after split() with no JoinLayers() in between.
+  # Same failure family as L-003 (slot=/layer=), applied to subset() rather
+  # than a GetAssayData()-style accessor - see reference/pitfalls.md#p-012.
+  subset_lines <- grep("\\bsubset\\s*\\(", code)
+  split_lines  <- grep("\\bsplit\\s*\\(", code)
+  join_lines   <- grep("JoinLayers\\s*\\(", code)
+  for (i in subset_lines) {
+    if (any(split_lines < i) && !any(join_lines < i)) {
+      out[[length(out) + 1]] <- finding(
+        "R-004", "L-006", "warn", i,
+        "subset() called after split() with no JoinLayers() in between. On an unjoined multi-sample v5 object this can silently filter within a single layer rather than consistently across every sample.")
+    }
+  }
+
+  # L-007 (R-006): a named highly-expressed gene (e.g. MALAT1) removed with no
+  # stated connection to the rest of the QC evidence nearby.
+  MALAT_WINDOW <- 3L
+  malat_lines <- grep("MALAT1", code)
+  for (i in malat_lines) {
+    looks_like_removal <- grepl(
+      '!=\\s*["\']MALAT1["\']|setdiff\\s*\\(|%in%|exclude|drop', code[i], ignore.case = TRUE)
+    if (looks_like_removal) {
+      lo <- max(1L, i - MALAT_WINDOW); hi <- min(length(code), i + MALAT_WINDOW)
+      # Justification is often written as a comment, so check the raw lines,
+      # not the comment-stripped `code` used for pattern matching.
+      justified <- grepl("stress|dying|QC|percent\\.mito|justif|because|evidence",
+                        paste(lines[lo:hi], collapse = " "), ignore.case = TRUE)
+      if (!justified) {
+        out[[length(out) + 1]] <- finding(
+          "R-006", "L-007", "warn", i,
+          "MALAT1 appears to be removed with no stated connection to the rest of the QC evidence. State why (or leave it in, as the course chapter does when no other QC metric suggests stressed/dying cells).")
+      }
+    }
+  }
+
+  # L-008 (R-007): reading from the raw (not cellranger-filtered) matrix.
+  raw_matrix_lines <- grep("raw_feature_bc_matrix", code)
+  for (i in raw_matrix_lines) {
+    out[[length(out) + 1]] <- finding(
+      "R-007", "L-008", "warn", i,
+      "Reading from raw_feature_bc_matrix/, not filtered_feature_bc_matrix/. This has not had cellranger's own empty-droplet cell-calling (the UMI-rank knee point) applied - it needs its own cell-calling step (e.g. emptyDrops()) before this pack's thresholds apply.")
+  }
+
+  # L-009 (R-009): PercentageFeatureSet() after NormalizeData()/SCTransform().
+  norm_lines <- grep("NormalizeData\\s*\\(|SCTransform\\s*\\(", code)
+  late_pfs <- Filter(function(i) any(norm_lines < i), pfs_lines)
+  if (length(late_pfs)) {
+    out[[length(out) + 1]] <- finding(
+      "R-009", "L-009", "block", late_pfs[1],
+      "PercentageFeatureSet() called after NormalizeData()/SCTransform(). QC metrics computed on normalised data are not a percentage of anything meaningful - compute them on raw counts, before normalisation.")
+  }
+
+  # L-010 (R-014): percent.ribo used as a filtering threshold, not just reported.
+  ribo_filter <- grep("percent\\.ribo\\s*[<>]=?\\s*[0-9]", code)
+  for (i in ribo_filter) {
+    out[[length(out) + 1]] <- finding(
+      "R-014", "L-010", "warn", i,
+      "percent.ribo used as a filtering threshold. Unlike percent.mito, there is no widely-accepted mechanism linking ribosomal percentage to cell quality - report it, but don't filter on it without a stated reason for this dataset.")
+  }
+
   if (!length(out)) return(no_findings())
   do.call(rbind, out)
 }
