@@ -1,0 +1,53 @@
+id: sib/scrnaseq-dimensionality-reduction
+title: "Dimensionality reduction: PCA, t-SNE, UMAP (Seurat 5)"
+version: 0.1.0
+status: pilot
+
+scope: >
+  Running and interpreting PCA, selecting the number of PCs, and running
+  t-SNE/UMAP for visualization. Starts from a normalised, scaled Seurat
+  object with variable features identified. Ends at PCA/UMAP (and
+  optionally t-SNE) embeddings ready for clustering. Does not cover
+  integration or clustering - separate packs.
+
+provenance:
+  repo: https://github.com/sib-swiss/single-cell-r-training
+  derived_from:
+    - day2/day2-2_dimensionality_reduction.qmd
+    - llm-packs/_dev/transcripts/QS6ZH_41b4s.clean.txt   # lecture recording, shared with day2-1
+  course: "SIB: Single-cell transcriptomics with R"
+  dataset: "Caron et al. 2020, paediatric B-ALL and PBMMC bone marrow (10x 3' GEX)"
+  maintainer:
+    name: "TODO: named individual, not a team alias"
+    email: "TODO@sib.swiss"
+  license: CC-BY-4.0
+
+validity:
+  last_validated: null
+  validated_against:
+    R: "4.6.0"
+    Seurat: "5.5.0"
+    SeuratObject: "5.4.0"
+    container: "sibswiss/training-singlecell-rstudio:2026.6"
+    renv_lock: "renv.lock@incorporate-skill-md"
+  validation_entrypoint: validate/run_all.R
+  stale_after_days: 120
+  on_stale: >
+    Tell the user, before giving any advice from this pack, that it has not
+    been re-tested against current package versions and may be out of date.
+
+applies_when:
+  object: "Seurat >= 5.0, normalised, scaled, with variable features set"
+
+not_applicable_to:
+  - what: "Running t-SNE/UMAP directly on the full expression matrix, skipping PCA"
+    why: "PCA removes redundancy/noise first; t-SNE and UMAP are not substitutes for it. See reference/pitfalls.md#p-dr-002."
+  - what: "Treating a 2D PCA plot as a sufficient visualization of scRNA-seq data"
+    why: "Unlike bulk RNA-seq, the first two PCs typically capture only a small fraction of total variance in scRNA-seq - see reference/citations.md."
+
+depends_on:
+  in_lockfile:
+    - Seurat
+    - SeuratObject
+    - plotly
+  recommended_but_absent: []

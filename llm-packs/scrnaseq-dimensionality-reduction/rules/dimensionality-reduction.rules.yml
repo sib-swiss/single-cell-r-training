@@ -1,0 +1,92 @@
+# Machine-checkable assertions for scRNA-seq dimensionality reduction.
+#
+# severity: block | warn | inform
+
+rules:
+
+  - id: R-DR-001
+    severity: warn
+    title: "PCA loadings are not differential expression or a correlation score"
+    when: "explaining what RunPCA's reported top genes per PC represent"
+    forbid: "describing the genes RunPCA lists per PC as differentially expressed, or as correlated with the PC"
+    require: >
+      State they are the rotation matrix / loadings: the coefficients of the
+      linear combination of original genes that defines that PC's axis.
+    rationale: >
+      Source: course lecture, confirmed by a live audience poll where a
+      majority of participants initially picked "differential expression" or
+      "correlation score" as the answer - both wrong. PCA is a linear,
+      interpretable method precisely because these are loadings, not a
+      statistical test result.
+    enforced: [manual]
+
+  - id: R-DR-002
+    severity: block
+    title: "t-SNE/UMAP require PCA to have been run first"
+    when: "RunTSNE()/RunUMAP() is called"
+    forbid: "running RunTSNE()/RunUMAP() with no PCA reduction present on the object"
+    require: "RunPCA() has been run, and dims= references that PCA's components"
+    rationale: >
+      Source: course lecture, stated directly: "you would always do PCA
+      first before running t-SNE or UMAP... it reduces the dimension in a
+      way of keeping only the relevant information." Neither t-SNE nor UMAP
+      is itself a noise/redundancy filter - they assume that was already
+      done.
+    enforced: [lint, runtime]
+    lint: L-DR-001
+    post_condition: "'pca' %in% names(seu@reductions)"
+
+  - id: R-DR-003
+    severity: warn
+    title: "t-SNE inter-cluster distance is not meaningful"
+    when: "interpreting distances between clusters on a t-SNE plot"
+    forbid: "concluding two t-SNE clusters are 'more similar' because they are plotted closer together"
+    require: >
+      State that t-SNE's optimisation does not preserve global distance -
+      only local neighbourhood structure is meaningful. UMAP preserves more
+      global structure than t-SNE, but the course's own demonstration shows
+      it still isn't always reliable (two clusters that should be closer
+      together, in a known toy dataset, did not visibly get closer even at
+      high perplexity/neighbour settings).
+    enforced: [manual]
+
+  - id: R-DR-004
+    severity: warn
+    title: "Default neighbourhood size assumes dataset-scale data, not a subset"
+    when: "RunUMAP()/RunTSNE() is run on a subsetted object (e.g. one cell type)"
+    require: >
+      Lower n.neighbours (UMAP) / perplexity (t-SNE) below the default (30)
+      when working with a small subset - the default assumes a
+      neighbourhood size that may exceed the subset's own cluster sizes.
+    rationale: >
+      Source: course lecture, with the course's own worked rationale: "if
+      one has subset the data... the number of neighbors in a cluster would
+      anyway be most of the time lower than 30, then 30 is too much."
+    enforced: [manual]
+
+  - id: R-DR-005
+    severity: block
+    title: "Number of PCs (dims=) is a decision, not a default"
+    when: "dims= is set for RunUMAP()/RunTSNE()/FindNeighbors()"
+    forbid: "presenting a specific dims range as the standard/correct choice with no reference to the elbow plot"
+    require:
+      - "show the elbow plot (or another PC-selection diagnostic) before choosing"
+      - "state that too few PCs under-represents variation and too many adds noise, without being catastrophic either way"
+    rationale: >
+      Course's own exercise: comparing dims = 1:5 vs 1:25 vs 1:50 on the same
+      data gives visibly different UMAPs (a "blob" vs. over-separated). dims
+      cannot exceed the number of PCs RunPCA computed (50 by default) -
+      increase npcs at the RunPCA step if more precision is needed.
+    enforced: [lint]
+    lint: L-DR-002
+
+  - id: R-DR-006
+    severity: inform
+    title: "Two PCs rarely capture enough variance in scRNA-seq to be a sufficient visualization"
+    when: "a 2D PCA plot (not UMAP/t-SNE) is presented as the main visualization"
+    note: >
+      Source: course lecture: in scRNA-seq (unlike bulk RNA-seq) the first
+      two PCs often capture only a small percentage of total variance. A
+      2D PCA scatterplot alone is a diagnostic, not a substitute for
+      UMAP/t-SNE.
+    enforced: [manual]
