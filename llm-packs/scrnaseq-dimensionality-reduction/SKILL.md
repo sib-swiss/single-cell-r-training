@@ -51,6 +51,16 @@ confirmed by the course's own live quiz:
   plot as meaningful; the optimisation doesn't preserve it. UMAP preserves
   more global structure, but still only approximately.
 
+## Write the code to a file
+
+Before anything else in this section: write the code you produce to an
+actual file in the user's project (e.g. `analysis/<step>.R`, or appended to
+whatever script they're already building) — don't just execute it in a
+transient/ephemeral session with nothing saved. This is not optional. It is
+what makes the check below possible at all, and it's what keeps the
+analysis inspectable, version-controlled, and re-runnable after this
+conversation ends.
+
 ## Check your own output
 
 ```bash

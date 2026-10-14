@@ -59,6 +59,16 @@ by an inconsistency in the course's own material:
   a statistic, ranked *manually* beforehand — `GSEA()`-family functions do
   not rank it for you.
 
+## Write the code to a file
+
+Before anything else in this section: write the code you produce to an
+actual file in the user's project (e.g. `analysis/<step>.R`, or appended to
+whatever script they're already building) — don't just execute it in a
+transient/ephemeral session with nothing saved. This is not optional. It is
+what makes the check below possible at all, and it's what keeps the
+analysis inspectable, version-controlled, and re-runnable after this
+conversation ends.
+
 ## Check your own output
 
 ```bash
