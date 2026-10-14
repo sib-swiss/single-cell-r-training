@@ -1,0 +1,200 @@
+---
+title: "Using AI assistants with LLM packs"
+project:
+  execute-dir: project
+engine: knitr
+editor_options:
+  chunk_output_type: console
+---
+
+::: {.callout-note}
+## Learning outcomes
+
+**After having completed this chapter you will be able to:**
+
+- Explain what an LLM pack is, and how it differs from the course chapters themselves
+- Locate the LLM packs available for this course and the workflow stage each one covers
+- Set up an AI coding assistant on your own computer to use a pack
+- Use a pack to get AI-assisted help on your own dataset, while critically checking its output
+- Properly attribute a pack's guidance when you use it in your own analysis
+:::
+
+## What is an LLM pack?
+
+So far, every chapter in this course has taught *you* how to analyse single-cell
+data. An **LLM pack** targets a different reader: an AI coding assistant —
+a tool that can read and write code in your project based on natural-language
+instructions — writing analysis code for you, on your own data, after the
+course is over.
+
+A pack is not a copy of the course material. It keeps the decisions, the
+guard rails and the failure modes of a workflow — the things you'd want an
+experienced colleague looking over your shoulder to catch — in a form an AI
+assistant can act on and be checked against, rather than in a form meant to
+teach a human step by step.
+
+This course's packs live in the
+[`llm-packs/`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs)
+directory of the course repository. Each pack bundles:
+
+- **`pack.yml`** — what the pack covers, what it doesn't, and when it was last
+  checked against current package versions
+- **`SKILL.md`** — what the assistant should establish before writing any code
+- **`rules/`** — the hard rules, written so they can be checked automatically
+- **`reference/pitfalls.md`** and **`reference/citations.md`** — worked
+  failures, and a table mapping every substantive claim to its source
+- **`implementation/`** — a tested reference implementation to adapt rather
+  than reimplement from scratch
+- **`validate/`** — a linter you can run yourself on any code an assistant
+  writes for you
+
+## Packs available for this course
+
+| Pack | Covers | Source chapter |
+|---|---|---|
+| [`scrnaseq-qc-filtering`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-qc-filtering) | Loading 10x data, QC metrics, cell filtering | [Analysis tools and QC](day1-3_analysis_tools_qc.qmd) |
+| [`scrnaseq-integration`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-integration) | Multi-sample integration (Seurat 5, CCA) | [Integration](../day2/day2-3_integration.qmd) |
+| [`scrnaseq-differential-expression`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs/scrnaseq-differential-expression) | Cluster markers and cross-condition DE | [Differential gene expression](../day3/day3-2_differential_gene_expression.qmd) |
+
+More packs are planned, covering the remaining chapters of the course. Check
+the [`llm-packs/README.md`](https://github.com/sib-swiss/single-cell-r-training/tree/main/llm-packs)
+for the current status of each.
+
+::: {.callout-warning}
+## These are pilots
+
+Every pack above is marked `pilot, unreleased` in its own `pack.yml`. That is
+not a formality: it means the pack has not yet been used and evaluated widely
+enough to be trusted the way you'd trust a published tool. Use them, but keep
+your own critical judgement switched on — the same judgement this course is
+trying to teach you in the first place. If something looks wrong, it might be.
+:::
+
+## Setting up an AI coding assistant on your own computer
+
+Many AI coding assistants support some notion of a reusable "skill", "tool"
+or "context pack": a folder of instructions and supporting files that the
+assistant consults automatically once it's relevant, rather than something
+you have to re-explain every time. This course's packs are written to work
+with that kind of mechanism. The exact name and folder convention differs
+between assistants, but the pack itself is just plain Markdown, YAML and R —
+nothing assistant-specific — so any assistant that can read project files
+and run R code can use one.
+
+### 1. Install an AI coding assistant
+
+Follow the official installation instructions for whichever AI coding
+assistant you choose to use. You do not need anything beyond what the course
+already uses on top of that — your own R/Seurat setup (see
+[Setup](day1-1_setup.qmd)) and your own data.
+
+Check that assistant's own documentation for how it discovers reusable
+skills/tools/context packs, and where it expects to find them in a project —
+look for terms like "skills", "custom tools", "project rules" or "context
+packs". You'll need that answer for the next step.
+
+### 2. Ask your assistant to fetch the pack
+
+The packs live in this course's GitHub repository, but you don't need to
+clone the whole course material yourself, or even know any `git` commands.
+In the project directory where **your own data** lives, start your assistant
+and paste in a prompt like this one (substitute the pack name for the one you
+want):
+
+```
+Set up the "scrnaseq-qc-filtering" LLM pack from the SIB single-cell
+transcriptomics course (https://github.com/sib-swiss/single-cell-r-training)
+in this project, without downloading the whole course repository:
+
+1. In a temporary directory, sparse-clone only the llm-packs/scrnaseq-qc-filtering
+   folder, using `git clone --filter=blob:none --sparse` followed by
+   `git sparse-checkout set llm-packs/scrnaseq-qc-filtering`.
+2. Copy that folder into the location where you look for reusable
+   skills/tools/context packs in this project (create that location if it
+   doesn't exist yet).
+3. Remove the temporary clone.
+4. Confirm the pack is in place by listing its new location.
+```
+
+Your assistant will likely ask you to approve the commands it runs (clone,
+copy, delete) along the way — that's expected, and worth reading before you
+approve them. The end result is the same as copying the folder by hand, but
+only the one pack's files are ever downloaded, and you never had to type a
+`git` command yourself.
+
+### 3. Describe your task in plain language
+
+Start your assistant in that project directory and describe what you want to
+do, the same way you would ask a colleague:
+
+> *"I have 10x Genomics data from 3 samples in `course_data/count_matrices`.
+> Can you help me load it into Seurat and do QC and cell filtering?"*
+
+If the pack's `SKILL.md` description matches your request, the assistant will
+consult it automatically. A well-written pack will then ask you things like
+*which species* and *how many samples* before writing any code — exactly the
+facts this course has taught you are important to establish first.
+
+### 4. Check the output critically
+
+This is the step a pack cannot do for you. Before you trust any code an
+assistant writes:
+
+- Read `reference/pitfalls.md` yourself. It describes, in the pack's own
+  words, exactly what can go wrong.
+- Run the pack's linter on the code you were given (adjust the path to
+  wherever the pack ended up in step 2):
+
+  ```{bash day1-4-llm-packs-1}
+  #| eval: false
+  Rscript path/to/scrnaseq-qc-filtering/validate/lint_code.R my_analysis.R
+  ```
+
+- Check `pack.yml:validity.last_validated` — if it's old or empty, the pack
+  hasn't been re-checked against current package versions recently, and the
+  assistant should tell you this before giving advice.
+
+### 5. Keep the attribution
+
+A pack that follows this course's conventions will stamp the course's
+provenance onto the object it produces, and offer you a ready-to-paste methods
+sentence. Keep both — they are there so that using AI assistance doesn't mean
+losing track of where your methodology actually came from.
+
+## Try it now
+
+::: {.callout-important}
+## Exercise
+
+You already created a QC-filtered `seu` object earlier today, in [Analysis
+tools and QC](day1-3_analysis_tools_qc.qmd). Set up the
+`scrnaseq-qc-filtering` pack as described above, and ask your assistant to
+redo the QC and filtering step **from the raw count matrices**, without
+telling it the thresholds you used manually. Compare what it asks you, and
+what it produces, to what you did by hand.
+:::
+
+::: {.callout-tip collapse="true"}
+## What to look out for
+
+A pack that is working as intended should, among other things:
+
+- Ask you to confirm the species before writing any `PercentageFeatureSet`
+  call, rather than assuming human
+- Refuse to present the thresholds it uses as "standard" or "default", and
+  instead show you the distributions first
+- Produce code you can run yourself, not just a description of what to do
+
+If it does none of these, that's useful information too — it's a sign the
+pack (or the assistant's use of it) still needs work, which is exactly why
+these are pilots.
+:::
+
+## Limitations and feedback
+
+LLM packs encode *this course's* decisions for *this course's* workflows —
+they are not a general substitute for understanding single-cell analysis, and
+they will not catch every mistake. If you find a pack giving advice you think
+is wrong, outdated, or missing an important caveat, please open an issue on
+the [course repository](https://github.com/sib-swiss/single-cell-r-training/issues).
+That feedback is exactly what turns a pilot pack into a trustworthy one.
