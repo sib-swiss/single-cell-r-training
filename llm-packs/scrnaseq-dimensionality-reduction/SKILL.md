@@ -26,6 +26,9 @@ old, say so before giving advice from this pack.
 4. **Has the dataset been subsetted (e.g. to one cell type)?** Default
    `n.neighbors`/perplexity (30) assumes dataset-scale neighbourhoods; a
    small subset needs a smaller value (`R-DR-004`).
+5. **Are there 2+ samples/batches in this object?** If so, plan to look at
+   the UMAP colored by sample before moving on to clustering — see the last
+   step of the Procedure below (`R-DR-007`).
 
 ## Procedure
 
@@ -47,6 +50,24 @@ This pack also has a tested `run_dimred()` wrapper in `implementation/dimred.R`
 that refuses to run without a PCA reduction present — read it to confirm the
 guard, but write the steps out as shown, not a call to it.
 
+**Before moving on to clustering**, with 2+ samples/batches present, look at
+the UMAP colored by sample — this is the last step of this pack, not an
+optional extra (`R-DR-007`):
+
+```r
+if (length(unique(seu$orig.ident)) > 1) {
+  Seurat::DimPlot(seu, group.by = "orig.ident")
+}
+```
+
+Look at this plot before writing a single further line of analysis code.
+State explicitly what it shows: if cells visibly group by sample rather than
+by expected cell type, say so and raise the `scrnaseq-integration` pack's
+facts-to-resolve list before continuing to clustering — don't proceed as if
+the question wasn't asked. If samples mix well, say that explicitly too.
+`scrnaseq-clustering`'s `R-CLU-006` is the quantitative follow-up to this same
+question, once cluster assignments exist.
+
 ## Hard rules
 
 `rules/dimensionality-reduction.rules.yml`. The one most often gotten wrong,
@@ -62,6 +83,10 @@ confirmed by the course's own live quiz:
 - **`R-DR-003`** — do not read cluster-to-cluster **distance** off a t-SNE
   plot as meaningful; the optimisation doesn't preserve it. UMAP preserves
   more global structure, but still only approximately.
+- **`R-DR-007`** — with 2+ samples/batches, look at the UMAP colored by
+  sample before moving to clustering, and state explicitly whether it
+  separates by sample. This pack has no other point where that question gets
+  asked.
 
 ## Write the code to a file
 

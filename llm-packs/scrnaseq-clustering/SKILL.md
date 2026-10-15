@@ -51,6 +51,41 @@ This pack also has a tested `cluster_cells()` wrapper in
 integrated object — read it to confirm the guard, but write the steps out as
 shown, not a call to it.
 
+**Before trusting this clustering**, with 2+ samples/batches present,
+quantify sample mixing — this is the last step of this pack, not an optional
+extra (`R-CLU-006`):
+
+```r
+chosen_resolution <- 0.3   # a decision for this dataset, from the clustree plot above - R-CLU-001
+Seurat::Idents(seu) <- paste0("RNA_snn_res.", chosen_resolution)
+
+sample_col <- "orig.ident"
+if (length(unique(seu[[sample_col, drop = TRUE]])) > 1) {
+  tab <- table(cluster = Seurat::Idents(seu), sample = seu[[sample_col, drop = TRUE]])
+  purity <- apply(tab, 1, function(x) max(x) / sum(x))   # 1.0 = cluster entirely from one sample
+  print(data.frame(cluster = rownames(tab), n_cells = rowSums(tab),
+                   purity = round(purity, 2),
+                   dominant_sample = colnames(tab)[apply(tab, 1, which.max)]))
+
+  emb <- as.data.frame(SeuratObject::Embeddings(seu, "umap")[, 1:2])
+  centroids <- do.call(rbind, lapply(split(emb, seu[[sample_col, drop = TRUE]]), colMeans))
+  print(stats::dist(centroids))   # large pairwise distances = samples occupy different UMAP regions
+}
+
+source("implementation/cluster.R")   # for the attribution helper only (if not already sourced)
+```
+
+Report both numbers, not just an impression from the plot: a cluster near
+purity 1.0, or pairwise centroid distances that are large relative to the
+spread within a sample, both point to an uncorrected sample/batch effect —
+say so and raise the `scrnaseq-integration` pack before trusting this
+clustering for anything beyond a first look. If purity roughly tracks each
+sample's overall share of the dataset and centroids sit close together, say
+that explicitly too. `implementation/cluster.R` has a tested
+`check_sample_mixing()` version of this exact computation — read it to
+confirm you haven't missed an edge case (e.g. a single-sample object), but
+write the steps out as shown, not a call to it.
+
 ## Hard rules
 
 `rules/clustering.rules.yml`. The one that causes the most silent damage:
@@ -64,6 +99,10 @@ shown, not a call to it.
   clusters." The course instructor states this directly: clustering is
   subjective, and `FindClusters()` finds the optimal partition *for that
   resolution*, not the optimal resolution.
+- **`R-CLU-006`** — after clustering, with 2+ samples/batches present,
+  compute per-cluster purity by sample and per-sample centroid distances in
+  the UMAP, not just a visual impression. The quantitative follow-up to
+  `scrnaseq-dimensionality-reduction`'s `R-DR-007`.
 
 ## Write the code to a file
 

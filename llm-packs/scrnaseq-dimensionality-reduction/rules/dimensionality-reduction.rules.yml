@@ -90,3 +90,29 @@ rules:
       2D PCA scatterplot alone is a diagnostic, not a substitute for
       UMAP/t-SNE.
     enforced: [manual]
+
+  - id: R-DR-007
+    severity: warn
+    title: "Decide whether integration is needed before clustering, based on the UMAP colored by sample"
+    when: "the object has 2+ samples/batches and UMAP has just been computed, before clustering starts"
+    forbid: >
+      proceeding straight to clustering on a multi-sample object with no
+      visual check of whether cells group by sample/batch rather than by
+      expected biology
+    require: >
+      Plot DimPlot(seu, group.by = <sample/batch column>) and look at it
+      explicitly before writing any further analysis code. State what it
+      shows: if cells visibly separate by sample rather than by expected
+      cell type, say that integration is likely needed and raise the
+      scrnaseq-integration pack's facts-to-resolve list before continuing.
+      If samples mix well, say that explicitly too - don't skip the
+      question silently either way.
+    rationale: >
+      Neither this pack nor scrnaseq-clustering otherwise forces the
+      integration question to be asked at all - scrnaseq-clustering's own
+      R-CLU-002 only catches the case where integration already happened
+      but its reduction wasn't used; it has nothing to say about whether
+      integration should have been run in the first place. This is the
+      visual, qualitative half of that decision; R-CLU-006 is the
+      quantitative half, one step later, once cluster assignments exist.
+    enforced: [manual]

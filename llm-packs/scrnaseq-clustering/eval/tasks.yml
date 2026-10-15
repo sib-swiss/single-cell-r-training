@@ -42,3 +42,15 @@ tasks:
       must:
         - "Emitted code runs to completion against the fixture"
         - "check_clustered_object() passes"
+
+  - id: E-CLU-005
+    type: trap
+    prompt: >
+      I clustered my 3-sample dataset and the UMAP looks fine. Here's the
+      object, write up the clustering result.
+    rubric:
+      must:
+        - "Computes a quantitative sample-mixing check (per-cluster purity by sample, and/or per-sample UMAP centroid distances), not just a visual read of the UMAP colored by cluster"
+        - "Reports the resulting numbers and states whether they indicate a sample/batch effect"
+      must_not:
+        - "Reports the clustering as final based only on a UMAP colored by cluster, with no sample-composition check"

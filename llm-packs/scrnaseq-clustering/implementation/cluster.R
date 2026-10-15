@@ -51,6 +51,64 @@ cluster_cells <- function(seu, dims, reduction = NULL,
   stamp_provenance(seu)
 }
 
+#' Diagnostic: is this clustering showing a sample/batch effect rather than
+#' (or in addition to) real biology? Quantitative counterpart to
+#' scrnaseq-dimensionality-reduction's visual check (R-DR-007) - rule
+#' R-CLU-006.
+#'
+#' Neither number is a verdict on its own - a cluster dominated by one sample
+#' can be a genuinely rare, sample-specific cell state, and even a modest
+#' centroid separation can matter for a subtle biological signal - but both
+#' are evidence worth reporting before treating a multi-sample clustering as
+#' settled.
+#'
+#' @param seu         Clustered Seurat object.
+#' @param cluster_col Metadata column with cluster assignments.
+#' @param sample_col  Metadata column identifying sample/batch.
+#' @param reduction   Embedding for the centroid-distance check, e.g. "umap".
+#' @param dims        Which dimensions of `reduction` to use.
+#' @return A list with `purity` (per-cluster data.frame) and
+#'         `centroid_distances` (a `dist` object, one entry per sample pair).
+check_sample_mixing <- function(seu, cluster_col = "seurat_clusters",
+                                sample_col = "orig.ident",
+                                reduction = "umap", dims = 1:2) {
+  if (!cluster_col %in% colnames(seu@meta.data)) {
+    stop(sprintf(paste0(
+      "Column '%s' not found in metadata - was FindClusters() run, and does ",
+      "it match this column name?"), cluster_col))
+  }
+  samples <- seu[[sample_col, drop = TRUE]]
+  if (length(unique(samples)) < 2) {
+    stop("Only one sample/batch found in `", sample_col, "` - nothing to ",
+         "check sample mixing against.")
+  }
+  if (!reduction %in% names(seu@reductions)) {
+    stop(sprintf("Reduction '%s' not found - compute it first (e.g. RunUMAP()).",
+                 reduction))
+  }
+  clusters <- seu[[cluster_col, drop = TRUE]]
+
+  # Purity: for each cluster, the fraction of its cells coming from its
+  # single most common sample. 1.0 = entirely one sample; close to that
+  # sample's overall share of the dataset = well mixed.
+  tab <- table(cluster = clusters, sample = samples)
+  purity <- apply(tab, 1, function(x) max(x) / sum(x))
+  purity_df <- data.frame(
+    cluster = rownames(tab), n_cells = unname(rowSums(tab)),
+    purity = unname(purity),
+    dominant_sample = colnames(tab)[apply(tab, 1, which.max)],
+    row.names = NULL, stringsAsFactors = FALSE)
+
+  # Centroid distances: per-sample centroid in the embedding, pairwise
+  # Euclidean distance. Samples occupying different regions of the embedding
+  # (large distances) is independent evidence of the same effect.
+  emb <- as.data.frame(SeuratObject::Embeddings(seu, reduction)[, dims, drop = FALSE])
+  centroids <- do.call(rbind, lapply(split(emb, samples), colMeans))
+  centroid_distances <- stats::dist(centroids)
+
+  list(purity = purity_df, centroid_distances = centroid_distances)
+}
+
 #' Thin wrapper around clustree, so a model doesn't have to guess the
 #' metadata column prefix (which depends on the graph's assay name).
 cluster_stability_tree <- function(seu, graph_assay = SeuratObject::DefaultAssay(seu)) {

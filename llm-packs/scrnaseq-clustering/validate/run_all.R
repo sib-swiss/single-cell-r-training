@@ -51,6 +51,51 @@ if (!identical(got2, "ok")) {
   cat("  PASS\n")
 }
 
+# --- R-CLU-006: check_sample_mixing() must discriminate a planted sample
+# effect from a no-effect fixture, on the actual UMAP embedding -----------
+
+cat("\n=== R-CLU-006: check_sample_mixing() flags a planted sample/batch effect ===\n")
+seu_mix <- make_fixture(with_integration = TRUE)
+seu_mix <- cluster_cells(seu_mix, dims = 1:15, reduction = "integrated.cca")
+mix <- check_sample_mixing(seu_mix, sample_col = "orig.ident")
+r3 <- check_sample_mixing_result(mix)
+if (!report(r3, "check_sample_mixing(): structural post-conditions")) {
+  note("check_sample_mixing() structure check failed")
+}
+mean_purity_effect <- mean(mix$purity$purity)
+cat(sprintf("  mean purity (planted sample effect): %.2f\n", mean_purity_effect))
+if (mean_purity_effect < 0.7) {
+  note("check_sample_mixing() did not detect the planted sample/batch effect via purity (mean purity %.2f)", mean_purity_effect)
+}
+
+cat("\n=== check_sample_mixing(): stays low with no planted sample effect ===\n")
+seu_nomix <- make_fixture(with_integration = FALSE)
+seu_nomix <- cluster_cells(seu_nomix, dims = 1:15)
+mix2 <- check_sample_mixing(seu_nomix, sample_col = "orig.ident")
+mean_purity_nomix <- mean(mix2$purity$purity)
+cat(sprintf("  mean purity (no sample effect):      %.2f\n", mean_purity_nomix))
+if (mean_purity_nomix >= mean_purity_effect) {
+  note("check_sample_mixing(): no-effect fixture did not have lower purity than the planted-effect fixture (%.2f vs %.2f) - diagnostic not discriminating", mean_purity_nomix, mean_purity_effect)
+} else {
+  cat("  PASS - planted-effect fixture shows higher purity than the no-effect fixture\n")
+}
+
+cat("\n=== check_sample_mixing(): refuses a single-sample object ===\n")
+seu_single <- make_fixture(with_integration = FALSE)
+seu_single <- seu_single[, seu_single$orig.ident == "S1"]
+seu_single <- cluster_cells(seu_single, dims = 1:15)
+got4 <- tryCatch({ check_sample_mixing(seu_single); "no error" },
+                 error = function(e) conditionMessage(e))
+if (identical(got4, "no error")) {
+  note("check_sample_mixing() accepted a single-sample object")
+  cat("  FAIL\n")
+} else if (!grepl("Only one sample/batch", got4)) {
+  note("check_sample_mixing() errored on a single-sample object, but not via the intended guard: %s", got4)
+  cat("  FAIL (wrong error):", got4, "\n")
+} else {
+  cat("  PASS - errored as required via the sample-count guard:", got4, "\n")
+}
+
 cat("\n", strrep("-", 60), "\n", sep = "")
 if (length(failures)) {
   cat("VALIDATION FAILED\n")

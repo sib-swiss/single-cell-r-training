@@ -33,6 +33,7 @@ make_fixture <- function(n_cells = 300, n_genes = 200, with_integration = FALSE)
   seu <- Seurat::FindVariableFeatures(seu, nfeatures = 100, verbose = FALSE)
   seu <- Seurat::ScaleData(seu, verbose = FALSE)
   seu <- Seurat::RunPCA(seu, npcs = 15, verbose = FALSE)
+  seu <- Seurat::RunUMAP(seu, dims = 1:15, reduction = "pca", verbose = FALSE)
   if (with_integration) {
     # Stand-in "integrated" reduction: same embedding as pca here is enough
     # to exercise the reduction-selection guard; the fixture's job is to

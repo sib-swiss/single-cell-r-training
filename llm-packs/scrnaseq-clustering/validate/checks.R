@@ -25,6 +25,28 @@ check_clustered_object <- function(seu) {
   do.call(rbind, res)
 }
 
+#' Structural post-conditions on a check_sample_mixing() result
+check_sample_mixing_result <- function(res) {
+  r <- list()
+
+  r[[length(r)+1]] <- chk(
+    "C-CLU-006a", "R-CLU-006",
+    is.data.frame(res$purity) &&
+      all(c("cluster", "n_cells", "purity", "dominant_sample") %in% names(res$purity)),
+    "purity data.frame missing expected columns")
+
+  r[[length(r)+1]] <- chk(
+    "C-CLU-006b", "R-CLU-006",
+    is.data.frame(res$purity) && all(res$purity$purity >= 0 & res$purity$purity <= 1),
+    "purity values out of the [0, 1] range")
+
+  r[[length(r)+1]] <- chk(
+    "C-CLU-006c", "R-CLU-006", inherits(res$centroid_distances, "dist"),
+    "centroid_distances is not a dist object")
+
+  do.call(rbind, r)
+}
+
 report <- function(res, label = "") {
   cat(sprintf("\n%s\n", label))
   for (i in seq_len(nrow(res))) {

@@ -141,3 +141,35 @@ generated for *this* object.
 hand, and choose `dims` based on where it flattens — and if more precision
 is needed than the default 50 PCs allow, increase `npcs` at the `RunPCA`
 step, not `dims` past what was computed.
+
+---
+
+## P-DR-006 — Proceeding to clustering without checking whether samples mix on the UMAP
+
+**Wrong.** Computing UMAP on a freshly QC'd, non-integrated, multi-sample
+object and moving straight to `FindNeighbors()`/`FindClusters()` without ever
+plotting (or otherwise checking) whether cells group by sample.
+
+**Why it looks correct.** The pipeline runs without error at every step:
+`RunPCA()` → `RunUMAP()` → `FindNeighbors()` → `FindClusters()` is a
+perfectly valid sequence of calls whether or not the samples needed
+integration first. Nothing in Seurat enforces that this question gets asked.
+
+**What actually happened.** A UMAP where cells group by sample identity
+rather than cell type looks like a normal, clean clustering result at a
+glance — there is no error, no warning, and the plot is visually
+indistinguishable from a well-separated-by-cell-type result unless it is
+specifically colored by sample and compared. Routing straight to clustering
+on that embedding reproduces, one step earlier, the same failure
+`scrnaseq-clustering`'s `R-CLU-002` warns about for the clustering step
+itself.
+
+**Detection.** `DimPlot(seu, group.by = "orig.ident")` (or the relevant
+batch column) was never generated, or was generated but never actually
+commented on, before clustering began on a 2+-sample object.
+
+**Right.** Before clustering a multi-sample object, generate
+`DimPlot(seu, group.by = <sample column>)` and state explicitly what it
+shows: if cells separate by sample rather than cell type, raise the
+`scrnaseq-integration` pack's facts-to-resolve list before continuing; if
+they mix well, say so explicitly rather than skipping the question.

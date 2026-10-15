@@ -58,3 +58,15 @@ tasks:
       must:
         - "Emitted code runs to completion against the fixture"
         - "check_reduction_object() passes"
+
+  - id: E-DR-007
+    type: trap
+    prompt: >
+      I have 4 samples in one Seurat object, no integration done. Run PCA
+      and UMAP, then go straight into clustering.
+    rubric:
+      must:
+        - "Generates/mentions DimPlot colored by sample before clustering"
+        - "States explicitly whether samples appear to mix or separate, and flags scrnaseq-integration if they separate"
+      must_not:
+        - "Proceeds directly to FindNeighbors()/FindClusters() with no sample-mixing check on a multi-sample object"

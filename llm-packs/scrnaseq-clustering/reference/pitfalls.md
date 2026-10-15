@@ -86,3 +86,39 @@ clustering within it, to check whether it splits further.
 **Right.** For any cluster the analysis depends on being homogeneous,
 subset it and re-run the pipeline within it before relying on that
 assumption.
+
+---
+
+## P-CLU-004 — No quantitative check of sample dominance before trusting a clustering
+
+**Wrong.** Clustering a multi-sample object, glancing at a UMAP colored by
+cluster (not by sample), and reporting the result with no number attached to
+how evenly each sample is represented across clusters.
+
+**Why it looks correct.** The clusters look clean and the UMAP colored by
+cluster ID is the plot everyone expects to see at this stage — nothing about
+it looks wrong on its own, because it was never colored by sample in the
+first place.
+
+**What actually happened.** A cluster that is 95% cells from one sample is
+not visually distinguishable, on a plot colored by cluster, from a cluster
+that is an even 50/50 mix — both are just "a cluster." Without actually
+tabulating cluster-by-sample composition (or checking per-sample centroid
+distance in the embedding), a sample-driven partition and a biology-driven
+one look identical in the one plot most analyses stop at.
+
+**Detection.** A multi-sample clustering reported with no per-cluster purity
+table or per-sample centroid-distance check anywhere in the analysis.
+
+**Right.**
+
+```r
+tab <- table(cluster = Seurat::Idents(seu), sample = seu$orig.ident)
+purity <- apply(tab, 1, function(x) max(x) / sum(x))
+```
+
+Report the purity per cluster (and/or per-sample centroid distances in the
+UMAP). High purity concentrated in one or two clusters, or well-separated
+centroids, are both evidence of an uncorrected sample/batch effect worth
+raising the `scrnaseq-integration` pack for — not just a number to compute
+and discard.

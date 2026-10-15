@@ -77,3 +77,29 @@ rules:
       explained mainly by a QC metric (e.g. percent.mito) rather than a
       genuine expression signature, before trusting the partition.
     enforced: [manual]
+
+  - id: R-CLU-006
+    severity: warn
+    title: "Quantify sample mixing per cluster before trusting a multi-sample clustering"
+    when: "the object has 2+ samples/batches and clustering has just finished"
+    forbid: >
+      treating a multi-sample clustering as finished with no quantitative
+      check of whether clusters are dominated by a single sample
+    require: >
+      Compute, per cluster, the fraction of cells coming from its single
+      most common sample (purity) and the pairwise distance between each
+      sample's centroid in the UMAP embedding. Report both numbers, not just
+      an impression from the plot: clusters with high purity by sample, or
+      samples with well-separated centroids, both indicate a sample/batch
+      effect that integration (`scrnaseq-integration` pack) would likely
+      address.
+    rationale: >
+      This is the quantitative counterpart to
+      `scrnaseq-dimensionality-reduction`'s `R-DR-007` (the visual check one
+      step earlier) and a different failure from this pack's own `R-CLU-002`
+      (which only catches the case where integration already happened but
+      its reduction wasn't used) - neither of those has anything to say
+      about whether integration should have been run in the first place.
+      Without a number attached, "the samples look okay on the UMAP" is an
+      impression, not a decision basis.
+    enforced: [manual]
