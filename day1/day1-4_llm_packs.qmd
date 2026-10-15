@@ -99,7 +99,25 @@ skills/tools/context packs, and where it expects to find them in a project —
 look for terms like "skills", "custom tools", "project rules" or "context
 packs". You'll need that answer for the next step.
 
-### 2. Ask your assistant to fetch the packs
+### 2. Install the packages yourself, before involving your assistant
+
+Do this yourself, in your own R console, rather than asking your assistant to
+do it — the same command from [Setup](day1-1_setup.qmd):
+
+```r
+install.packages("renv")
+renv::restore(lockfile = "https://raw.githubusercontent.com/sib-swiss/single-cell-r-training/refs/heads/master/renv.lock")
+```
+
+This is the single biggest lever you have over how much of your conversation
+with the assistant gets spent on installation rather than your actual
+analysis. Every pack's `ENVIRONMENT.md` tells the assistant what to do if it
+still hits a missing package, but an assistant that never hits one in the
+first place never produces — and you never have to read — a single line of
+compiler or download output. Do this before step 3, especially if this is a
+brand-new project with none of this installed yet.
+
+### 3. Ask your assistant to fetch the packs
 
 The packs live in this course's GitHub repository, but you don't need to
 clone the whole course material yourself, or even know any `git` commands.
@@ -118,7 +136,7 @@ Set up all of the LLM packs from the SIB single-cell transcriptomics course
 (https://github.com/sib-swiss/single-cell-r-training) in this project,
 without downloading the whole course repository:
 
-1. In a temporary directory, sparse-clone only the llm-packs folder (not
+1. In a temporary directory, sparse-clone only the llm-packs folder in the branch incorporate-skill-md (not
    llm-packs/_dev, which is authoring material, not a pack), using
    `git clone --filter=blob:none --sparse` followed by
    `git sparse-checkout set llm-packs` and then excluding llm-packs/_dev.
@@ -152,7 +170,7 @@ of having to repeat the whole fetch-and-copy process again the next time
 you need a different stage.
 :::
 
-### 3. Describe your task in plain language
+### 4. Describe your task in plain language
 
 Start your assistant in that project directory and describe what you want to
 do, the same way you would ask a colleague:
@@ -165,7 +183,7 @@ consult it automatically. A well-written pack will then ask you things like
 *which species* and *how many samples* before writing any code — exactly the
 facts this course has taught you are important to establish first.
 
-### 4. Check the output critically
+### 5. Check the output critically
 
 This is the step a pack cannot do for you. Before you trust any code an
 assistant writes:
@@ -174,7 +192,7 @@ assistant writes:
   words, exactly what can go wrong.
 - Run the relevant pack's linter on the code you were given — and remember
   rule 1: that code has to exist as a file first (adjust the path to
-  wherever the packs ended up in step 2):
+  wherever the packs ended up in step 3):
 
   ```{bash day1-4-llm-packs-1}
   #| eval: false
@@ -185,7 +203,7 @@ assistant writes:
   hasn't been re-checked against current package versions recently, and the
   assistant should tell you this before giving advice.
 
-### 5. Keep the attribution
+### 6. Keep the attribution
 
 A pack that follows this course's conventions will stamp the course's
 provenance onto the object it produces, and offer you a ready-to-paste methods
