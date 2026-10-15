@@ -38,11 +38,12 @@ Write the actual Seurat calls directly into the user's own script — the same
 functions this course taught (`PercentageFeatureSet`, `subset`, ...) — rather
 than sourcing `implementation/qc_filter.R` and calling `add_qc_metrics()`/
 `filter_cells()` as opaque wrapper functions. Those two functions are the
-CI-tested version of this exact logic: read them to confirm you haven't
-missed a guard, and match their structure, but don't call them in the file
-you hand back. A script that just calls a pack-specific function name the
-user has never seen is not something they can recognise, validate against
-what they learned, or run once this pack's files are gone:
+CI-tested version of this exact logic, matching the guards already listed
+under Hard Rules below — open the file only if something fails in a way
+those rules don't explain, not as a routine step. Don't call them in the
+file you hand back: a script that just calls a pack-specific function name
+the user has never seen is not something they can recognise, validate
+against what they learned, or run once this pack's files are gone:
 
 ```r
 # R-001: species decides the pattern; never hardcode "^MT-" unconfirmed.

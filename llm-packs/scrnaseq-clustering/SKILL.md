@@ -48,8 +48,9 @@ seu <- stamp_provenance(seu, reduction = reduction, resolutions = resolutions)
 
 This pack also has a tested `cluster_cells()` wrapper in
 `implementation/cluster.R` that refuses to default to `"pca"` on an
-integrated object — read it to confirm the guard, but write the steps out as
-shown, not a call to it.
+integrated object, matching `R-CLU-002` above — open it only if something
+fails in a way that rule doesn't explain. Write the steps out as shown, not
+a call to it.
 
 **Before trusting this clustering**, with 2+ samples/batches present,
 quantify sample mixing — this is the last step of this pack, not an optional
@@ -82,9 +83,10 @@ say so and raise the `scrnaseq-integration` pack before trusting this
 clustering for anything beyond a first look. If purity roughly tracks each
 sample's overall share of the dataset and centroids sit close together, say
 that explicitly too. `implementation/cluster.R` has a tested
-`check_sample_mixing()` version of this exact computation — read it to
-confirm you haven't missed an edge case (e.g. a single-sample object), but
-write the steps out as shown, not a call to it.
+`check_sample_mixing()` version of this exact computation — open it only if
+something fails in a way the code above doesn't explain (e.g. an edge case
+like a single-sample object), not as a routine step. Write the steps out as
+shown, not a call to it.
 
 ## Hard rules
 

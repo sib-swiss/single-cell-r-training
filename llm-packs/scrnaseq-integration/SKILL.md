@@ -48,9 +48,10 @@ Write the actual Seurat calls directly into the user's own script — the same
 functions this course taught (`IntegrateLayers`, `JoinLayers`, ...) — rather
 than sourcing `implementation/integrate.R` and calling `integrate_samples()`
 as an opaque wrapper function. That function is the CI-tested version of
-this exact logic: read it to confirm you haven't missed a guard, but don't
-call it in the file you hand back — a script built from the course's own
-functions is something the user can recognise and validate; a call to a
+this exact logic, matching the guards already listed under Hard Rules
+below — open it only if something fails in a way those rules don't explain.
+Don't call it in the file you hand back — a script built from the course's
+own functions is something the user can recognise and validate; a call to a
 pack-specific function name is not.
 
 ```r

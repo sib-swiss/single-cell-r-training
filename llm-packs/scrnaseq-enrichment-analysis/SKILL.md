@@ -52,8 +52,9 @@ go_res <- stamp_provenance(go_res, n_genes = length(tum_down_genes),
 ```
 
 This pack also has a tested `run_ora()` wrapper in `implementation/enrichment.R`
-that refuses to run without an explicit `universe` — read it to confirm the
-guard, but write the steps out as shown, not a call to it.
+that refuses to run without an explicit `universe`, matching `R-ENR-001`
+above — open it only if something fails in a way that rule doesn't explain.
+Write the steps out as shown, not a call to it.
 
 ## Hard rules
 

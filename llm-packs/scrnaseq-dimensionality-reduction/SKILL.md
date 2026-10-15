@@ -47,8 +47,9 @@ seu <- stamp_provenance(seu, dims = dims, reduction = "pca", tsne = FALSE)
 ```
 
 This pack also has a tested `run_dimred()` wrapper in `implementation/dimred.R`
-that refuses to run without a PCA reduction present — read it to confirm the
-guard, but write the steps out as shown, not a call to it.
+that refuses to run without a PCA reduction present, matching `R-DR-002`
+above — open it only if something fails in a way that rule doesn't explain.
+Write the steps out as shown, not a call to it.
 
 **Before moving on to clustering**, with 2+ samples/batches present, look at
 the UMAP colored by sample — this is the last step of this pack, not an

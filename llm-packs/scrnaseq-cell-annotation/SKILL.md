@@ -56,8 +56,9 @@ seu <- stamp_provenance(seu, n_labels = length(unique(seu_SingleR$labels)),
 ```
 
 This pack also has a tested `annotate_with_reference()` wrapper in
-`implementation/annotate.R` doing the same thing — read it to confirm the
-guards above, but write the steps out as shown, not a call to it.
+`implementation/annotate.R` doing the same thing, matching the guards
+already listed above — open it only if something fails in a way those don't
+explain. Write the steps out as shown, not a call to it.
 
 ## Hard rules
 

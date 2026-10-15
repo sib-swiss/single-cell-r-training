@@ -52,9 +52,9 @@ functions this course taught (`FindAllMarkers`, `AggregateExpression`,
 `DGEList`, `voom`, `lmFit`, ...) — rather than sourcing
 `implementation/de_markers.R` and calling `cluster_markers()`/
 `pseudobulk_de()` as opaque wrapper functions. Those functions are the
-CI-tested version of this exact logic (including the guards below): read
-them to confirm you haven't missed one, but don't call them in the file you
-hand back.
+CI-tested version of this exact logic, matching the guards already listed
+below — open the file only if something fails in a way those rules don't
+explain. Don't call them in the file you hand back.
 
 Marker discovery is simple enough to stay a one-liner:
 

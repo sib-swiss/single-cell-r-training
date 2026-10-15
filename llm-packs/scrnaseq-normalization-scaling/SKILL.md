@@ -55,9 +55,10 @@ on a specific marker panel), scale those explicitly: `ScaleData(seu, features
 `n_scaled_genes = length(scale_genes)` to `stamp_provenance()` accordingly.
 
 This pack also has a tested `scale_variable_features()` wrapper in
-`implementation/normalize_scale.R` doing the same thing — read it to confirm
-the guards above, but write the steps out as shown, not a call to it, so
-the user's script shows the Seurat functions this course taught.
+`implementation/normalize_scale.R` doing the same thing, matching the guards
+already listed above — open it only if something fails in a way those don't
+explain. Write the steps out as shown, not a call to it, so the user's
+script shows the Seurat functions this course taught.
 
 ## Hard rules
 
