@@ -1,8 +1,9 @@
 # Environment and shared conventions
 
-Every pack's `SKILL.md` points here for two things that apply identically to
-all of them: what to do about a missing package, and the one rule that
-applies to every pack's Procedure section, below.
+Every pack's `SKILL.md` points here for three things that apply identically
+to all of them: what to do about a missing package, the one rule that
+applies to every pack's Procedure section, and how to run the resulting
+script without flooding the conversation with its console output.
 
 ## Missing a package?
 
@@ -15,7 +16,7 @@ pack as the analysis moves through the pipeline. On a cold environment with
 none of this pre-installed, that can mean the same flood six or seven times
 over in one session.
 
-## Do this instead
+### Do this instead
 
 1. Check whether this project already has an `renv.lock` (the course repo's
    own, or a copy fetched alongside the packs). If so, restore it **once**,
@@ -62,3 +63,22 @@ transient/ephemeral session with nothing saved. This is not optional. It is
 what makes every pack's `validate/lint_code.R` check possible at all, and
 it's what keeps the analysis inspectable, version-controlled, and
 re-runnable after this conversation ends.
+
+## Run scripts without flooding context back in
+
+Running the code from any pack's Procedure produces console output
+(package messages, printed diagnostics, warnings) that gets read back in
+full once the run finishes - this is a separate cost from the installation
+logs covered above, and it recurs every time a script runs, not just once
+per package. Redirect it and pull in only what's needed, rather than
+letting an entire run flow back unexamined:
+
+```bash
+Rscript analysis/02_dimred.R > analysis/02_dimred.log 2>&1
+tail -n 20 analysis/02_dimred.log        # or: grep -i error analysis/02_dimred.log
+```
+
+If the run succeeded, a short tail (or "no errors found") is enough to
+report back - the full log stays on disk if it's needed for debugging
+later, rather than needing to be re-run just to produce it again. If it
+failed, show the actual error from the log, not just "it failed."
