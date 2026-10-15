@@ -62,6 +62,18 @@ output. Prose warnings cannot do both.
 and without, across model versions. Until those numbers exist, "this makes
 AI-assisted analysis more trustworthy" is a hypothesis.
 
+## Writing Procedure code
+
+Every Seurat (or edgeR/limma) call in a `SKILL.md` Procedure block or an
+`implementation/*.R` reference is run, and its console output read back, by
+whatever agent is following the pack to confirm each step worked. Pass
+`verbose = FALSE` on every call that has it (check with
+`"verbose" %in% names(formals(fn))` if unsure) — the alternative is real,
+observed cost: an un-silenced `FindClusters()` swept across 8 resolutions
+printed ~70 lines of Louvain/modularity output for a single step. A handful
+of functions used in these packs (`RunTSNE`, `SCTransform`) have no `verbose`
+argument at all; nothing to do there.
+
 ## Running the checks
 
 The same commands apply to every pack - substitute the pack directory.

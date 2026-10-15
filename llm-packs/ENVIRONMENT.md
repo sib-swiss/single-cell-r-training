@@ -1,4 +1,10 @@
-# Environment: what to do about a missing package
+# Environment and shared conventions
+
+Every pack's `SKILL.md` points here for two things that apply identically to
+all of them: what to do about a missing package, and the one rule that
+applies to every pack's Procedure section, below.
+
+## Missing a package?
 
 Every pack's `pack.yml:depends_on` names the packages its advice depends on.
 If you hit a missing-package error while following any pack, **don't install
@@ -46,3 +52,13 @@ over in one session.
    the course's `renv.lock` by design (see that pack's `pack.yml` for why) —
    don't add it via step 1 or 2; that's a separate, deliberate decision to
    flag to the user, not a gap to silently fill.
+
+## Write the code to a file, always
+
+Before anything else in any pack's Procedure: write the code you produce to
+an actual file in the user's project (e.g. `analysis/<step>.R`, or appended
+to whatever script they're already building) — don't just execute it in a
+transient/ephemeral session with nothing saved. This is not optional. It is
+what makes every pack's `validate/lint_code.R` check possible at all, and
+it's what keeps the analysis inspectable, version-controlled, and
+re-runnable after this conversation ends.

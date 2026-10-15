@@ -59,7 +59,7 @@ hand back.
 Marker discovery is simple enough to stay a one-liner:
 
 ```r
-markers <- Seurat::FindAllMarkers(seu, min.pct = 0.25, only.pos = TRUE)
+markers <- Seurat::FindAllMarkers(seu, min.pct = 0.25, only.pos = TRUE, verbose = FALSE)
 markers <- subset(markers, markers$p_val_adj < 0.05)
 ```
 
@@ -82,7 +82,7 @@ stopifnot("fewer than 2 replicates per condition" = all(n_per_condition[contrast
 # course's own exercise fabricates pairing for teaching purposes only.
 
 bulk <- Seurat::AggregateExpression(seu, group.by = sample_col,
-                                    return.seurat = TRUE, assay = "RNA")
+                                    return.seurat = TRUE, assay = "RNA", verbose = FALSE)
 meta <- unique(md[, c(sample_col, condition_col, replicate_col)])
 rownames(meta) <- meta[[sample_col]]
 bulk@meta.data <- meta[colnames(bulk), , drop = FALSE]
@@ -145,13 +145,9 @@ produce the analysis — explain the problem instead. The headline:
 
 ## Write the code to a file
 
-Before anything else in this section: write the code you produce to an
-actual file in the user's project (e.g. `analysis/<step>.R`, or appended to
-whatever script they're already building) — don't just execute it in a
-transient/ephemeral session with nothing saved. This is not optional. It is
-what makes the check below possible at all, and it's what keeps the
-analysis inspectable, version-controlled, and re-runnable after this
-conversation ends.
+Write the code you produce to an actual file before running or checking it —
+see [`../ENVIRONMENT.md`](../ENVIRONMENT.md#write-the-code-to-a-file-always)
+for why this applies to every pack and is not optional.
 
 ## Check your own output
 

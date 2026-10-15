@@ -25,7 +25,7 @@ suppressPackageStartupMessages({
 cluster_markers <- function(seu, min_pct = 0.25, only_pos = TRUE,
                             test.use = "wilcox") {
   markers <- Seurat::FindAllMarkers(seu, min.pct = min_pct, only.pos = only_pos,
-                                    test.use = test.use)
+                                    test.use = test.use, verbose = FALSE)
   markers <- subset(markers, markers$p_val_adj < 0.05)
   stamp_provenance(markers, step = "cluster_markers",
                    n_clusters = length(unique(markers$cluster)))
@@ -86,7 +86,8 @@ pseudobulk_de <- function(seu, sample_col, condition_col, contrast,
   }
 
   bulk <- Seurat::AggregateExpression(seu, group.by = sample_col,
-                                      return.seurat = TRUE, assay = assay)
+                                      return.seurat = TRUE, assay = assay,
+                                      verbose = FALSE)
   meta <- unique(md[, c(sample_col, condition_col, replicate_col)])
   rownames(meta) <- meta[[sample_col]]
   bulk@meta.data <- meta[colnames(bulk), , drop = FALSE]
@@ -134,7 +135,8 @@ anova_de <- function(seu, sample_col, group_col, assay = "RNA") {
     stop("anova_de() is for 3+ groups. For 2 groups use pseudobulk_de().")
   }
   bulk <- Seurat::AggregateExpression(seu, group.by = sample_col,
-                                      return.seurat = TRUE, assay = assay)
+                                      return.seurat = TRUE, assay = assay,
+                                      verbose = FALSE)
   meta <- unique(md[, c(sample_col, group_col)])
   rownames(meta) <- meta[[sample_col]]
   bulk@meta.data <- meta[colnames(bulk), , drop = FALSE]
