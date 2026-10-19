@@ -38,7 +38,8 @@ make_fixture <- function(n_cells = 240, n_genes = 120) {
   ref_mat[decoy_genes, "NK_cell_DECOY"] <- 50
   ref_mat <- log1p(ref_mat)
 
-  list(seu = seu, ref = ref_mat, labels = colnames(ref_mat))
+  list(seu = seu, ref = ref_mat, labels = colnames(ref_mat),
+       genes = genes, marker_idx = marker_idx)
 }
 
 if (!interactive()) {

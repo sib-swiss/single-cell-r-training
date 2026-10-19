@@ -94,3 +94,32 @@ rules:
       count against a match. Other scoring methods (e.g. UCell, mentioned in
       the lecture) support this, but are not in this course's renv.lock.
     enforced: [manual]
+
+  - id: R-ANN-007
+    severity: warn
+    title: "Ground marker-based cell-type calls in a trusted database, not memorized knowledge"
+    when: "assigning a cell-type name to a cluster from its marker genes (manual annotation, not SingleR's reference-based path)"
+    forbid: >
+      presenting a cell-type call as grounded in evidence when it was
+      actually pattern-matched against the model's own training knowledge,
+      with no external marker-database lookup
+    require: >
+      Fetch candidate cell types' marker genes from a trusted, versioned
+      source - CellMarker or PanglaoDB - before naming a cluster, preferring
+      a connected tool (e.g. a ToolUniverse/MCP CellMarker lookup) over
+      manually tracking a download link when one is available. Only fall
+      back to markers recalled from training knowledge if no such source is
+      reachable, and if so: say so explicitly in the reply itself (not only
+      in a code comment), name which specific labels rest on unverified
+      recalled markers, and recommend the user cross-check them against
+      CellMarker or PanglaoDB before trusting them.
+    rationale: >
+      A model's trained knowledge of marker genes can be outdated, carries
+      no species/tissue context, and is not citable - presenting a
+      cell-type call sourced from it with the same confidence as a database
+      lookup hides exactly the kind of unverifiable claim this course's
+      emphasis on critical judgement is meant to catch. CellMarker and
+      PanglaoDB are both curated, versioned, citable marker-gene resources
+      built for this exact check (reference/citations.md: C-ANN-06, C-ANN-07).
+    enforced: [lint, manual]
+    lint: L-ANN-003

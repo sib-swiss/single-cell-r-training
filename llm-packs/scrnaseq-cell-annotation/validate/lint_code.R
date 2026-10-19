@@ -54,6 +54,26 @@ lint_annotation_code <- function(text) {
       "SingleR() called with no plotScoreHeatmap()/plotDeltaDistribution() diagnostic anywhere in the file. SingleR has no rejection option - every cell gets a label - inspect quality before trusting the annotation.")
   }
 
+  # L-ANN-003 (R-ANN-007): manual/marker-based cell-type naming with no
+  # visible trusted-database evidence anywhere in the file. Heuristic, not
+  # proof - it can't see what informed a label, only whether the file shows
+  # any sign of a database lookup having happened at all.
+  manual_naming_lines <- grep(
+    "RenameIdents\\s*\\(|\\$cell_type\\s*<-|\\bcell_type\\s*<-\\s*c\\(|\\$SingleR_annot\\s*<-\\s*c\\(",
+    code)
+  has_db_evidence <- grepl(
+    paste0("read_excel|read\\.delim|read\\.csv|download\\.file|",
+          "CellMarker|PanglaoDB|marker_db|match_clusters_to_markers|",
+          "model_memory_unverified"),
+    blob, ignore.case = TRUE)
+  for (i in manual_naming_lines) {
+    if (!has_db_evidence) {
+      out[[length(out) + 1]] <- finding(
+        "R-ANN-007", "L-ANN-003", "warn", i,
+        "Manual cell-type naming with no visible marker-database lookup (CellMarker/PanglaoDB/a connected tool) anywhere in this file, and no explicit model_memory_unverified fallback marker either. Confirm these labels aren't sourced from memory alone - if they are, that must be stated explicitly as a last resort, not presented as database-grounded.")
+    }
+  }
+
   if (!length(out)) return(no_findings())
   do.call(rbind, out)
 }

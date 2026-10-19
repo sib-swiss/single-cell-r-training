@@ -48,6 +48,54 @@ if (!identical(got, "ok")) {
   cat("  PASS\n")
 }
 
+cat("\n=== R-ANN-007: match_clusters_to_markers() recovers the planted cell type ===\n")
+# Synthetic marker_db shaped like a real CellMarker/PanglaoDB table (a
+# cell-type column + a gene column), built from the fixture's own planted
+# ground truth plus one decoy cell type with unrelated genes - this stays
+# testable in CI without a network download.
+cluster_markers <- data.frame(
+  cluster = rep(names(fx$marker_idx), each = 20),
+  gene = fx$genes[unlist(fx$marker_idx)],
+  stringsAsFactors = FALSE)
+decoy_genes <- setdiff(fx$genes, fx$genes[unlist(fx$marker_idx)])[1:10]
+marker_db <- data.frame(
+  cell_name = c(rep(names(fx$marker_idx), each = 20), rep("Unrelated_decoy", 10)),
+  Symbol = c(fx$genes[unlist(fx$marker_idx)], decoy_genes),
+  stringsAsFactors = FALSE)
+
+matches <- match_clusters_to_markers(cluster_markers, marker_db,
+                                     celltype_col = "cell_name", gene_col = "Symbol")
+print(matches)
+if (!all(matches$best_match == matches$cluster)) {
+  note("match_clusters_to_markers() failed to recover the planted cell type for at least one cluster")
+  cat("  FAIL\n")
+} else {
+  cat("  PASS - recovered the planted cell type for every cluster\n")
+}
+
+cat("\n=== match_clusters_to_markers(): errors on a missing column name ===\n")
+got_mm <- tryCatch({
+  match_clusters_to_markers(cluster_markers, marker_db,
+                            celltype_col = "nonexistent_col", gene_col = "Symbol")
+  "no error"
+}, error = function(e) conditionMessage(e))
+if (identical(got_mm, "no error")) {
+  note("match_clusters_to_markers() accepted a nonexistent celltype_col")
+  cat("  FAIL\n")
+} else {
+  cat("  PASS - errored as required:", got_mm, "\n")
+}
+
+cat("\n=== stamp_provenance()/annotation_methods_sentence(): marker_source path ===\n")
+seu_manual <- stamp_provenance(fx$seu, marker_source = "CellMarker")
+cat(annotation_methods_sentence(seu_manual), "\n")
+seu_memory <- stamp_provenance(fx$seu, marker_source = "model_memory_unverified")
+sentence_memory <- annotation_methods_sentence(seu_memory)
+cat(sentence_memory, "\n")
+if (!grepl("NOT independently verified", sentence_memory)) {
+  note("annotation_methods_sentence() did not flag the model_memory_unverified fallback as unverified")
+}
+
 cat("\n=== Rare labels get relabelled to 'none', not silently dropped ===\n")
 # Force a near-empty label by using a very high min_label_cells.
 seu_rare <- annotate_with_reference(fx$seu, ref = fx$ref, labels = fx$labels, min_label_cells = 1000)

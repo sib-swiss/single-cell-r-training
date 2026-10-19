@@ -98,3 +98,36 @@ stated replicate count, or n=1 per condition.
 and flag that an orthogonal validation (e.g. flow cytometry) strengthens the
 claim considerably — don't present a single-sample proportion difference as
 settled biology.
+
+---
+
+## P-ANN-005 — Naming a cluster's cell type from memorized marker knowledge, not a database
+
+**Wrong.** Looking at `FindAllMarkers()`'s top genes for a cluster (e.g.
+`CD3D`, `CD3E`, `IL7R`), and directly naming it "CD4+ T cell" from the
+model's own training knowledge, with no accompanying marker-database lookup.
+
+**Why it looks correct.** For well-known cell types and canonical markers,
+this often lands on the right answer, and the reply reads exactly like a
+correct, database-grounded annotation — there is no visible difference
+between "I looked this up" and "I recognized this pattern from training."
+
+**What actually happened.** The model's marker-to-cell-type knowledge is
+frozen at training time, carries no species/tissue context (a marker set
+that identifies one cell type in blood can mean something else in brain),
+and is not a citable source — unlike `SingleR`'s reference-based path
+(`R-ANN-002`), there is no external check standing behind the call at all. A
+wrong or outdated call made this way looks exactly as confident as a correct
+one.
+
+**Detection.** A cell-type label assigned from marker genes with no
+`CellMarker`/`PanglaoDB` lookup, no connected marker-database tool call, and
+no explicit statement that the label rests on recalled knowledge rather than
+a database.
+
+**Right.** Fetch the candidate cell types' marker genes from `CellMarker` or
+`PanglaoDB` (or a connected tool backed by one) before naming a cluster, and
+report the overlap. If no trusted source is reachable, fall back to recalled
+knowledge only as a last resort — and say so explicitly, naming which labels
+are unverified, rather than presenting them with the same confidence as a
+database-backed call.

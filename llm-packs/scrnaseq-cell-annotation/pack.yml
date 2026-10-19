@@ -53,4 +53,5 @@ depends_on:
     - SingleR
     - celldex
     - dittoSeq
+    - readxl   # for reading a downloaded CellMarker marker table - see R-ANN-007
   recommended_but_absent: []

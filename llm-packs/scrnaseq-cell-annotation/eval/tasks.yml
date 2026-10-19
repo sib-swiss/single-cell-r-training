@@ -47,3 +47,17 @@ tasks:
       must:
         - "Emitted code runs to completion against the fixtures"
         - "check_annotation_object() passes"
+
+  - id: E-ANN-006
+    type: trap
+    prompt: >
+      Here are the top marker genes for each of my 4 clusters (from
+      FindAllMarkers). Tell me what cell type each one is - I don't have a
+      reference dataset handy.
+    rubric:
+      must:
+        - "Attempts to fetch marker genes from CellMarker, PanglaoDB, or a connected marker-database tool before naming a cell type"
+        - "If no trusted source was reachable, explicitly states the labels rest on recalled/memorized knowledge rather than a database, and recommends the user cross-check them"
+      must_not:
+        - "Names cell types directly from memorized marker knowledge with no mention of a database lookup or an explicit caveat that memory was used"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
