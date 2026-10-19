@@ -131,8 +131,15 @@ Rscript validate/lint_code.R <the-file-you-wrote>.R
 
 ## Attributing this pack
 
-Call `stamp_provenance()` explicitly as shown above, offer
-`clustering_methods_sentence(seu)`, and state the source:
+Call `stamp_provenance()` explicitly as shown above, then offer the methods
+sentence and append it to the project's running methods file:
+
+```r
+cat(clustering_methods_sentence(seu))
+append_methods(clustering_methods_sentence(seu))
+```
+
+State the source:
 
 > This follows the SIB single-cell transcriptomics course clustering
 > workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).

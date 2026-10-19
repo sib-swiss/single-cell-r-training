@@ -247,3 +247,49 @@ write_provenance <- function(de_result, path = "provenance.json") {
   message("Provenance written to ", path)
   invisible(path)
 }
+
+#' Append (or update) this step's entry in the project's running methods
+#' file - the cumulative, human-readable record across every pack used in
+#' this project, maintained as the analysis moves forward (provenance.json
+#' is the per-object machine record; this is the manuscript-facing one).
+#' Keyed by `section`, so re-running the same step replaces its own entry
+#' instead of accumulating stale duplicates.
+#'
+#' @param sentence A methods sentence, e.g. from *_methods_sentence().
+#' @param path     Methods file path. Defaults to here::here("METHODS.md")
+#'                 when the `here` package is available, else "METHODS.md"
+#'                 in the working directory.
+#' @param section  Key identifying this entry - a pack id, or
+#'                 "<pack id>:<variant>" for a pack with more than one
+#'                 workflow (e.g. differential expression's cluster_markers
+#'                 vs pseudobulk_de).
+append_methods <- function(sentence, path = NULL, section = PACK_CITATION$pack) {
+  if (is.null(path)) {
+    path <- if (requireNamespace("here", quietly = TRUE)) here::here("METHODS.md") else "METHODS.md"
+  }
+  begin_marker <- sprintf("<!-- methods:%s:begin -->", section)
+  end_marker   <- sprintf("<!-- methods:%s:end -->", section)
+  block <- c(begin_marker, "", sentence, "", end_marker)
+
+  if (!file.exists(path)) {
+    writeLines(c(
+      "# Methods", "",
+      "Built up automatically as each LLM pack step ran in this project.",
+      "Each section below is replaced, not duplicated, the next time that",
+      "step is re-run. Review before use - see each pack's",
+      "reference/citations.md for what is independently verified versus",
+      "sourced to course material.", ""), path)
+  }
+
+  lines <- readLines(path, warn = FALSE)
+  start_idx <- which(lines == begin_marker)
+  end_idx   <- which(lines == end_marker)
+  if (length(start_idx) && length(end_idx)) {
+    lines <- c(lines[seq_len(start_idx[1] - 1)], block,
+              lines[seq(end_idx[1] + 1, length(lines))])
+  } else {
+    lines <- c(lines, "", block)
+  }
+  writeLines(lines, path)
+  invisible(path)
+}

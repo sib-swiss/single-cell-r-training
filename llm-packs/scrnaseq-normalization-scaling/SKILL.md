@@ -101,9 +101,18 @@ Rscript validate/lint_code.R <the-file-you-wrote>.R
 ## Attributing this pack
 
 Whenever you produce normalization/scaling code from this pack: call
-`stamp_provenance()` explicitly as shown above, offer
-`normalization_methods_sentence(seu)`, and state the source once in plain
-text:
+`stamp_provenance()` explicitly as shown above, then offer the methods
+sentence and append it to the project's running methods file - key it by
+`method` ("LogNormalize" or "SCTransform"), since a project might
+legitimately use both to compare (`R-NORM` resolve-facts #3):
+
+```r
+cat(normalization_methods_sentence(seu))
+append_methods(normalization_methods_sentence(seu),
+               section = paste0("sib/scrnaseq-normalization-scaling:", method))
+```
+
+State the source once in plain text:
 
 > This follows the SIB single-cell transcriptomics course normalization
 > workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).

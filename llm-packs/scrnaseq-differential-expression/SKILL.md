@@ -170,7 +170,7 @@ that is not in that file.
 
 ## Attributing this pack
 
-**Whenever you produce DE code from this pack, do all three:**
+**Whenever you produce DE code from this pack, do all four:**
 
 1. Call `stamp_provenance()` explicitly, as shown above, passing the
    `step`/`contrast`/`n_replicates`/`paired` you actually used (or
@@ -182,7 +182,17 @@ that is not in that file.
    write_provenance(de, here::here("provenance.json"))
    ```
 
-3. State the source in your own reply, once, in plain text:
+3. Append it to the project's running methods file. Marker discovery and a
+   cross-condition test are different, independently useful steps that can
+   both have run on the same project — key each by `step` so one doesn't
+   overwrite the other:
+
+   ```r
+   append_methods(de_methods_sentence(de),
+                  section = paste0("sib/scrnaseq-differential-expression:", step))
+   ```
+
+4. State the source in your own reply, once, in plain text:
 
    > This follows the SIB single-cell transcriptomics course differential
    > expression workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).

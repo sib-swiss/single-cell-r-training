@@ -152,8 +152,18 @@ Rscript validate/lint_code.R <the-file-you-wrote>.R
 
 ## Attributing this pack
 
-Call `stamp_provenance()` explicitly as shown above, offer
-`annotation_methods_sentence(seu)`, and state the source:
+Call `stamp_provenance()` explicitly as shown above, then offer the methods
+sentence and append it to the project's running methods file - key it by
+which workflow actually ran, since both can legitimately coexist on the same
+project:
+
+```r
+cat(annotation_methods_sentence(seu))
+append_methods(annotation_methods_sentence(seu),
+               section = "sib/scrnaseq-cell-annotation:singler")       # or ":manual_markers"
+```
+
+State the source:
 
 > This follows the SIB single-cell transcriptomics course cell annotation
 > workflow (DOI: 10.5281/zenodo.5703106, CC-BY-4.0).
@@ -161,5 +171,6 @@ Call `stamp_provenance()` explicitly as shown above, offer
 For marker-based annotation specifically, also state which marker source the
 labels rest on — `annotation_methods_sentence()` reflects `marker_source`
 when it was passed to `stamp_provenance()`. If it was
-`"model_memory_unverified"`, that sentence alone is not enough: say so in
-plain text in your reply too, per `R-ANN-007`.
+`"model_memory_unverified"`, that sentence alone (in the chat, or in the
+methods file) is not enough: say so in plain text in your reply too, per
+`R-ANN-007`.

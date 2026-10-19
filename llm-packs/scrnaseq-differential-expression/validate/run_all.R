@@ -147,6 +147,21 @@ if (!report(rd, "diagnostic plot post-conditions")) note("de_diagnostic_plots() 
 
 # --- verdict -----------------------------------------------------------------
 
+cat("\n=== append_methods(): creates, then replaces (not duplicates) on re-run ===\n")
+methods_path <- tempfile(fileext = ".md")
+append_methods("First sentence.", path = methods_path, section = "test:section")
+append_methods("Updated sentence.", path = methods_path, section = "test:section")
+methods_lines <- readLines(methods_path)
+n_blocks <- sum(grepl("^<!-- methods:test:section:begin -->$", methods_lines))
+if (n_blocks != 1 || !any(grepl("Updated sentence\\.", methods_lines)) ||
+    any(grepl("First sentence\\.", methods_lines))) {
+  note("append_methods() duplicated or failed to replace an existing section on re-run")
+  cat("  FAIL\n")
+} else {
+  cat("  PASS - section replaced in place, not duplicated\n")
+}
+unlink(methods_path)
+
 cat("\n", strrep("-", 60), "\n", sep = "")
 if (length(failures)) {
   cat("VALIDATION FAILED\n")

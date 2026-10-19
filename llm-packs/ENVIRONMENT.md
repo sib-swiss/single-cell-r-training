@@ -119,6 +119,16 @@ this course's `renv.lock` - use it.
    writeLines(capture.output(sessionInfo()), here::here("results", "sessionInfo.txt"))
    ```
 
-4. **Don't use interactive-only calls** (`menu()`, `readline()`, a bare
+4. **Every pack's `append_methods()` writes to the same shared file**,
+   `here::here("METHODS.md")` by default - not a per-pack file. Across a
+   project that moves through several packs (QC, then normalization, then
+   dimensionality reduction, ...), this builds up into one running methods
+   section covering every step actually run, each keyed so re-running a
+   step updates its own entry instead of duplicating it. It is a companion
+   to `provenance.json`, not a replacement: `provenance.json` is the
+   per-step machine-readable record on one object; `METHODS.md` is the
+   cumulative, human/manuscript-facing one across the whole project.
+
+5. **Don't use interactive-only calls** (`menu()`, `readline()`, a bare
    `View()`) in a script meant to be re-run unattended later - they block
    on input that won't be there.
