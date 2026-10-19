@@ -143,7 +143,7 @@ not in that file.
 
    ```r
    cat(qc_methods_sentence(seu))
-   write_provenance(seu, "provenance.json")   # optional sidecar
+   write_provenance(seu, here::here("provenance.json"))   # optional sidecar
    ```
 
    Show the user the generated sentence. It is accurate, parameter-filled and

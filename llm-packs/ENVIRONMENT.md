@@ -1,9 +1,10 @@
 # Environment and shared conventions
 
-Every pack's `SKILL.md` points here for three things that apply identically
-to all of them: what to do about a missing package, the one rule that
-applies to every pack's Procedure section, and how to run the resulting
-script without flooding the conversation with its console output.
+Every pack's `SKILL.md` points here for things that apply identically to all
+of them: what to do about a missing package, the one rule that applies to
+every pack's Procedure section, how to run the resulting script without
+flooding the conversation with its console output, and how to keep the
+result reproducible on a different machine or a different day.
 
 ## Missing a package?
 
@@ -82,3 +83,42 @@ If the run succeeded, a short tail (or "no errors found") is enough to
 report back - the full log stays on disk if it's needed for debugging
 later, rather than needing to be re-run just to produce it again. If it
 failed, show the actual error from the log, not just "it failed."
+
+## Reproducible paths, seeds, and sessions
+
+A script that only runs correctly from one specific working directory, or
+only gives the same numbers on one specific run, is not something the user
+can hand to a colleague or re-run next month and trust. `here` is already in
+this course's `renv.lock` - use it.
+
+1. **Build every file path with `here::here()`, never a hardcoded absolute
+   path, and never `setwd()`.** `here::here("data", "counts")`,
+   `here::here("results", "qc_umap.png")` - resolved from the project root
+   regardless of where the script is actually run from. A path that is
+   correct only because the working directory happens to match whoever
+   wrote it is not reproducible, and `setwd()` inside a script changes state
+   for everything that runs after it in the same session.
+
+2. **Set a seed once, near the top of the script, as defense-in-depth.**
+   Seurat's own key functions already default to a fixed internal seed
+   (`RunPCA`/`RunUMAP`: `seed.use = 42`; `RunTSNE`: `seed.use = 1`;
+   `FindClusters`: `random.seed = 0`) - so results from those specific calls
+   are already deterministic run-to-run on the same package versions,
+   without any extra code. A top-of-script `set.seed(1)` doesn't change
+   that, but it does cover anything else in the script that doesn't carry
+   its own seed argument (a `sample()` call, a bootstrap, a quick manual
+   subsample) - set one regardless of whether the pack's own calls strictly
+   require it.
+
+3. **Record the session alongside the output**, not only on the R object
+   itself. Every pack's `stamp_provenance()` already records the R and
+   package versions used *on the object* - but that's lost if only a
+   derived plot or table is kept. Alongside any saved output:
+
+   ```r
+   writeLines(capture.output(sessionInfo()), here::here("results", "sessionInfo.txt"))
+   ```
+
+4. **Don't use interactive-only calls** (`menu()`, `readline()`, a bare
+   `View()`) in a script meant to be re-run unattended later - they block
+   on input that won't be there.

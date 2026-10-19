@@ -157,7 +157,7 @@ citation.
 
    ```r
    cat(integration_methods_sentence(seu))
-   write_provenance(seu, "provenance.json")   # optional sidecar
+   write_provenance(seu, here::here("provenance.json"))   # optional sidecar
    ```
 
 3. State the source in your own reply, once, in plain text:

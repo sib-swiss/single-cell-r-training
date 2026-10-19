@@ -179,7 +179,7 @@ that is not in that file.
 
    ```r
    cat(de_methods_sentence(de))
-   write_provenance(de, "provenance.json")
+   write_provenance(de, here::here("provenance.json"))
    ```
 
 3. State the source in your own reply, once, in plain text:

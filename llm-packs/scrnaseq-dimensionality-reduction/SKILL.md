@@ -37,6 +37,7 @@ old, say so before giving advice from this pack.
 > time as you discover them.
 
 ```r
+set.seed(1)   # defense-in-depth for reproducibility - see ../ENVIRONMENT.md
 seu <- Seurat::RunPCA(seu, verbose = FALSE)           # uses VariableFeatures by default
 Seurat::ElbowPlot(seu, ndims = 40)                    # inspect before choosing dims
 dims <- 1:25                                          # a decision for THIS object, not a default

@@ -34,6 +34,7 @@ days old, say so before giving advice from this pack.
 > time as you discover them.
 
 ```r
+set.seed(1)   # defense-in-depth for reproducibility - see ../ENVIRONMENT.md
 reduction <- "integrated.cca"   # name it explicitly - R-CLU-002
 resolutions <- seq(0.1, 0.8, by = 0.1)   # sweep, don't guess one value - R-CLU-001
 
