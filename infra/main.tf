@@ -114,6 +114,7 @@ data "cloudinit_config" "server" {
             GOOSE_VERSION=${var.goose_version}
             LITELLM_VERSION=${var.litellm_version}
             LLM_MODEL_ALIAS=${var.llm_model_alias}
+            GROUP_COUNT=${var.group_count}
           EOT
         },
         { path = "/opt/course/bootstrap.sh", permissions = "0755", content = file("${path.module}/server/bootstrap.sh") },

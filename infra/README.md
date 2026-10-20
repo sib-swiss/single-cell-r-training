@@ -71,7 +71,9 @@ Accounts and passwords are in `infra/credentials.csv`.
    denied, and that `cat /run/course/users.tsv` is denied.
 3. Check that `curl -s -m 5 http://169.254.169.254/` from the RStudio terminal
    times out or fails.
-4. Run part of the Seurat workflow in a few accounts at once and watch `htop`
+4. As `user01`, save a file in `~/group_work/group1`; as `user02`, edit and save
+   the same file.
+5. Run part of the Seurat workflow in a few accounts at once and watch `htop`
    on the host.
 
 ### During the course
@@ -127,6 +129,14 @@ OpenRouter key.
   session that caused it. Size the instance at ~12-16 GiB per participant.
 - **sslip.io** gives a hostname without owning a domain. If its Let's Encrypt
   rate limit is ever exhausted, Caddy falls back to ZeroSSL automatically.
-- **goose** runs in `smart_approve` mode, so it asks before risky actions.
+- **goose** runs in `smart_approve` mode, so it asks before risky actions, and
+  with the light CLI theme, which matches RStudio's default.
   The shared settings are in `/etc/goose/config.yaml` inside the container. A
-  participant's own `~/.config/goose/config.yaml` overrides them.
+  participant's own `~/.config/goose/config.yaml` overrides them. Each account
+  also gets `~/.config/goose/.goosehints` (short replies, no wide tables, code in
+  files, no package installs); it is written once, so participants can edit it.
+- **Group work** happens in `/group_work`, with `group1` ... `group<group_count>`
+  created up front. Every course account can read, write and delete everything
+  in it, so trainers have nothing to manage when groups form; participants can
+  also create extra directories there. Each home has a `group_work` shortcut to
+  it. Like `/home`, it is on the data volume.

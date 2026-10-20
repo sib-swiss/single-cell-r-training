@@ -29,6 +29,12 @@ variable "extra_users" {
   default     = []
 }
 
+variable "group_count" {
+  description = "Number of shared project directories created up front (/group_work/group1, ...). Every account can use all of them, and create more."
+  type        = number
+  default     = 4
+}
+
 # --- server -------------------------------------------------------------------
 
 variable "instance_type" {

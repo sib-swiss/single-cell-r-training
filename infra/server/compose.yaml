@@ -37,8 +37,10 @@ services:
     environment:
       COURSE_LLM_HOST: http://llm-proxy:4000
       COURSE_LLM_MODEL: ${LLM_MODEL_ALIAS}
+      COURSE_GROUP_COUNT: ${GROUP_COUNT}
     volumes:
       - /srv/course/home:/home
+      - /srv/course/group_work:/group_work
       - ./secrets/users.tsv:/run/course/users.tsv:ro
     networks: [web, llm]
 

@@ -23,7 +23,7 @@ mkdir -p /srv/course
 grep -q 'LABEL=course-data' /etc/fstab ||
     echo 'LABEL=course-data /srv/course ext4 defaults,nofail 0 2' >>/etc/fstab
 mountpoint -q /srv/course || mount /srv/course
-mkdir -p /srv/course/home /srv/course/postgres /srv/course/caddy
+mkdir -p /srv/course/home /srv/course/group_work /srv/course/postgres /srv/course/caddy
 
 # --- stack -------------------------------------------------------------------
 # Leave ~12 GiB for the host, proxy and database; when RStudio sessions exceed
