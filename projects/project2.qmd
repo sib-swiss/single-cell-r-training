@@ -19,9 +19,10 @@ Cluster-specific coexpression networks and global interaction networks revealed 
 
 Data has been downloaded and prepared for you from [GEO GSE152495](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE152495). 
 
-In order to download the data, run:
+In order to download the data, run (on the course server: once per group, in your group directory; see [Working directories](introduction.qmd#working-directories)):
 
-```{r, eval=TRUE}
+```{r}
+#| eval: false
 download.file(
   url = "https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project2.tar.gz",
   destfile = "project2.tar.gz"
@@ -74,22 +75,26 @@ After extracting, a directory `project2` appears with the following format:
 9 directories, 25 files
 ```
 
-Showing us that we have two replicates per treatment, and two treatments:
+Showing us that we have two replicates per condition, for two treatments in both sexes:
 
 - Male_Sucrose: controls
 - Female_Sucrose: controls
 - Male_Cocaine: treatments
 - Female_Cocaine: treatments
 
-Now create a new project in the `project2` directory (Project (None) > New Project ...), and create Seurat object from the count matrices:
+Now create a Seurat object from the count matrices:
 
 
 ```{r}
 #| eval: false
 library(Seurat)
 
+# the downloaded data directory; on your own computer, with an RStudio project
+# in project2, this is "data"
+data_dir <- "~/group_work/groupX/project2/data"
+
 # vector of paths to all sample directories
-datadirs <- list.files(path = "project2/data", full.names = TRUE)
+datadirs <- list.files(path = data_dir, full.names = TRUE)
 
 # get the sample names and replace underscores with hyphens
 names(datadirs) <- basename(datadirs) |> gsub("_", "-", x = _)
@@ -176,7 +181,7 @@ Sexual Dimorphism refers to the differences in gene expression between males and
 
 ### 8. Pathway Enrichment Analysis
 
-The paper used **Reactome** for pathway enrichment analysis. You can use the `R` package `clusterProfiler` for this task. While the paper used Reactome, `clusterProfiler` is a popular tool that can perform enrichment analysis with various databases, including Reactome. You will need to ensure you have the appropriate `Drosophila melanogaster` gene annotation package for `clusterProfiler` to work correctly. To install a package, use the command `renv::install("package-name")`.
+The paper used **Reactome** for pathway enrichment analysis. You can use the `R` package `clusterProfiler` for this task. While the paper used Reactome, `clusterProfiler` is a popular tool that can perform enrichment analysis with various databases, including Reactome. You will need the *Drosophila melanogaster* gene annotation package for `clusterProfiler` to work correctly, which is not installed by default. Install it with `BiocManager::install("org.Dm.eg.db")`; on the course server, answer *yes* when R offers to use a personal library.
 
   * **Reproduce:**
     1.  Take the list of differentially expressed genes from your DE analysis.
@@ -195,3 +200,7 @@ As you work through the analysis, you can compare your results to the following 
 ::: {.callout-important}
 The supplementary material of this paper contain a `docx` file with some data analysis code.
 :::
+
+### Using an AI assistant
+
+If you use an AI assistant with the [LLM packs](../day1/day1-4_llm_packs.qmd), make sure it knows this is ***Drosophila*** data: gene name patterns (like `"^mt:"` above), annotation packages and gene set databases all differ from human. The paper gives exact thresholds for markers and differential expression; check that the assistant uses those rather than its own defaults.

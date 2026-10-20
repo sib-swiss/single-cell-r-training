@@ -37,9 +37,10 @@ These samples represent different stages and conditions of cervical tissues, pro
 
 Data has been downloaded and prepared for you from [GEO GSE208653](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE208653). 
 
-In order to download the data, run:
+In order to download the data, run (on the course server: once per group, in your group directory; see [Working directories](introduction.qmd#working-directories)):
 
-```{r, eval=TRUE}
+```{r}
+#| eval: false
 download.file(
   url = "https://single-cell-transcriptomics.s3.eu-central-1.amazonaws.com/projects/data/project4.tar.gz",
   destfile = "project4.tar.gz"
@@ -97,12 +98,17 @@ After extracting, a directory `project4` appears with the following content:
 10 directories, 29 files
 ```
 
-Now create a new project in the `project1` directory (Project (None) > New Project ...), and create Seurat object from the count matrices:
+Now create a Seurat object from the count matrices:
 
 ```{r}
 library(Seurat)
+
+# the downloaded data directory; on your own computer, with an RStudio project
+# in project4, this is "data"
+data_dir <- "~/group_work/groupX/project4/data"
+
 # vector of paths to all sample directories
-datadirs <- list.files(path = "data", full.names = TRUE)
+datadirs <- list.files(path = data_dir, full.names = TRUE)
 
 # get the sample names
 # replace underscores with hyphen to correctly extract sample names later on
@@ -172,9 +178,9 @@ If you'd like more structure, the following questions may guide your analyses:
 
 ## Additional tips
 
-- For mitochondrial genes, ribosomol genes and hemoglobin genes you can use the following patterns: `"^MT-"`, `"^RP[SL]"` and `"^HB[^(P)]"`. 
+- For mitochondrial genes, ribosomal genes and hemoglobin genes you can use the following patterns: `"^MT-"`, `"^RP[SL]"` and `"^HB[^(P)]"`.
 
-- Work iterative; meaning that based on results of an analyis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution. 
+- Work iteratively; meaning that based on results of an analysis, adjust the previous analysis. For example, if clustering is not according to cell types, try to adjust the number of components or the resolution. 
 
 - Please read the methods section of the paper.
 
@@ -183,3 +189,5 @@ If you'd like more structure, the following questions may guide your analyses:
 - Check the supplementary figures.
 
 - Try to understand if they used some other tools for the data analysis.
+
+- If you use an AI assistant with the [LLM packs](../day1/day1-4_llm_packs.qmd), compare the QC thresholds it proposes with those of the two papers — they differ from each other too, which makes this a good place to check whether the assistant explains its choices.
