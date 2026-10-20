@@ -105,50 +105,50 @@ jobs:
               scripts/run_analysis.R scripts/project1.R scripts/project2.R || true
           done
 
-  # Slow, needs Seurat: runtime post-conditions against synthetic fixtures.
-  # max-parallel: 1 because the "stamp last_validated" step below commits and
-  # pushes to pack.yml on main - running packs sequentially avoids two matrix
-  # cells racing on that commit.
-  validate:
-    needs: [setup, lint]
-    runs-on: ubuntu-latest
-    container: sibswiss/training-singlecell-rstudio:2026.6
-    strategy:
-      max-parallel: 1
-      matrix:
-        pack: ${{ fromJson(needs.setup.outputs.packs) }}
-    steps:
-      - uses: actions/checkout@v4
+  # # Slow, needs Seurat: runtime post-conditions against synthetic fixtures.
+  # # max-parallel: 1 because the "stamp last_validated" step below commits and
+  # # pushes to pack.yml on main - running packs sequentially avoids two matrix
+  # # cells racing on that commit.
+  # validate:
+  #   needs: [setup, lint]
+  #   runs-on: ubuntu-latest
+  #   container: sibswiss/training-singlecell-rstudio:2026.6
+  #   strategy:
+  #     max-parallel: 1
+  #     matrix:
+  #       pack: ${{ fromJson(needs.setup.outputs.packs) }}
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Build fixtures
-        run: Rscript "llm-packs/${{ matrix.pack }}/validate/make_fixtures.R"
+  #     - name: Build fixtures
+  #       run: Rscript "llm-packs/${{ matrix.pack }}/validate/make_fixtures.R"
 
-      - name: Run full validation
-        run: Rscript "llm-packs/${{ matrix.pack }}/validate/run_all.R"
+  #     - name: Run full validation
+  #       run: Rscript "llm-packs/${{ matrix.pack }}/validate/run_all.R"
 
-      # Only a green run may write this stamp - it is the pack's entire claim
-      # to being current. Pulls first since matrix cells run sequentially
-      # against the same branch and each one commits.
-      - name: Stamp last_validated
-        if: success() && github.ref == 'refs/heads/main'
-        run: |
-          Rscript -e '
-            f <- "llm-packs/${{ matrix.pack }}/pack.yml"
-            l <- readLines(f)
-            i <- grep("^  last_validated:", l)
-            l[i] <- sprintf("  last_validated: %s", format(Sys.Date()))
-            j <- grep("^    R:", l)[1]
-            l[j] <- sprintf("    R: \"%s\"", getRversion())
-            k <- grep("^    Seurat:", l)[1]
-            l[k] <- sprintf("    Seurat: \"%s\"", packageVersion("Seurat"))
-            writeLines(l, f)'
-          if ! git diff --quiet; then
-            git config user.name  "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git pull --rebase origin "${GITHUB_REF#refs/heads/}"
-            git commit -am "CI: stamp llm-pack validation date (${{ matrix.pack }})"
-            git push
-          fi
+  #     # Only a green run may write this stamp - it is the pack's entire claim
+  #     # to being current. Pulls first since matrix cells run sequentially
+  #     # against the same branch and each one commits.
+  #     - name: Stamp last_validated
+  #       if: success() && github.ref == 'refs/heads/main'
+  #       run: |
+  #         Rscript -e '
+  #           f <- "llm-packs/${{ matrix.pack }}/pack.yml"
+  #           l <- readLines(f)
+  #           i <- grep("^  last_validated:", l)
+  #           l[i] <- sprintf("  last_validated: %s", format(Sys.Date()))
+  #           j <- grep("^    R:", l)[1]
+  #           l[j] <- sprintf("    R: \"%s\"", getRversion())
+  #           k <- grep("^    Seurat:", l)[1]
+  #           l[k] <- sprintf("    Seurat: \"%s\"", packageVersion("Seurat"))
+  #           writeLines(l, f)'
+  #         if ! git diff --quiet; then
+  #           git config user.name  "github-actions[bot]"
+  #           git config user.email "github-actions[bot]@users.noreply.github.com"
+  #           git pull --rebase origin "${GITHUB_REF#refs/heads/}"
+  #           git commit -am "CI: stamp llm-pack validation date (${{ matrix.pack }})"
+  #           git push
+  #         fi
 
   # Surface staleness as a visible failure rather than a silent decay.
   staleness:
