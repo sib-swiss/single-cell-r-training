@@ -46,8 +46,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # No repos= override: rocker/r-ver defaults to Posit Package Manager
+      # binaries, which avoids compiling (and needing system libs like libuv
+      # for fs). install.packages() only warns on failure, so check explicitly.
       - name: Install test deps
-        run: Rscript -e 'install.packages(c("testthat","yaml"), repos="https://cloud.r-project.org")'
+        run: |
+          Rscript -e '
+            pkgs <- c("testthat", "yaml")
+            install.packages(pkgs)
+            missing <- pkgs[!vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)]
+            if (length(missing)) stop("failed to install: ", paste(missing, collapse = ", "))'
 
       - name: Linter self-tests
         run: Rscript "llm-packs/${{ matrix.pack }}/validate/test-lint.R"
@@ -152,7 +160,7 @@ jobs:
         pack: ${{ fromJson(needs.setup.outputs.packs) }}
     steps:
       - uses: actions/checkout@v4
-      - run: Rscript -e 'install.packages("yaml", repos="https://cloud.r-project.org")'
+      - run: Rscript -e 'install.packages("yaml"); stopifnot(requireNamespace("yaml", quietly = TRUE))'
       - name: Fail if the pack is past its stale_after_days
         run: |
           Rscript -e '
