@@ -31,7 +31,7 @@ validity:
     R: "4.6.0"
     clusterProfiler: "check against renv.lock at validation time"
     container: "sibswiss/training-singlecell-rstudio:2026.6"
-    renv_lock: "renv.lock@incorporate-skill-md"
+    renv_lock: "renv.lock@main"
   validation_entrypoint: validate/run_all.R
   stale_after_days: 120
   on_stale: >
