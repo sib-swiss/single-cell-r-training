@@ -1,0 +1,84 @@
+# Course stack. Variables come from .env next to this file (written by Terraform
+# and bootstrap.sh); secrets come from ./secrets, readable by root only.
+#
+#   internet ── caddy (HTTPS) ── rstudio ── llm-proxy (LiteLLM) ── OpenRouter
+#                                               └── db (Postgres)
+#
+# rstudio cannot reach the database, and never sees the OpenRouter key.
+
+name: course
+
+services:
+  caddy:
+    image: caddy:2.10.2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - /srv/course/caddy:/data
+    networks: [web]
+
+  rstudio:
+    build:
+      context: ./rstudio
+      args:
+        BASE_IMAGE: ${RSTUDIO_BASE_IMAGE}
+        GOOSE_VERSION: ${GOOSE_VERSION}
+    image: course-rstudio:local
+    hostname: course-server
+    restart: unless-stopped
+    mem_limit: ${RSTUDIO_MEM_LIMIT}
+    # Every variable here is copied into Renviron.site by the rocker image, so
+    # all participants can read them: nothing secret.
+    environment:
+      COURSE_LLM_HOST: http://llm-proxy:4000
+      COURSE_LLM_MODEL: ${LLM_MODEL_ALIAS}
+    volumes:
+      - /srv/course/home:/home
+      - ./secrets/users.tsv:/run/course/users.tsv:ro
+    networks: [web, llm]
+
+  llm-proxy:
+    image: ghcr.io/berriai/litellm:${LITELLM_VERSION}
+    restart: unless-stopped
+    command: ["--config=/app/config.yaml", "--port=4000"]
+    env_file: ./secrets/litellm.env
+    volumes:
+      - ./litellm-config.yaml:/app/config.yaml:ro
+      - ./create_llm_keys.py:/run/course/create_llm_keys.py:ro
+      - ./secrets/llm-keys.json:/run/course/llm-keys.json:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')\""]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks: [llm, db, egress]
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    env_file: ./secrets/postgres.env
+    volumes:
+      - /srv/course/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U litellm -d litellm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [db]
+
+networks:
+  web: {}
+  egress: {}
+  llm:
+    internal: true
+  db:
+    internal: true

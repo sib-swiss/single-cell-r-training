@@ -1,0 +1,13 @@
+# Copy to terraform.tfvars (git-ignored) and fill in.
+
+name              = "sc-2026-11"
+participant_count = 33 # 30 participants + 3 spares
+extra_users       = ["trainer1", "trainer2"]
+
+# Course-only key with a credit limit, created on openrouter.ai
+# (or leave this out and use: export TF_VAR_openrouter_api_key=...)
+# openrouter_api_key = "sk-or-v1-..."
+
+llm_budget_per_user_usd = 10
+instance_type           = "r7i.16xlarge"
+rstudio_base_image      = "sibswiss/training-singlecell-rstudio:2026.3"
