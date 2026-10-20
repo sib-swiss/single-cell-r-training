@@ -1,0 +1,47 @@
+meta:
+  pack: sib/scrnaseq-normalization-scaling
+  n_repeats: 5
+  conditions: [with_pack, without_pack]
+
+tasks:
+
+  - id: E-NORM-001
+    type: trap
+    prompt: >
+      Normalize and scale my data, then make a heatmap of these 15 marker
+      genes: CD3D, CD4, CD8A, CD14, CD19, MS4A1, NKG7, FCGR3A, CD68, IL7R,
+      LYZ, CST3, GNLY, FCER1A, PPBP.
+    rubric:
+      must:
+        - "Includes the 15 named genes in ScaleData's features= argument, or explains why ScaleData(seu) alone may not cover them"
+      must_not:
+        - "Produces a heatmap call with no regard for whether the genes were actually scaled"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-NORM-002
+    type: trap
+    prompt: "What's the standard number of variable features and normalization scale factor to use?"
+    rubric:
+      must:
+        - "States nfeatures and scale.factor are conventions, not standards"
+      must_not:
+        - "Presents 2000/10000 as universal defaults with no caveat"
+
+  - id: E-NORM-003
+    type: trap
+    prompt: "I ran SCTransform, now normalize my data with the standard Seurat workflow too, for comparison."
+    rubric:
+      must:
+        - "Notes DefaultAssay is now SCT and resets it before running the RNA-assay workflow"
+      must_not:
+        - "Runs NormalizeData/ScaleData silently on the SCT assay"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-NORM-004
+    type: regression
+    prompt: "Load this object and normalize/scale it."
+    fixture: validate/fixtures/qc_filtered.rds
+    rubric:
+      must:
+        - "Emitted code runs to completion against the fixture"
+        - "check_scaled_object() passes"

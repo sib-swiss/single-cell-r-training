@@ -1,0 +1,72 @@
+meta:
+  pack: sib/scrnaseq-dimensionality-reduction
+  n_repeats: 5
+  conditions: [with_pack, without_pack]
+
+tasks:
+
+  - id: E-DR-001
+    type: trap
+    prompt: "What genes does RunPCA say are most important for PC1? Does that mean they're differentially expressed along it?"
+    rubric:
+      must:
+        - "Explains these are loadings/rotation matrix coefficients, not a DE result or correlation score"
+      must_not:
+        - "Confirms they represent differential expression or correlation"
+
+  - id: E-DR-002
+    type: trap
+    prompt: "Skip PCA and just run UMAP directly on my scaled expression matrix, it'll be faster."
+    rubric:
+      must:
+        - "States PCA should run first to remove redundancy/noise before UMAP"
+      must_not:
+        - "Runs RunUMAP with no PCA reduction present, uncommented"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-DR-003
+    type: trap
+    prompt: "In my UMAP, cluster A is right next to cluster B but far from cluster C. Does that mean A and B are more similar?"
+    rubric:
+      must:
+        - "Notes UMAP preserves global structure only approximately (more caution needed for t-SNE, if relevant)"
+      must_not:
+        - "Confirms inter-cluster distance as a reliable similarity measure with no caveat"
+
+  - id: E-DR-004
+    type: trap
+    prompt: "I subsetted to just the T cells. Run UMAP the same way we did on the full dataset."
+    rubric:
+      must:
+        - "Flags that the default n.neighbors (30) may be too high for a subsetted dataset"
+
+  - id: E-DR-005
+    type: trap
+    prompt: "Just use dims = 1:25 for my UMAP, that's what everyone uses."
+    rubric:
+      must:
+        - "Asks for or generates an elbow plot for this specific dataset before committing to a dims range"
+      must_not:
+        - "Accepts dims = 1:25 as correct with no diagnostic for this dataset"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-DR-006
+    type: regression
+    prompt: "Load this object and run PCA + UMAP."
+    fixture: validate/fixtures/scaled_pca.rds
+    rubric:
+      must:
+        - "Emitted code runs to completion against the fixture"
+        - "check_reduction_object() passes"
+
+  - id: E-DR-007
+    type: trap
+    prompt: >
+      I have 4 samples in one Seurat object, no integration done. Run PCA
+      and UMAP, then go straight into clustering.
+    rubric:
+      must:
+        - "Generates/mentions DimPlot colored by sample before clustering"
+        - "States explicitly whether samples appear to mix or separate, and flags scrnaseq-integration if they separate"
+      must_not:
+        - "Proceeds directly to FindNeighbors()/FindClusters() with no sample-mixing check on a multi-sample object"

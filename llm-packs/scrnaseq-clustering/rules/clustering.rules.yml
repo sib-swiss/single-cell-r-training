@@ -1,0 +1,105 @@
+# Machine-checkable assertions for scRNA-seq clustering.
+#
+# severity: block | warn | inform
+
+rules:
+
+  - id: R-CLU-001
+    severity: block
+    title: "Resolution is a decision; there is no optimal number of clusters"
+    when: "presenting the result of a specific resolution"
+    forbid: "describing one resolution's clustering as the objectively correct/optimal number of clusters"
+    require: >
+      State that FindClusters() optimises a partition FOR that resolution,
+      not the resolution itself, and that the right granularity depends on
+      what the user wants to distinguish (broad cell types vs subtypes).
+    rationale: >
+      Source: course lecture, stated directly and repeatedly: "clustering is
+      subjective, there is no ground truth... each resolution parameter
+      gives you the optimal number of clusters for THAT resolution
+      parameter, not the optimal number of clusters" for the dataset.
+    enforced: [lint]
+    lint: L-CLU-001
+
+  - id: R-CLU-002
+    severity: block
+    title: "FindNeighbors() must use the integrated reduction on an integrated object"
+    when: "the object carries an integrated/harmony/cca reduction and FindNeighbors() is called"
+    forbid: "calling FindNeighbors() with no reduction= (defaults to 'pca') on an integrated object"
+    require: "reduction= set explicitly to the integrated reduction's name (e.g. 'integrated.cca')"
+    rationale: >
+      FindNeighbors()'s reduction= argument defaults to "pca". On an
+      integrated multi-sample object, the unintegrated "pca" reduction still
+      exists alongside the integrated one - using the default silently
+      clusters on the pre-batch-correction embedding. It does not error: it
+      produces a normal-looking clustering that still separates by sample.
+      The course's own exercise sets this explicitly
+      (FindNeighbors(seu, dims = 1:25, reduction = "integrated.cca")),
+      which is itself evidence this is a real, anticipated failure mode.
+    enforced: [lint, runtime]
+    lint: L-CLU-002
+    post_condition: >
+      Checked via implementation/cluster.R's cluster_cells(), which records
+      which reduction it used and refuses to default to an unintegrated
+      "pca" when an integrated reduction is present - see
+      validate/checks.R:check_clustered_object().
+
+  - id: R-CLU-003
+    severity: inform
+    title: "Check sub-structure by subsetting and re-clustering"
+    when: "a broad clustering is treated as final"
+    note: >
+      Source: course lecture: "what I usually do is start with major
+      clusters... and then subselect only [one cluster] and see in there do
+      I have some more clusters, by redoing all the steps from scaling to
+      run PCA to run UMAP." A visually single cluster at a coarse resolution
+      can resolve into several clusters once analysed on its own.
+    enforced: [manual]
+
+  - id: R-CLU-004
+    severity: inform
+    title: "Check cluster stability under subsampling"
+    when: "a clustering result will inform a significant downstream decision"
+    note: >
+      Source: course lecture: some clustering algorithms are not stable -
+      re-running on a subsample (e.g. half the cells, or a single sample)
+      can give a visibly different partition. Worth checking before treating
+      a clustering as settled, especially for a small or borderline cluster.
+    enforced: [manual]
+
+  - id: R-CLU-005
+    severity: warn
+    title: "Check QC metrics per cluster, not only per cell, before finalising"
+    when: "clustering is treated as finished"
+    note: >
+      Source: course lecture, consistent with the QC pack's own P-015
+      (iterative QC): after clustering, check whether any cluster is
+      explained mainly by a QC metric (e.g. percent.mito) rather than a
+      genuine expression signature, before trusting the partition.
+    enforced: [manual]
+
+  - id: R-CLU-006
+    severity: warn
+    title: "Quantify sample mixing per cluster before trusting a multi-sample clustering"
+    when: "the object has 2+ samples/batches and clustering has just finished"
+    forbid: >
+      treating a multi-sample clustering as finished with no quantitative
+      check of whether clusters are dominated by a single sample
+    require: >
+      Compute, per cluster, the fraction of cells coming from its single
+      most common sample (purity) and the pairwise distance between each
+      sample's centroid in the UMAP embedding. Report both numbers, not just
+      an impression from the plot: clusters with high purity by sample, or
+      samples with well-separated centroids, both indicate a sample/batch
+      effect that integration (`scrnaseq-integration` pack) would likely
+      address.
+    rationale: >
+      This is the quantitative counterpart to
+      `scrnaseq-dimensionality-reduction`'s `R-DR-007` (the visual check one
+      step earlier) and a different failure from this pack's own `R-CLU-002`
+      (which only catches the case where integration already happened but
+      its reduction wasn't used) - neither of those has anything to say
+      about whether integration should have been run in the first place.
+      Without a number attached, "the samples look okay on the UMAP" is an
+      impression, not a decision basis.
+    enforced: [manual]

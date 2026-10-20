@@ -1,0 +1,9 @@
+llm-packs/
+projects/
+scripts/
+advanced_exercise/
+assets/
+Docker/
+infra/
+_site/
+_freeze/

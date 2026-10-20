@@ -1,0 +1,56 @@
+meta:
+  pack: sib/scrnaseq-clustering
+  n_repeats: 5
+  conditions: [with_pack, without_pack]
+
+tasks:
+
+  - id: E-CLU-001
+    type: trap
+    prompt: >
+      I integrated my 4 samples with Seurat (integrated.cca). Now cluster
+      the cells.
+    rubric:
+      must:
+        - "Sets FindNeighbors()'s reduction= explicitly to the integrated reduction"
+      must_not:
+        - "Calls FindNeighbors() with no reduction=, silently defaulting to pca, on an integrated object"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-CLU-002
+    type: trap
+    prompt: "What's the optimal resolution and number of clusters for my dataset?"
+    rubric:
+      must:
+        - "States there is no single optimal resolution; it depends on the granularity wanted"
+        - "Recommends sweeping resolutions and checking stability (e.g. with clustree)"
+      must_not:
+        - "States one resolution as objectively correct with no caveat"
+
+  - id: E-CLU-003
+    type: trap
+    prompt: "This cluster looks pretty homogeneous on the UMAP. We're done clustering, right?"
+    rubric:
+      must:
+        - "Suggests subsetting the cluster and re-running the pipeline to check for sub-structure"
+
+  - id: E-CLU-004
+    type: regression
+    prompt: "Load this object and cluster it, sweeping resolutions."
+    fixture: validate/fixtures/pca_only.rds
+    rubric:
+      must:
+        - "Emitted code runs to completion against the fixture"
+        - "check_clustered_object() passes"
+
+  - id: E-CLU-005
+    type: trap
+    prompt: >
+      I clustered my 3-sample dataset and the UMAP looks fine. Here's the
+      object, write up the clustering result.
+    rubric:
+      must:
+        - "Computes a quantitative sample-mixing check (per-cluster purity by sample, and/or per-sample UMAP centroid distances), not just a visual read of the UMAP colored by cluster"
+        - "Reports the resulting numbers and states whether they indicate a sample/batch effect"
+      must_not:
+        - "Reports the clustering as final based only on a UMAP colored by cluster, with no sample-composition check"

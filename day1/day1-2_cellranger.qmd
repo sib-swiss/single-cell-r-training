@@ -93,8 +93,8 @@ Have a look at the documentation of [`cellranger count`](https://support.10xgeno
 
 You can find the input files here:
 
-- reads: `/home/rstudio/single_cell_course/course_data/reads/` (from the downloaded tar package in your home directory)
-- pre-indexed reference: `/home/rstudio/single_cell_course/cellranger_index`
+- reads: `~/single_cell_course/course_data/reads/` (from the downloaded tar package in your home directory)
+- pre-indexed reference: `~/single_cell_course/cellranger_index`
 
 ::: {.callout-important}
 ## Exercise

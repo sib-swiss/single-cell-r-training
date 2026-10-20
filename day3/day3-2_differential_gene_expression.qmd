@@ -37,6 +37,7 @@ library(edgeR) # BiocManager::install("edgeR")
 library(limma)
 library(dplyr)
 library(scuttle)
+library(presto)
 ```
 
 The function `FindAllMarkers` performs a Wilcoxon test to determine the genes differentially expressed between each cluster and the rest of the cells. Other types of tests than the Wilcoxon test are available. Check it out by running `?Seurat::FindAllMarkers`.

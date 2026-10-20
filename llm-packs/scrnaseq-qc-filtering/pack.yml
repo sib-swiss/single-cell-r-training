@@ -1,0 +1,73 @@
+id: sib/scrnaseq-qc-filtering
+title: "scRNA-seq quality control and cell filtering (10x Genomics, Seurat 5)"
+version: 0.1.0
+status: pilot
+
+scope: >
+  Loading 10x CellRanger output into a Seurat object, computing per-cell QC
+  metrics, choosing filtering thresholds, and applying them. Covers human and
+  mouse. Ends at a filtered Seurat object; normalisation and everything
+  downstream are separate packs.
+
+provenance:
+  repo: https://github.com/sib-swiss/single-cell-r-training
+  derived_from:
+    - day1/day1-3_analysis_tools_qc.qmd
+    - scripts/run_analysis.R
+    - llm-packs/_dev/transcripts/YT7xeHVnTw4.clean.txt   # lecture recording for this chapter
+  course: "SIB: Single-cell transcriptomics with R"
+  dataset: "Caron et al. 2020, paediatric B-ALL and PBMMC bone marrow (10x 3' GEX)"
+  maintainer:
+    name: "TODO: named individual, not a team alias"
+    email: "TODO@sib.swiss"
+  license: CC-BY-4.0
+
+# The validity contract. CI enforces this; see .github/workflows/validate-llm-packs.yml
+validity:
+  last_validated: null            # set by CI on a green run
+  validated_against:
+    R: "4.6.0"
+    Seurat: "5.5.0"
+    SeuratObject: "5.4.0"
+    container: "sibswiss/training-singlecell-rstudio:2026.6"
+    renv_lock: "renv.lock@main"
+  validation_entrypoint: validate/run_all.R
+  stale_after_days: 120
+  on_stale: >
+    Tell the user, before giving any advice from this pack, that it has not been
+    re-tested against current package versions and may be out of date.
+
+applies_when:
+  assay: ["10x 3' GEX v2", "10x 3' GEX v3", "10x 3' GEX v4", "10x 5' GEX"]
+  species: ["Homo sapiens", "Mus musculus"]
+  object: "Seurat >= 5.0 (layer-based assay)"
+
+not_applicable_to:
+  - what: "Single-nucleus RNA-seq"
+    why: "Mitochondrial fraction is not a viability proxy for nuclei."
+  - what: "Plate-based protocols (Smart-seq2/3)"
+    why: "Different QC metric distributions; no UMI-based doublet assumptions."
+  - what: "Seurat v4 objects"
+    why: "slot= vs layer= API differs. See reference/pitfalls.md#p-004."
+  - what: "Spatial transcriptomics"
+    why: "A spot is not a cell; per-cell QC metrics do not transfer."
+
+# Packages this pack's advice depends on, checked against renv.lock by CI.
+# A rule that recommends a package absent from the lockfile is a defect:
+# the learner cannot run it in the course container.
+depends_on:
+  in_lockfile:
+    - Seurat
+    - SeuratObject
+    - Matrix
+    - SparseArray
+  recommended_but_absent:
+    - name: scDblFinder
+      note: >
+        Preferred doublet caller, but NOT in renv.lock as of 2026-09-15.
+        DoubletFinder 2.0.6 is present and is what rule R-012 routes to.
+        Decide whether to add scDblFinder to the lockfile or keep routing to
+        DoubletFinder; do not let the pack recommend software the course
+        container cannot run.
+    - name: SoupX
+      note: "Ambient RNA correction; not in lockfile, referenced only as out of scope."

@@ -1,0 +1,119 @@
+# Machine-checkable assertions for scRNA-seq multi-sample integration.
+#
+# Two consumers read this file:
+#   1. An LLM, as instructions (via SKILL.md).
+#   2. validate/lint_code.R and validate/checks.R, as tests.
+#
+# A rule without at least one of `lint` or `post_condition` is a rule that
+# cannot be enforced. Those are allowed but must be marked enforced: manual.
+#
+# severity:
+#   block  - do not produce the analysis; explain the problem to the user
+#   warn   - proceed, but state the caveat in the output
+#   inform - mention where relevant
+
+rules:
+
+  - id: R-INT-001
+    severity: block
+    title: "Integrated data must not be used for differential expression"
+    when: "the object carries an integrated reduction and the request involves DE, markers, or testing between conditions/batches"
+    forbid: "using IntegrateLayers output (the integrated reduction, or any assay rebuilt from it) as the input to FindMarkers/FindAllMarkers or any DE tool"
+    require: >
+      Route to the original, non-integrated (but JoinLayers-joined) counts or
+      normalised data, and model batch/technology as a covariate if a complex
+      design tool (edgeR/limma) is being used.
+    rationale: >
+      Source: course lecture (day2/day2-3_integration.qmd recording), stated
+      directly rather than inferred: "this is not something you would use for
+      differential gene expression... you gave more power to the batch that
+      you considered than to the biology that you really have... it is always
+      better to go back to original data and then include [batch] as a
+      covariate." IntegrateLayers computes a per-cell correction vector in a
+      reduced space to align batches visually; it does not produce expression
+      values that preserve the original magnitude of biological differences.
+      Using it for DE systematically understates real effects and can
+      manufacture false negatives or, worse, false positives when the batch
+      correlates with the comparison of interest.
+    enforced: [lint, manual]
+    lint: L-INT-001
+
+  - id: R-INT-002
+    severity: block
+    title: "Integration follows QC and doublet removal, and precedes clustering"
+    when: "integrating samples"
+    require: "per-sample QC filtering and doublet removal have already run (see scrnaseq-qc-filtering pack, rule R-013)"
+    forbid: "integrating raw, unfiltered per-sample objects"
+    rationale: >
+      Low-quality cells and doublets are per-sample technical artefacts.
+      Integrating before removing them lets the integration method treat
+      "a sample has more doublets than another" as a batch effect to correct
+      for, which is not what batch correction is for.
+    enforced: [manual]
+
+  - id: R-INT-003
+    severity: warn
+    title: "A confounded design risks integrating away real biology"
+    when: "the batches/samples being integrated also differ by the biological condition of interest (e.g. all disease samples run separately from all healthy samples)"
+    require: >
+      State this risk explicitly before integrating. After integrating, check
+      that an expected biological difference (a known marker gene, a known
+      cell-type proportion difference) still appears in the integrated
+      embedding rather than being erased.
+    rationale: >
+      Source: course lecture. Integration methods find "corresponding cells"
+      across batches and pull them together; if the batch structure is
+      confounded with the biological comparison, the method cannot
+      distinguish "this is the same cell type, correct for batch" from "this
+      is a genuinely different cell state caused by the condition, don't
+      correct it away." Good experimental design does not remove this risk -
+      it only limits how much it can bias conclusions when it does happen.
+    enforced: [manual]
+
+  - id: R-INT-004
+    severity: warn
+    title: "JoinLayers() required after IntegrateLayers(), before single-matrix ops"
+    when: "emitting code that accesses counts or data from an assay after integration"
+    correct: |
+      seu <- Seurat::IntegrateLayers(object = seu, method = CCAIntegration,
+                                      orig.reduction = "pca",
+                                      new.reduction = "integrated.cca")
+      seu[["RNA"]] <- SeuratObject::JoinLayers(seu[["RNA"]])
+    rationale: >
+      Same failure family as the QC pack's R-004: a v5 object built from
+      several samples keeps per-sample layers until explicitly joined. Code
+      that reads a single counts/data matrix before joining silently covers
+      only one sample.
+    enforced: [lint]
+    lint: L-INT-002
+
+  - id: R-INT-005
+    severity: block
+    title: "PCA must be computed on the assay actually being integrated"
+    when: "calling IntegrateLayers with orig.reduction referencing a PCA"
+    require: >
+      If integrating the SCT assay, `orig.reduction` must point to a PCA
+      computed on that SCT assay (e.g. `pcaSCT`), not the RNA assay's `pca`.
+      Re-run RunPCA on the correct assay if it is missing or predates the
+      current variable-feature selection.
+    forbid: "reusing seu[['pca']] (computed on RNA) as orig.reduction when integrating the SCT assay"
+    rationale: >
+      A PCA computed on the wrong assay, or on stale variable features,
+      produces anchors in a space that does not reflect the data being
+      corrected. This does not error - it silently integrates on the wrong
+      basis and the result looks plausible.
+    enforced: [lint]
+    lint: L-INT-003
+
+  - id: R-INT-006
+    severity: inform
+    title: "Harmony and STACAS are available but untaught"
+    when: "the user asks which integration method to use, or mentions Harmony"
+    note: >
+      This course teaches Seurat's native CCA (IntegrateLayers). Harmony is in
+      renv.lock but not exercised in the course container - mention it as an
+      alternative, not a replacement, unless the user specifically asks for
+      it. STACAS (semi-supervised, uses known cell-type labels to avoid
+      cross-type anchors) is mentioned in the lecture as useful once reliable
+      per-sample cell-type annotations already exist, but is not in renv.lock.
+    enforced: [manual]

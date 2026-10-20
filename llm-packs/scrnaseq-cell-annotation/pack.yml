@@ -1,0 +1,57 @@
+id: sib/scrnaseq-cell-annotation
+title: "Cell type annotation (manual markers + SingleR, Seurat 5)"
+version: 0.1.0
+status: pilot
+
+scope: >
+  Annotating clusters with cell type labels: manual marker-gene inspection
+  (FeaturePlot/VlnPlot/AddModuleScore) and automated reference-based
+  annotation with SingleR + celldex. Starts from a clustered Seurat object.
+  Ends at a per-cell or per-cluster cell type label in `@meta.data`. Does not
+  cover differential expression between annotated types - separate pack.
+
+provenance:
+  repo: https://github.com/sib-swiss/single-cell-r-training
+  derived_from:
+    - day3/day3-1_cell_annotation.qmd
+    - llm-packs/_dev/transcripts/dNO7W7qkKBM.clean.txt   # lecture recording for this chapter
+  course: "SIB: Single-cell transcriptomics with R"
+  dataset: "Caron et al. 2020, paediatric B-ALL and PBMMC bone marrow (10x 3' GEX)"
+  maintainer:
+    name: "TODO: named individual, not a team alias"
+    email: "TODO@sib.swiss"
+  license: CC-BY-4.0
+
+validity:
+  last_validated: null
+  validated_against:
+    R: "4.6.0"
+    Seurat: "5.5.0"
+    SingleR: "check against renv.lock at validation time"
+    celldex: "check against renv.lock at validation time"
+    container: "sibswiss/training-singlecell-rstudio:2026.6"
+    renv_lock: "renv.lock@main"
+  validation_entrypoint: validate/run_all.R
+  stale_after_days: 120
+  on_stale: >
+    Tell the user, before giving any advice from this pack, that it has not
+    been re-tested against current package versions and may be out of date.
+
+applies_when:
+  object: "Seurat >= 5.0, clustered"
+  species: ["Homo sapiens", "Mus musculus"]
+
+not_applicable_to:
+  - what: "Reporting differences in cell-type ABUNDANCE between conditions as a validated finding"
+    why: "Needs multiple biological replicates and ideally an orthogonal validation - see reference/pitfalls.md#p-ann-005."
+  - what: "A non-model organism with no suitable reference available"
+    why: "SingleR/celldex automated annotation needs a reference; manual marker-based annotation is the fallback, with its own expert-knowledge requirement."
+
+depends_on:
+  in_lockfile:
+    - Seurat
+    - SingleR
+    - celldex
+    - dittoSeq
+    - readxl   # for reading a downloaded CellMarker marker table - see R-ANN-007
+  recommended_but_absent: []

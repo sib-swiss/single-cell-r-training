@@ -37,6 +37,10 @@ Choose one of the following:
 
 Log in to Rstudio server with the provided link, username and password.
 
+- The account is yours for the duration of the course: the files in your home directory are only visible to you, and all R packages for the course are already installed.
+- For the project work, groups share files in `/group_work` (see [Projects](../projects/introduction.qmd#working-directories)), and you can use the AI coding assistant goose (see [Using AI assistants with LLM packs](day1-4_llm_packs.qmd)). Do the course exercises without it.
+- The server, including your files, is removed after the course. Download anything you want to keep before then (in the Files pane: select files, **More** → **Export...**).
+
 ## Own installation
 
 Install the required packages using [renv](https://rstudio.github.io/renv/index.html)
@@ -50,7 +54,7 @@ renv::restore(lockfile = "https://raw.githubusercontent.com/sib-swiss/single-cel
 
 ## Docker
 
-With docker, you can use exactly the same environment as we use in the enrolled course, but than running locally.
+With docker, you can use exactly the same R environment as we use in the enrolled course, but than running locally. The AI coding assistant on the course server is not part of the image; see [Using AI assistants with LLM packs](day1-4_llm_packs.qmd) to set one up yourself.
 
 In the video below there's a short tutorial on how to set up a docker container for this course. Note that you will need administrator rights, and that if you are using Windows, you need the latest version of Windows 10.
 
@@ -117,7 +121,7 @@ Finally, type in the project name. This should be `single_cell_course`. Finish b
 ![](../assets/images/define_directory_name.png){width=300}
 
 
-Now that we have setup a project and a project directory (it is in `/home/rstudio/single_cell_course`), we can download the data that is required for this course.
+Now that we have setup a project and a project directory (it is in `~/single_cell_course`), we can download the data that is required for this course.
 
 
 ### To download and extract the dataset, copy-paste these commands in the **Console** tab:

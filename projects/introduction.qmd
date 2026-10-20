@@ -1,4 +1,4 @@
-# Introduction 
+# Introduction
 
 {{< downloadthis ../assets/pdf/05_introduction_project_work.pdf dname="05_introduction_project_work" label="Download the presentation" icon="filetype-pdf" >}}
 
@@ -13,6 +13,29 @@ You will get to know each other, define how you like to collaborate and start on
 
 ## Working directories
 
-Each group has access to a shared working directory, which is mounted at the root level as `/group_work/groupX` (replace `X` with your group number). 
+::: {.panel-tabset}
 
-In RStudio Server, you can view the contents of your group's directory in the Files pane (bottom left). Click on the three dots (`...`) to navigate to `/group_work/groupX` and access or manage your project files.
+### Enrolled in the course
+
+Each group has a shared directory on the course server, `/group_work/groupX` (replace `X` with your group number). Your home directory has a shortcut to it called `group_work`, so you can open it from the Files pane (bottom right).
+
+- Download the project data **once per group**, into your group directory. In the Console, go there first, e.g. `setwd("~/group_work/group1")`, and then run the download code on your project's page.
+- Each of you then creates your **own** RStudio project for your own scripts (**File** → **New Project...** → **New Directory**), and reads the data from the group directory. Use the group directory to share scripts and results (e.g. figures, or objects saved with `saveRDS()`) with the rest of your group.
+- Everyone on the course can open all group directories, so stick to your own, and don't delete other people's files.
+
+Your home directory and the group directories are removed after the course. Download anything you want to keep (in the Files pane: select files, **More** → **Export...**).
+
+### On your own computer
+
+Download the project data into a directory of your choice, with the download code on your project's page, and create an RStudio project in the `projectX` directory that appears (**File** → **New Project...** → **Existing Directory**). To work together, share scripts and results the way your group prefers, for example through a shared drive or a Git repository.
+
+:::
+
+## Using an AI assistant
+
+During the project work, you are welcome to use an AI coding assistant, together with the LLM packs of this course. [Using AI assistants with LLM packs](../day1/day1-4_llm_packs.qmd) explains how to set this up, on the course server or on your own computer, and what to check in what it produces.
+
+An assistant can write code quickly, but deciding whether that code does the right thing for your data is still up to you and your group. For your presentation:
+
+- Be ready to explain every step of your analysis, and why it is right for your dataset — whether you or the assistant wrote the code.
+- Say where you used an assistant, and what you checked.

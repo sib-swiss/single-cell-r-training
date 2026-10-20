@@ -1,0 +1,170 @@
+name: validate LLM packs
+
+on:
+  push:
+    paths:
+      - 'llm-packs/**'
+      - 'scripts/**'
+      - '.github/workflows/validate-llm-packs.yml'
+  pull_request:
+    paths:
+      - 'llm-packs/**'
+  schedule:
+    # Weekly. The point is to fail when the ecosystem moves, not when we do.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+
+  # Discover pack directories (anything under llm-packs/ with a pack.yml -
+  # this naturally excludes llm-packs/_dev/, which holds authoring material
+  # such as video transcripts, not a pack) and expose them as a matrix for
+  # every other job. Adding a pack is then just adding its directory - no
+  # workflow edits required.
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      packs: ${{ steps.list.outputs.packs }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: |
+          packs=$(for d in llm-packs/*/; do
+            [ -f "${d}pack.yml" ] && basename "$d"
+          done | jq -R -s -c 'split("\n")[:-1]')
+          echo "packs=$packs" >> "$GITHUB_OUTPUT"
+          echo "discovered packs: $packs"
+
+  # Fast, no container: each pack's own rules must hold on plain R.
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    container: rocker/r-ver:4.6
+    strategy:
+      matrix:
+        pack: ${{ fromJson(needs.setup.outputs.packs) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install test deps
+        run: Rscript -e 'install.packages(c("testthat","yaml"), repos="https://cloud.r-project.org")'
+
+      - name: Linter self-tests
+        run: Rscript "llm-packs/${{ matrix.pack }}/validate/test-lint.R"
+
+      - name: Rules file parses and every rule is enforceable
+        run: |
+          Rscript -e '
+            rules_file <- Sys.glob(file.path("llm-packs", "${{ matrix.pack }}", "rules", "*.rules.yml"))[1]
+            stopifnot("no rules/*.rules.yml file found" = !is.na(rules_file))
+            r <- yaml::read_yaml(rules_file)$rules
+            bad <- Filter(function(x) is.null(x$lint) && is.null(x$post_condition) &&
+                                      !identical(x$enforced, "manual") &&
+                                      !("manual" %in% x$enforced), r)
+            if (length(bad)) {
+              cat("Rules with no enforcement mechanism and not marked manual:\n")
+              for (b in bad) cat(" -", b$id, "\n")
+              quit(status = 1)
+            }
+            cat(length(r), "rules in", rules_file, "- all enforceable or explicitly manual\n")'
+
+      - name: pack.yml parses and declares a maintainer
+        run: |
+          Rscript -e '
+            p <- yaml::read_yaml("llm-packs/${{ matrix.pack }}/pack.yml")
+            stopifnot(!is.null(p$validity$stale_after_days))
+            if (grepl("TODO", p$provenance$maintainer$name %||% "TODO")) {
+              cat("::warning::pack.yml has no named maintainer yet\n")
+            }'
+
+  # Advisory: the course scripts are not required to pass any pack's rules,
+  # but we want to see when they drift. Not part of the matrix - this runs
+  # every pack's linter once each against the same course scripts, so it
+  # grows in coverage as packs are added without needing its own matrix.
+  # Remove continue-on-error once the known findings in scripts/ are resolved.
+  course-scripts-lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    container: rocker/r-ver:4.6
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint course scripts against every pack's linter (advisory)
+        run: |
+          for pack in $(echo '${{ needs.setup.outputs.packs }}' | jq -r '.[]'); do
+            echo "--- ${pack} ---"
+            Rscript "llm-packs/${pack}/validate/lint_code.R" \
+              scripts/run_analysis.R scripts/project1.R scripts/project2.R || true
+          done
+
+  # Slow, needs Seurat: runtime post-conditions against synthetic fixtures.
+  # max-parallel: 1 because the "stamp last_validated" step below commits and
+  # pushes to pack.yml on main - running packs sequentially avoids two matrix
+  # cells racing on that commit.
+  validate:
+    needs: [setup, lint]
+    runs-on: ubuntu-latest
+    container: sibswiss/training-singlecell-rstudio:2026.6
+    strategy:
+      max-parallel: 1
+      matrix:
+        pack: ${{ fromJson(needs.setup.outputs.packs) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build fixtures
+        run: Rscript "llm-packs/${{ matrix.pack }}/validate/make_fixtures.R"
+
+      - name: Run full validation
+        run: Rscript "llm-packs/${{ matrix.pack }}/validate/run_all.R"
+
+      # Only a green run may write this stamp - it is the pack's entire claim
+      # to being current. Pulls first since matrix cells run sequentially
+      # against the same branch and each one commits.
+      - name: Stamp last_validated
+        if: success() && github.ref == 'refs/heads/main'
+        run: |
+          Rscript -e '
+            f <- "llm-packs/${{ matrix.pack }}/pack.yml"
+            l <- readLines(f)
+            i <- grep("^  last_validated:", l)
+            l[i] <- sprintf("  last_validated: %s", format(Sys.Date()))
+            j <- grep("^    R:", l)[1]
+            l[j] <- sprintf("    R: \"%s\"", getRversion())
+            k <- grep("^    Seurat:", l)[1]
+            l[k] <- sprintf("    Seurat: \"%s\"", packageVersion("Seurat"))
+            writeLines(l, f)'
+          if ! git diff --quiet; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git pull --rebase origin "${GITHUB_REF#refs/heads/}"
+            git commit -am "CI: stamp llm-pack validation date (${{ matrix.pack }})"
+            git push
+          fi
+
+  # Surface staleness as a visible failure rather than a silent decay.
+  staleness:
+    needs: setup
+    runs-on: ubuntu-latest
+    container: rocker/r-ver:4.6
+    strategy:
+      matrix:
+        pack: ${{ fromJson(needs.setup.outputs.packs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: Rscript -e 'install.packages("yaml", repos="https://cloud.r-project.org")'
+      - name: Fail if the pack is past its stale_after_days
+        run: |
+          Rscript -e '
+            p <- yaml::read_yaml("llm-packs/${{ matrix.pack }}/pack.yml")
+            lv <- p$validity$last_validated
+            if (is.null(lv)) {
+              cat("::warning::pack has never been validated\n"); quit(status = 0)
+            }
+            age <- as.numeric(Sys.Date() - as.Date(as.character(lv)))
+            cat(sprintf("last validated %d days ago (limit %d)\n",
+                        age, p$validity$stale_after_days))
+            if (age > p$validity$stale_after_days) {
+              cat("::error::pack is stale - revalidate or unpublish it\n")
+              quit(status = 1)
+            }'

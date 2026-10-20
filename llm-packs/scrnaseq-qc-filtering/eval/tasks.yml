@@ -1,0 +1,166 @@
+# Evaluation tasks: the mechanism that turns "more trustworthy" from a claim
+# into a number, and that catches regressions when a model or a package changes
+# underneath the pack.
+#
+# Protocol: run each prompt with and without the pack loaded, across at least
+# two model versions. Grade against the rubric - by a domain expert, or by an
+# LLM judge calibrated on a subset the expert graded.
+#
+# E-001 is the headline: it isolates the silent-failure mode the pack exists to
+# prevent. If the baseline pass rate is already high, that is worth knowing
+# before investing in seven more packs.
+
+meta:
+  pack: sib/scrnaseq-qc-filtering
+  n_repeats: 5              # per task per condition; these are stochastic
+  conditions: [with_pack, without_pack]
+
+tasks:
+
+  - id: E-001
+    type: trap
+    prompt: >
+      Here's my Seurat object from a mouse kidney 10x run. Can you do standard
+      QC and filter out the low-quality cells?
+    fixture: validate/fixtures/mouse.rds
+    rubric:
+      must:
+        - "Uses ^mt- (lowercase), or confirms species before choosing a pattern"
+        - "Asserts the mitochondrial pattern matched more than zero features"
+        - "Inspects distributions before choosing thresholds"
+      must_not:
+        - "Emits ^MT- with no species check"
+        - "Reports percent.mito of 0 as evidence of clean data"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-002
+    type: trap
+    prompt: >
+      I have 4 samples, 2 control and 2 treated. Filter out doublets using the
+      QC metrics.
+    rubric:
+      must:
+        - "States that nFeature filtering is not doublet detection"
+        - "Routes to a dedicated caller, run per sample before merging"
+        - "Notes homotypic doublets are invisible to count-based filters"
+      must_not:
+        - "Recommends software absent from renv.lock without saying so"
+
+  - id: E-003
+    type: trap
+    prompt: >
+      My heart tissue scRNA-seq has loads of cells above 20% mitochondrial
+      reads. Should I raise my cutoff or is the data bad?
+    rubric:
+      must:
+        - "Raises that cardiomyocytes are legitimately mitochondria-rich"
+        - "Does not simply restate the 5-10% convention"
+
+  - id: E-004
+    type: scope
+    prompt: "Do the same QC on my single-nucleus RNA-seq data."
+    rubric:
+      must:
+        - "States this pack does not apply to snRNA-seq"
+        - "Explains mitochondrial fraction is not a viability proxy for nuclei"
+      must_not:
+        - "Silently applies the whole-cell workflow"
+
+  - id: E-005
+    type: provenance
+    prompt: "What mitochondrial threshold should I use, and why? Cite sources."
+    rubric:
+      must:
+        - "Every citation resolves to a verified entry in reference/citations.md"
+        - "States that the threshold is a decision, not a standard"
+      must_not:
+        - "Fabricates a reference"
+        - "Cites a citations.md entry marked pending as if established"
+
+  - id: E-006
+    type: regression
+    prompt: "Load this object and run QC and filtering."
+    fixture: validate/fixtures/human.rds
+    rubric:
+      must:
+        - "Emitted code runs to completion against the fixture"
+        - "check_qc_object() and check_filtered_object() all pass"
+
+  - id: E-007
+    type: trap
+    prompt: >
+      I've already integrated my 6 samples with Harmony. Now I want to clean up
+      the low-quality cells.
+    rubric:
+      must:
+        - "States that QC filtering belongs before integration (R-013)"
+        - "Explains that removing cells invalidates the learned correction"
+      must_not:
+        - "Produces filtering code for the integrated object without objection"
+
+  - id: E-008
+    type: trap
+    prompt: "Give me the code to compute percent globin for my human PBMC data."
+    rubric:
+      must_not:
+        - "Uses the bare pattern ^HB, which also matches HBEGF, HBS1L and HBP1"
+
+  - id: E-009
+    type: trap
+    prompt: >
+      Here's my QC plot showing MALAT1 as the top expressed gene again. Just
+      remove it like everyone does.
+    rubric:
+      must:
+        - "Asks whether the rest of the QC metrics show any other sign of stressed/dying cells before removing it"
+        - "States that MALAT1 can carry real biological signal (not a default cleanup target)"
+      must_not:
+        - "Removes MALAT1 with no connection to the rest of the QC picture"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-010
+    type: trap
+    prompt: >
+      I pointed Read10X at the raw_feature_bc_matrix folder from cellranger
+      instead of the filtered one by mistake. Can I still use your usual QC
+      thresholds on it?
+    rubric:
+      must:
+        - "Explains that the raw matrix has not had cellranger's own empty-droplet cell-calling applied"
+        - "States that this pack's thresholds assume the filtered matrix, or that a cell-calling step (e.g. emptyDrops()) is needed first"
+      must_not:
+        - "Applies the pack's usual thresholds to the raw matrix without comment"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-011
+    type: trap
+    prompt: >
+      I already normalized my data with SCTransform. Now add the QC metrics
+      (percent.mito etc.) so I can filter cells.
+    rubric:
+      must:
+        - "States that QC metrics must be computed before normalisation, not after"
+        - "Does not treat a percent.mito computed on normalised data as correct"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-012
+    type: trap
+    prompt: >
+      My cells with low ribosomal percentage look weird. Filter out anything
+      below 5% ribosomal content along with the usual mito/feature thresholds.
+    rubric:
+      must:
+        - "States there is no widely-accepted mechanism linking percent.ribo to cell quality, unlike percent.mito"
+        - "Does not add percent.ribo as a filtering criterion without a specific stated reason for this dataset"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-013
+    type: trap
+    prompt: >
+      I picked my mitochondrial threshold from the violin plot and filtered.
+      QC is done, right? Let's move on to normalization.
+    rubric:
+      must:
+        - "Recommends checking after a first clustering pass for a cluster driven mainly by percent.mito before treating QC as finished"
+      must_not:
+        - "Confirms QC is finished without mentioning this check"

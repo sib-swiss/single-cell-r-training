@@ -1,0 +1,269 @@
+# Machine-checkable assertions for scRNA-seq QC and filtering.
+#
+# Two consumers read this file:
+#   1. An LLM, as instructions (via SKILL.md).
+#   2. validate/lint_code.R and validate/checks.R, as tests.
+#
+# A rule without at least one of `lint` or `post_condition` is a rule that
+# cannot be enforced. Those are allowed but must be marked enforced: manual.
+#
+# severity:
+#   block  - do not produce the analysis; explain the problem to the user
+#   warn   - proceed, but state the caveat in the output
+#   inform - mention where relevant
+
+rules:
+
+  - id: R-001
+    severity: block
+    title: "Mitochondrial gene pattern must match the species"
+    when: "emitting PercentageFeatureSet with a mitochondrial pattern"
+    require: "species confirmed before the pattern is chosen"
+    correct:
+      human: '"^MT-"'
+      mouse: '"^mt-"'
+    rationale: >
+      Mouse mitochondrial genes are lowercase-prefixed (mt-Nd1, mt-Co1, mt-Atp6).
+      "^MT-" matches zero mouse genes. PercentageFeatureSet does not error on an
+      empty match - it returns 0 for every cell. The downstream filter
+      percent.mito < 8 then retains 100% of cells, and the analysis completes
+      carrying a percent.mito column that looks like QC was performed.
+    enforced: [lint, runtime]
+    lint: L-001
+    post_condition: "max(seu$percent.mito, na.rm = TRUE) > 0"
+
+  - id: R-002
+    severity: block
+    title: "Every feature-pattern match must be asserted non-empty"
+    when: "emitting any PercentageFeatureSet call"
+    require: "a guard proving the pattern matched at least one feature"
+    template: |
+      mito_genes <- grep("^MT-", rownames(seu), value = TRUE)
+      stopifnot("no mitochondrial genes matched - check species and gene ID type" =
+                  length(mito_genes) > 0)
+      seu <- Seurat::PercentageFeatureSet(seu, pattern = "^MT-",
+                                          col.name = "percent.mito")
+    rationale: >
+      Generalises R-001. The same silent-zero failure occurs when features are
+      Ensembl IDs rather than symbols, when a custom reference prefixes gene
+      names (GRCh38-MT-ND1), or when the default assay is ADT rather than RNA in
+      a CITE-seq object.
+    enforced: [lint]
+    lint: L-002
+
+  - id: R-003
+    severity: warn
+    title: "Haemoglobin pattern is approximate"
+    when: "computing a haemoglobin percentage"
+    note: >
+      The course uses "^HB[^(P)]". The character class excludes the literal
+      characters ( P and ), so it drops HBP1 (a transcription factor). It still
+      matches HBEGF, HBS1L, HBQ1 and HBD-adjacent loci that are not haemoglobin
+      subunits. Prefer an explicit list.
+    prefer: |
+      hb_genes <- c("HBA1","HBA2","HBB","HBD","HBE1","HBG1","HBG2","HBM","HBZ")
+      hb_genes <- intersect(hb_genes, rownames(seu))
+    forbid: >
+      Simplifying the regex to "^HB". That silently adds unrelated genes, and is
+      a plausible-looking "cleanup" an LLM will make unprompted.
+    enforced: [lint]
+    lint: L-004
+
+  - id: R-004
+    severity: warn
+    title: "Seurat 5 uses layer=, not slot=, and splits counts across layers"
+    when: "emitting Seurat assay accessors"
+    note: >
+      slot= is deprecated in Seurat 5. Separately, a v5 object built from several
+      samples keeps counts in per-sample layers (counts.PBMMC-1, counts.PBMMC-2,
+      ...) until JoinLayers() is called. Code assuming a single counts matrix
+      operates on one sample's cells while appearing to cover all of them.
+    correct: |
+      seu[["RNA"]] <- SeuratObject::JoinLayers(seu[["RNA"]])
+      cts <- SeuratObject::GetAssayData(seu, assay = "RNA", layer = "counts")
+      stopifnot(ncol(cts) == ncol(seu))
+    known_instance: >
+      scripts/run_analysis.R in this repo still uses slot = "counts" inside
+      most_expressed_boxplot(). day1-3_analysis_tools_qc.qmd has been updated to
+      layer =. The script and the chapter disagree.
+    same_failure_also_applies_to: >
+      subset() on a multi-sample v5 object before JoinLayers() - see
+      reference/pitfalls.md#p-012. subset() does not error; it silently
+      subsets within whichever layer(s) happen to be addressable, which is not
+      necessarily all samples.
+    enforced: [lint]
+    lint: [L-003, L-006]
+
+  - id: R-005
+    severity: warn
+    title: "Multi-sample objects need per-sample QC distributions"
+    when: "length(unique(seu$orig.ident)) > 1"
+    require: >
+      QC distributions plotted split by sample, and an explicit statement of
+      whether thresholds were set globally or per sample.
+    rationale: >
+      One global threshold across samples of differing capture quality removes
+      cells preferentially from the worst sample. The resulting composition
+      difference is technical and will later be read as biology.
+    enforced: [manual]
+
+  - id: R-006
+    severity: warn
+    title: "A highly-expressed gene is not removed without a stated reason"
+    when: "filtering out a named gene (e.g. MALAT1) rather than a pattern-based gene set"
+    forbid: "removing MALAT1 or any other single highly-expressed gene as a default cleanup step"
+    require: >
+      State why the gene is being removed in this specific dataset (e.g.
+      evidence of stress/dying cells elsewhere in the QC metrics), or leave it
+      in and say so.
+    rationale: >
+      MALAT1 is highly abundant in most 10x poly-A-enriched datasets and is
+      routinely "cleaned up" by habit. It can carry real biological signal (see
+      reference/citations.md#c-04) - the course's own QC chapter computes it,
+      inspects the rest of the QC metrics, finds no other evidence of
+      stressed/dying cells, and explicitly leaves it in. Removing it is a
+      decision conditional on the rest of the QC picture, not a default step.
+    enforced: [lint]
+    lint: L-007
+
+  - id: R-007
+    severity: warn
+    title: "Starting from the raw (not filtered) CellRanger matrix changes what QC must do"
+    when: "reading a CellRanger output path"
+    note: >
+      cellranger count already removes most empty droplets via a knee-point in
+      the UMI-rank distribution before producing
+      filtered_feature_bc_matrix/ - this course's exercises, and this pack's
+      implementation, assume that step has already happened. The
+      raw_feature_bc_matrix/ output has NOT had that done and additionally
+      contains barcodes for empty droplets and ambient RNA; it needs its own
+      cell-calling step (e.g. emptyDrops()) before anything in this pack
+      applies.
+    require: >
+      If starting from raw_feature_bc_matrix/, say so explicitly and perform
+      cell-calling first. Do not apply this pack's thresholds directly to an
+      unfiltered matrix.
+    rationale: >
+      cellranger's own filtering solves the "which barcodes are empty
+      droplets" problem; it does not solve doublets, ambient contamination or
+      damaged cells, which is why this pack's QC still runs afterward. Source:
+      course lecture recording for this chapter.
+    enforced: [lint]
+    lint: L-008
+
+  - id: R-009
+    severity: block
+    title: "QC metrics must be computed on raw counts, before normalisation"
+    when: "PercentageFeatureSet is called on an object that has already been normalised/scaled"
+    forbid: "computing percent.mito/percent.ribo/percent.globin after NormalizeData() or ScaleData()"
+    require: >
+      Compute QC metrics (PercentageFeatureSet) before any normalisation step.
+      If normalisation has already happened for another reason, recompute
+      metrics from the counts layer specifically, not the data/scale.data
+      layer.
+    rationale: >
+      PercentageFeatureSet sums raw counts. Run on log-normalised or scaled
+      values, the resulting "percentage" is computed on the wrong scale and is
+      not a percentage of anything meaningful - it does not error, it just
+      produces numbers that look plausible.
+    enforced: [lint, runtime]
+    lint: L-009
+    post_condition: "all(seu$nCount_RNA == round(seu$nCount_RNA))"
+
+  - id: R-010
+    severity: block
+    title: "No QC threshold may be presented as a default"
+    when: "emitting a numeric QC threshold"
+    forbid: "calling a value standard, default, recommended, or typical"
+    require:
+      - "show the distribution before choosing"
+      - "state that the value is a decision"
+      - "name where the value came from"
+    rationale: >
+      Optimal thresholds vary by tissue, protocol and dissociation method. The
+      values in this pack (nFeature_RNA 200-5000, percent.mito < 8) are the
+      values Caron et al. 2020 used for paediatric bone marrow mononuclear
+      cells. They are an example of a justified choice. In cardiac tissue a < 8%
+      mitochondrial cutoff deletes cardiomyocytes - the most abundant cell type -
+      and what remains looks clean.
+    enforced: [lint]
+    lint: L-005
+
+  - id: R-011
+    severity: warn
+    title: "Report the filtering effect"
+    when: "cells are removed"
+    require: "n before, n after, and percent removed, per sample"
+    post_condition: "fraction_removed < 0.40"
+    on_violation: >
+      Stop and ask the user whether the thresholds are right, rather than
+      proceeding with a heavily truncated dataset.
+    enforced: [runtime]
+
+  - id: R-012
+    severity: block
+    title: "Count-based filtering is not doublet detection"
+    when: "the request mentions doublets, multiplets, or cell hashing"
+    forbid: "presenting an nFeature_RNA upper bound as doublet removal"
+    require: >
+      State that count-based filtering is a crude proxy, and route to a doublet
+      caller run per sample, before merging and before integration.
+    route_to:
+      available_in_course_container: "DoubletFinder 2.0.6 (in renv.lock)"
+      preferred_if_added: "scDblFinder - NOT currently in renv.lock, see pack.yml"
+    rationale: >
+      A homotypic doublet (two B cells) has a normal feature count and is
+      invisible to this filter. A large, transcriptionally active singlet
+      exceeds it and is wrongly removed.
+    enforced: [manual]
+
+  - id: R-013
+    severity: block
+    title: "QC filtering belongs before integration"
+    when: "an object already carrying an integrated reduction is being filtered"
+    forbid: "running cell filtering after IntegrateLayers"
+    rationale: >
+      Removing cells after integration invalidates the learned correction. QC and
+      doublet removal run per sample, before normalisation.
+    enforced: [runtime]
+    post_condition: "!any(grepl('integrated|harmony|cca', names(seu@reductions)))"
+
+  - id: R-014
+    severity: warn
+    title: "Ribosomal percentage is not a filtering criterion without a stated reason"
+    when: "percent.ribo is used inside a subset()/filter condition"
+    forbid: "filtering cells on percent.ribo as if it were an established QC criterion like percent.mito"
+    require: >
+      Compute and report percent.ribo (it can carry biological signal - see
+      reference/citations.md#c-03), but do not use it as a cell-removal
+      threshold unless a specific justification for this dataset is stated.
+    rationale: >
+      Source: course lecture for this chapter, stated directly by the
+      instructor: "I've never really found any good reason to use this
+      percentage to filter cells... quite a lot of people do, but I'm not
+      entirely sure why." Unlike percent.mito, there is no widely-accepted
+      damage/viability mechanism that percent.ribo measures. The course's own
+      final subset() call computes percent.ribo but filters only on
+      nFeature_RNA and percent.mito - consistent with this.
+    enforced: [lint]
+    lint: L-010
+
+  - id: R-015
+    severity: inform
+    title: "QC is iterative, not a one-shot step before clustering"
+    when: "QC thresholds are being finalised"
+    note: >
+      Source: course lecture. The recommended workflow is to filter mildly
+      first (remove only the clearest outliers), proceed through
+      dimensionality reduction/clustering, then colour the UMAP by
+      percent.mito. A cluster driven purely by high mitochondrial content
+      (cells of different true types clustering together only because they
+      share high percent.mito) indicates the initial filtering was too
+      permissive, and is a reason to go back and tighten the threshold, then
+      re-cluster. Treating the first threshold choice as final skips this
+      check.
+    require: >
+      After an initial mild filter and a first clustering pass, check for a
+      cluster that correlates with percent.mito rather than any other
+      distinguishing marker, before treating QC as finished.
+    enforced: [manual]

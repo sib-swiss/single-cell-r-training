@@ -1,0 +1,79 @@
+id: sib/scrnaseq-differential-expression
+title: "Differential gene expression (cluster markers and cross-condition testing, Seurat 5 + edgeR/limma)"
+version: 0.1.0
+status: pilot
+
+scope: >
+  Testing for differentially expressed genes in scRNA-seq data: per-cluster
+  marker discovery (Seurat FindAllMarkers/FindMarkers, per-cell Wilcoxon) and
+  cross-condition comparisons via pseudobulk aggregation + edgeR/limma.
+  Starts from a clustered and/or annotated Seurat object. Ends at a gene list
+  with effect sizes and adjusted p-values. Does not cover enrichment analysis
+  of that gene list (a separate pack; the course's own slide deck and video
+  for this chapter cover both DE and enrichment together - this pack only
+  covers the DE half).
+
+provenance:
+  repo: https://github.com/sib-swiss/single-cell-r-training
+  derived_from:
+    - day3/day3-2_differential_gene_expression.qmd
+    - scripts/generate_object_proB.R
+    - llm-packs/_dev/transcripts/6Y5uCQWRRbg.clean.txt   # lecture recording for this chapter (also covers enrichment - out of scope here)
+  course: "SIB: Single-cell transcriptomics with R"
+  dataset: "Caron et al. 2020 pro-B cell subset (PBMMC vs ETV6-RUNX1), paediatric B-ALL and PBMMC bone marrow (10x 3' GEX)"
+  maintainer:
+    name: "TODO: named individual, not a team alias"
+    email: "TODO@sib.swiss"
+  license: CC-BY-4.0
+
+# The validity contract. CI enforces this; see .github/workflows/validate-llm-packs.yml
+validity:
+  last_validated: null            # set by CI on a green run
+  validated_against:
+    R: "4.6.0"
+    Seurat: "5.5.0"
+    edgeR: "check against renv.lock at validation time"
+    limma: "check against renv.lock at validation time"
+    container: "sibswiss/training-singlecell-rstudio:2026.6"
+    renv_lock: "renv.lock@main"
+  validation_entrypoint: validate/run_all.R
+  stale_after_days: 120
+  on_stale: >
+    Tell the user, before giving any advice from this pack, that it has not
+    been re-tested against current package versions and may be out of date.
+
+applies_when:
+  object: "Seurat >= 5.0, clustered and/or annotated"
+  comparison_types:
+    - "cluster vs rest, or cluster vs cluster (marker discovery)"
+    - "condition vs condition across samples/patients (e.g. disease vs healthy)"
+
+not_applicable_to:
+  - what: "Enrichment/pathway analysis of a DE gene list"
+    why: "Separate pack - this one stops at the gene list with statistics."
+  - what: "More than 2-level condition comparisons via repeated pairwise FindMarkers without correction"
+    why: >
+      Each FindMarkers call adjusts p-values only within that one comparison;
+      combining several pairwise calls for a >2-group question under-corrects
+      for multiple testing. See reference/pitfalls.md#p-de-004, sourced from
+      the course lecture, not written in the qmd exercise itself.
+  - what: "Cross-condition testing with 1 biological replicate per condition"
+    why: "There is no way to estimate between-replicate variance; this pack's pseudobulk route requires at least 2 independent replicates per condition to be meaningful."
+
+# Packages this pack's advice depends on, checked against renv.lock by CI.
+depends_on:
+  in_lockfile:
+    - Seurat
+    - edgeR
+    - limma
+    - scuttle
+    - dittoSeq
+  recommended_but_absent:
+    - name: muscat
+      note: >
+        Bioconductor package purpose-built for pseudobulk DE across many
+        cell types/samples at once, named in both the exercise's Material
+        links and the lecture. The exercise itself implements the same
+        aggregate -> DGEList -> voom -> lmFit pipeline by hand rather than via
+        muscat. Not in renv.lock as of this pack's authoring - mention as an
+        alternative/more scalable route, do not require it.

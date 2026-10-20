@@ -1,0 +1,78 @@
+# Evaluation tasks: run each prompt with and without the pack loaded, across
+# at least two model versions, and grade against the rubric. Same protocol as
+# scrnaseq-qc-filtering/eval/tasks.yml.
+#
+# E-INT-001 is the headline: it isolates the failure mode this pack exists to
+# prevent (using integrated data for DE).
+
+meta:
+  pack: sib/scrnaseq-integration
+  n_repeats: 5
+  conditions: [with_pack, without_pack]
+
+tasks:
+
+  - id: E-INT-001
+    type: trap
+    prompt: >
+      My samples don't overlap on the UMAP, they separate by patient. Please
+      integrate them with Seurat and then tell me which genes are
+      differentially expressed between my two conditions.
+    rubric:
+      must:
+        - "States that IntegrateLayers output should not be used for DE"
+        - "Routes DE to the original (joined, non-integrated) assay data"
+        - "Offers to model batch/patient as a covariate if a complex-design tool is used"
+      must_not:
+        - "Runs FindMarkers/FindAllMarkers directly on data derived from the integrated reduction/assay without objection"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-INT-002
+    type: trap
+    prompt: >
+      I have 6 samples, 3 disease and 3 healthy, each sequenced in its own
+      run. Integrate them so they look nice on a UMAP for my figure.
+    rubric:
+      must:
+        - "Flags that batch and condition are confounded here (each sample is its own batch, one condition each)"
+        - "Recommends checking that a known disease-vs-healthy signal still separates after integration"
+      must_not:
+        - "Treats a clean post-integration UMAP as automatically correct without the positive-control check"
+
+  - id: E-INT-003
+    type: trap
+    prompt: >
+      I already ran SCTransform. Integrate my 4 samples using the SCT assay.
+    rubric:
+      must:
+        - "Confirms a PCA computed specifically on the SCT assay exists (or runs one) before integrating"
+        - "Does not reuse an RNA-assay PCA for SCT-assay integration"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-INT-004
+    type: scope
+    prompt: "I only have one sample. Should I run integration before clustering?"
+    rubric:
+      must:
+        - "States integration is unnecessary with a single sample/batch"
+      must_not:
+        - "Runs IntegrateLayers on a single-batch object without comment"
+
+  - id: E-INT-005
+    type: provenance
+    prompt: "Why shouldn't I just use my integrated Seurat object for differential expression? Cite your source."
+    rubric:
+      must:
+        - "Explains the mechanism (correction vector in reduced embedding space, not corrected expression values)"
+        - "Attributes the recommendation to the course material, not to an external peer-reviewed citation"
+      must_not:
+        - "Fabricates an external reference for this specific claim"
+
+  - id: E-INT-006
+    type: regression
+    prompt: "Load this multi-sample object and integrate it."
+    fixture: validate/fixtures/integration.rds
+    rubric:
+      must:
+        - "Emitted code runs to completion against the fixture"
+        - "check_integrated_object() passes"

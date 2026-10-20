@@ -1,0 +1,88 @@
+# Evaluation tasks: run each prompt with and without the pack loaded, across
+# at least two model versions, and grade against the rubric. Same protocol as
+# scrnaseq-qc-filtering/eval/tasks.yml.
+#
+# E-DE-001 is the headline: it isolates the pseudoreplication failure mode
+# this pack exists to prevent, using the course's own worked comparison.
+
+meta:
+  pack: sib/scrnaseq-differential-expression
+  n_repeats: 5
+  conditions: [with_pack, without_pack]
+
+tasks:
+
+  - id: E-DE-001
+    type: trap
+    prompt: >
+      I have single-cell data from 3 tumor patients and 3 healthy donors.
+      Can you find which genes are differentially expressed between tumor and
+      healthy using FindMarkers?
+    rubric:
+      must:
+        - "Asks or states how many independent replicates (patients/donors) exist per condition"
+        - "Flags that pooling all cells from 3 patients and testing per-cell inflates significance (pseudoreplication)"
+        - "Recommends or performs pseudobulk aggregation + edgeR/limma for the actual test"
+      must_not:
+        - "Presents raw FindMarkers output between the two conditions as the trustworthy final result with no caveat"
+    auto_check: "validate/lint_code.R on the emitted code must exit 0"
+
+  - id: E-DE-002
+    type: trap
+    prompt: >
+      Here's some code from a tutorial that treats my samples as patient-matched
+      pairs for a paired DE test. My samples aren't actually from matched
+      patients, but can you adapt this code for my dataset anyway?
+    rubric:
+      must:
+        - "Flags that a paired design requires genuinely matched samples"
+        - "Does not silently carry a fabricated pairing into the new analysis"
+      must_not:
+        - "Applies the paired-design code unchanged without raising the mismatch"
+
+  - id: E-DE-003
+    type: trap
+    prompt: >
+      I want to compare gene expression across three age groups: young,
+      middle-aged, and old mice. Can you run FindMarkers for each pair?
+    rubric:
+      must:
+        - "Notes that repeated pairwise FindMarkers calls under-correct for multiple testing across 3+ groups"
+        - "Suggests an omnibus/ANOVA-style alternative (e.g. limma's F-test) or an explicit combined p-value adjustment"
+
+  - id: E-DE-004
+    type: scope
+    prompt: "I only have 1 patient per condition. Can you still run a proper DE test between conditions?"
+    rubric:
+      must:
+        - "States this cannot be done with proper replication (no way to estimate between-replicate variance)"
+      must_not:
+        - "Silently runs a per-cell test and presents it as a valid condition-level comparison"
+
+  - id: E-DE-005
+    type: provenance
+    prompt: >
+      Why shouldn't I just pool all my single cells across patients and run a
+      t-test between conditions? Cite your source.
+    rubric:
+      must:
+        - "Explains the pseudoreplication mechanism clearly (cells within a patient aren't independent)"
+        - "Cites Soneson & Robinson 2018 (or states the claim is uncited if it cannot confirm the citation)"
+      must_not:
+        - "Fabricates a citation not present in reference/citations.md"
+
+  - id: E-DE-006
+    type: regression
+    prompt: "Load this object and find genes that differ between the two conditions, using patient as the replicate."
+    fixture: validate/fixtures/two_condition.rds
+    rubric:
+      must:
+        - "Emitted code runs to completion against the fixture"
+        - "check_pseudobulk_design() passes"
+
+  - id: E-DE-007
+    type: trap
+    prompt: "What does a log2FC of -1.3 for CD4 mean in my FindMarkers(ident.1 = 'CD8', ident.2 = 'CD4') result?"
+    rubric:
+      must:
+        - "States the direction explicitly relative to ident.1 and ident.2 (lower in CD8 relative to CD4, not just 'downregulated')"
