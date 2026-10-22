@@ -1,19 +1,107 @@
-name: build and push CI
+name: Build and push Docker image
 
+# Tags (set in the merge job):
+#   push to a branch / manual run -> <branch>, plus latest on main
+#   push of a v*.* git tag        -> <major>.<minor>, e.g. v2026.6 -> 2026.6
 on:
+  workflow_dispatch:
   push:
+    branches:
+      - deepak
+      - main
+      - master
     tags:
       - 'v*.*'
-  
+
+env:
+  IMAGE: sibswiss/training-singlecell-rstudio
+
 jobs:
-  docker:
-    runs-on: ubuntu-latest
+  # Each architecture builds on its own native runner (no QEMU: emulated
+  # source builds of the R/Bioconductor stack would take many hours) and
+  # pushes an untagged image by digest. The merge job then tags both digests
+  # as one multi-arch image, so `docker pull` picks the right one.
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-24.04
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     steps:
-      # Step 1: Checkout the repository code
+      - name: Prepare
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> "$GITHUB_ENV"
+
       - name: Checkout code
         uses: actions/checkout@v4
 
-    # Step 2: Set up Docker Buildx (enables multi-platform builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Labels go on the per-arch images; tags are applied in the merge job
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push by digest
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Docker/Dockerfile
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,name=${{ env.IMAGE }},push-by-digest=true,name-canonical=true,push=true
+          # Separate cache per architecture, otherwise they evict each other
+          cache-from: type=gha,scope=${{ env.PLATFORM_PAIR }}
+          cache-to: type=gha,mode=max,scope=${{ env.PLATFORM_PAIR }}
+
+      - name: Export digest
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          digest="${{ steps.build.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  # Only runs if both architectures built, so a tag never points at a
+  # half-finished image.
+  merge:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-*
+          merge-multiple: true
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -21,24 +109,18 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          # list of Docker images to use as base name for tags
-          images: |
-            sibswiss/training-singlecell-rstudio
-          # generate Docker tags based on the following events/attributes
+          images: ${{ env.IMAGE }}
           tags: |
+            type=ref,event=branch
+            type=raw,value=latest,enable={{is_default_branch}}
             type=semver,pattern={{major}}.{{minor}}
 
-      - name: Log in to Docker Hub
+      - name: Create multi-arch manifest and push
+        working-directory: ${{ runner.temp }}/digests
         run: |
-          echo "Logging into Docker Hub"
-          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-        shell: bash
-    
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          context: ./Docker
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          docker buildx imagetools create \
+            $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.IMAGE }}@sha256:%s ' *)
+
+      - name: Inspect image
+        run: docker buildx imagetools inspect "${{ env.IMAGE }}:${{ steps.meta.outputs.version }}"

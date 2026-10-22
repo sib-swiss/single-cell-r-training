@@ -47,6 +47,8 @@ RUN apt-get update && apt-get install -y \
     && R CMD javareconf \
     && rm -rf /var/lib/apt/lists/*
 
+# The project's renv.lock (repo root); build with the repo root as context:
+#   docker build -f Docker/Dockerfile .
 COPY renv.lock ./
 
 ENV RENV_INSTALL_THREADS=16
@@ -56,16 +58,7 @@ ENV RENV_CONFIG_PAK_ENABLED=FALSE
 RUN Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
 RUN Rscript -e 'remotes::install_version("renv", version = "1.2.3", repos="https://cloud.r-project.org")'
 
-# install xgboost first (required by BayesSpace)
-RUN Rscript -e 'install.packages("xgboost", repos = c("https://dmlc.r-universe.dev", "https://cloud.r-project.org"))'
-
-# restore everything except renv, xgboost, and the two that collide in staging
-RUN Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, exclude = c("renv", "xgboost", "BPCells", "monocle3"))'
-
-# install the stragglers explicitly (BPCells must build before monocle3)
-RUN rm -rf /tmp/Rtmp*/renv-graph-staging-* 2>/dev/null; \
-    Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, packages = "BPCells")'
-RUN Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, packages = "monocle3")'
+RUN Rscript -e 'renv::restore(lockfile="renv.lock", prompt=FALSE, exclude = "renv")'
 
 EXPOSE 8787
 CMD ["/init"]

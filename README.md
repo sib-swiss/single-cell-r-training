@@ -65,17 +65,15 @@ You can also use the script `Docker/run_locally.sh` to run the container.
 To add or update R packages in the Docker image, you need to:
 
 1. Add the new packages to the `Docker/install_packages.R` script.
-2. Copy the `renv.lock` file from the root directory to the `Docker` directory.
+2. Update the project `renv.lock` (in the root directory) with `renv::snapshot()`. The image is built from this lockfile.
 3. Rebuild the Docker image.
 
 #### Using GitHub Actions
-You can manually trigger a build of the Docker image by going to the Actions tab of this repository, selecting the "Manual build and push" workflow, and clicking "Run workflow".
+You can manually trigger a build of the Docker image by going to the Actions tab of this repository, selecting the "Build and push Docker image" workflow, and clicking "Run workflow". The same workflow also runs on pushes to `main` (tagged `latest` and `main`) and on `v*.*` git tags (e.g. `v2026.6` is pushed as `2026.6`).
 
 #### Locally
 Alternatively, you can rebuild the image locally:
 
 ```sh
-cp renv.lock Docker/
-cd Docker
-docker build -t sibswiss/training-singlecell-rstudio:latest .
+docker build -f Docker/Dockerfile -t sibswiss/training-singlecell-rstudio:latest .
 ```

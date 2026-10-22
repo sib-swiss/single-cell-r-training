@@ -1,0 +1,4 @@
+# The image is built with the repo root as context (docker build -f Docker/Dockerfile .)
+# but only needs the lockfile; keep course data, renv/library, _site etc. out of the context.
+*
+!renv.lock
