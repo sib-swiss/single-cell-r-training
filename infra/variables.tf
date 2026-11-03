@@ -66,7 +66,7 @@ variable "allowed_cidrs" {
 variable "rstudio_base_image" {
   description = "Course image the server image is built from (see Docker/Dockerfile)."
   type        = string
-  default     = "sibswiss/training-singlecell-rstudio:2026.3"
+  default     = "sibswiss/training-singlecell-rstudio:latest"
 }
 
 variable "goose_version" {

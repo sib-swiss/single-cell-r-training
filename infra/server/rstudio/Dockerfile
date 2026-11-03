@@ -1,7 +1,7 @@
 # Server-only layer on top of the course image: adds the goose coding agent
 # and creates the course accounts and group directories at container start. Built on the server by
 # compose.yaml, so the public image participants run locally stays unchanged.
-ARG BASE_IMAGE=sibswiss/training-singlecell-rstudio:2026.3
+ARG BASE_IMAGE=sibswiss/training-singlecell-rstudio:latest
 FROM ${BASE_IMAGE}
 
 ARG GOOSE_VERSION=v1.53.0
