@@ -7,6 +7,7 @@ editor_options:
 ::: {.callout-note}
 ## Learning outcomes
 **After having completed this chapter you will be able to:**
+
 - Understand the biological rationale and concepts behind trajectory inference and pseudotime analysis.
 - Convert a clustered Seurat object into a Monocle3 `cell_data_set` object.
 - Pre-process, reduce dimensions, and learn a principal graph trajectory from single-cell RNA-seq data.
