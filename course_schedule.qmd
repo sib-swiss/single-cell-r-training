@@ -17,7 +17,7 @@ title: "Course schedule"
 |         	    | 12:00 PM 	| 1:00 PM  	| BREAK                          	                                                      |                                  |
 | block 3 	    | 1:00 PM  	| 2:30 PM  	| [Analysis tools and QC](day1/day1-3_analysis_tools_qc.qmd)                            | Deepak Tanwar                    | [pdf](assets/pdf/04_analysis_tools_qc.pdf)  |
 |         	    | 2:30 PM  	| 3:00 PM  	| BREAK                                                                         	      |                                  |
-| block 5 	    | 3:00 PM  	| 5:15 PM  	| [Using AI and Group work](projects/introduction.qmd)                                  | Geert van Geest                  | [pdf](assets/pdf/05_introduction_project_work.pdf), [project1](projects/project1.qmd), [project2](projects/project2.qmd), [project3](projects/project3.qmd), [project4](projects/project4.qmd) |
+| block 4 	    | 3:00 PM  	| 5:15 PM  	| [Using AI and Group work](projects/introduction.qmd)                                  | Geert van Geest                  | [pdf](assets/pdf/05_introduction_project_work.pdf), [project1](projects/project1.qmd), [project2](projects/project2.qmd), [project3](projects/project3.qmd), [project4](projects/project4.qmd) |
 
 ## Day 2
 
@@ -25,11 +25,11 @@ title: "Course schedule"
 |-------------	|----------	|----------	|--------------------------------------------------------------------------------------	|--------------------------------	 | ------------ |
 | block 1 	    | 9:00 AM  	| 10:00 AM 	| [Normalization and scaling](day2/day2-1_normalization_scaling.qmd)                    |  Deepak Tanwar                   |  [pdf](assets/pdf/06_normalization_scaling.pdf) |
 |         	    | 10:00 AM 	| 10:30 AM 	| BREAK                               	                                                |                                  |              |
-| block 2 	    | 10:30 AM 	| 12:00 PM 	| [Dimensionality reduction](day2/day2-2_dimensionality_reduction.qmd) and [Integration](day2/day2-3_integration.qmd)  | Luciano Cascione |  [pdf](assets/pdf/07_DimensionalityReduction.pdf), [pdf](assets/pdf/08_Integration.pdf) |
-|         	    | 12:00 PM 	| 1:00 PM  	| BREAK                               	| |
-| block 3 	    | 1:00 PM  	| 2:30 PM  	| [Clustering](day2/day2-4_clustering.qmd)     	|  Luciano Cascione |  [pdf](assets/pdf/09_Clustering.pdf) |
-|         	    | 2:30 PM  	| 3:00 PM  	| BREAK                               	| |
-| block 4 	    | 3:00 PM  	| 5:15 PM  	| group work 	| |
+| block 2 	    | 10:30 AM 	| 12:30 PM 	| Using AI and Group work 	| Geert van Geest |
+|         	    | 12:30 PM 	| 1:30 PM  	| BREAK                               	| |
+| block 3 	    | 1:30 PM 	| 3:00 PM 	| [Dimensionality reduction](day2/day2-2_dimensionality_reduction.qmd) & [Integration](day2/day2-3_integration.qmd)  | Luciano Cascione |  [pdf](assets/pdf/07_DimensionalityReduction.pdf), [pdf](assets/pdf/08_Integration.pdf) |
+|         	    | 3:00 PM 	| 3:30 PM 	| BREAK                               	| |
+| block 4 	    | 3:30 PM  	| 5:00 PM 	| [Clustering](day2/day2-4_clustering.qmd) & [Pseudotime analysis (Advanced)](day2/day2-5_pseudotime.qmd)     	|  Luciano Cascione |  [pdf](assets/pdf/09_Clustering.pdf) |
 
 ## Day 3
 

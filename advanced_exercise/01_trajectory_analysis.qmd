@@ -2,6 +2,8 @@
 title: "Trajectory analysis"
 execute:
   eval: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -9,18 +11,25 @@ execute:
 
 Lecture Alex Russel Lederer:
 
-{{< downloadthis ../assets/pdf/Lecture_pseudotime_velocity.pdf dname="Lecture_pseudotime_velocity" label="Download the presentation" icon="filetype-pdf" >}}
-
-Lecture Tania Wyss and Rachel Marcone:
-
-{{< downloadthis ../assets/pdf/Trajectories.pdf dname="Trajectories" label="Download the presentation" icon="filetype-pdf" >}}
-
 {{< video https://youtu.be/FNrjzFUMOzU?si=G-ETBiHkkMe6eWfQ >}}
 
 - `slingshot` [vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/slingshot/inst/doc/vignette.html)
 - [`monocle3`](https://cole-trapnell-lab.github.io/monocle3/)
 
 ## Exercises
+
+::: {.callout-note}
+## Package Installation with `renv`
+If any required packages (such as `slingshot`, `scater`, `ggbeeswarm`, or `monocle3`) are not present in your `renv` library, install them before starting the exercises:
+
+```R
+renv::install(c("SingleCellExperiment", "scater", "slingshot", "ggbeeswarm", "leidenbase", "remotes", "devtools"))
+
+# For monocle3:
+remotes::install_github("bnprks/BPCells/r")
+renv::install("cole-trapnell-lab/monocle3")
+```
+:::
 
 Load the following packages:
 
@@ -38,19 +47,18 @@ library(Seurat)
 
 > This part uses the `Deng` dataset
 
-First, download the dataset from github within your  **Terminal** tab as on Day 1:
+Run the following command in R to download the dataset:
 
-<figure>
-<img src="../assets/images/select_terminal_tab.png" width="300"/>
-</figure>
+```{r}
+#| eval: false
+if (!dir.exists("course_data")) {
+  dir.create("course_data", recursive = TRUE)
+}
 
-
-Type the following commands within the Terminal tab:
-
-```{bash}
-#| output: false
-cd course_data/
-wget https://github.com/hemberg-lab/nrg-paper-figures/raw/master/deng-reads.rds
+download.file(
+  url = "https://github.com/hemberg-lab/nrg-paper-figures/raw/master/deng-reads.rds",
+  destfile = "course_data/deng-reads.rds"
+)
 ```
 
 Then, within R, import the rds file. the 'Deng' dataset is an object of class `SingleCellExperiment`.
@@ -333,7 +341,7 @@ gc()
 This part showcases how you can use `monocle3` to perform a trajectory analysis. First load the `seu` dataset:
 
 ```{r}
-seu <- readRDS("seu_day2-4.rds")
+seu <- readRDS("day2/seu_day2-4.rds")
 ```
 
 Load the required package into your environment:
@@ -475,7 +483,7 @@ seuB <- seu_monocl[, names(cls)[cls %in% c(10, 3, 11)]]
 ```
 
 <figure>
-<img src="../assets/images/choose_cells.gif" width="500"/>
+<img src="assets/images/choose_cells.gif" width="500"/>
 </figure>
 
 
