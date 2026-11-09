@@ -16,6 +16,8 @@ engine: knitr
 library(yaml)
 library(styler)
 library(namer)
+library(downlit)
+library(xml2)
 ```
 
 
