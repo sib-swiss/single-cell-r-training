@@ -319,14 +319,14 @@
     "href": "course_schedule.html#day-1",
     "title": "Course schedule",
     "section": "Day 1",
-    "text": "Day 1\n\n\n\nblock\nstart\nend\nsubject\nlecturer\n\n\n\n\n\nintroduction\n9:00 AM\n9:30 AM\nIntroduction\nLuciano Cascione\npdf\n\n\nblock 1\n9:30 AM\n10:30 AM\nIntroduction scRNAseq\nAndrea Rinaldi\npdf\n\n\n\n10:30 AM\n11:00 AM\nBREAK\n\n\n\n\nblock 2\n11:00 AM\n12:00 PM\nSetup and 10X and Cellranger\nDeepak Tanwar\npdf\n\n\n\n12:00 PM\n1:00 PM\nBREAK\n\n\n\n\nblock 3\n1:00 PM\n2:30 PM\nAnalysis tools and QC\nDeepak Tanwar\npdf\n\n\n\n2:30 PM\n3:00 PM\nBREAK\n\n\n\n\nblock 5\n3:00 PM\n5:15 PM\nUsing AI and Group work\nGeert van Geest\npdf, project1, project2, project3, project4"
+    "text": "Day 1\n\n\n\nblock\nstart\nend\nsubject\nlecturer\n\n\n\n\n\nintroduction\n9:00 AM\n9:30 AM\nIntroduction\nLuciano Cascione\npdf\n\n\nblock 1\n9:30 AM\n10:30 AM\nIntroduction scRNAseq\nAndrea Rinaldi\npdf\n\n\n\n10:30 AM\n11:00 AM\nBREAK\n\n\n\n\nblock 2\n11:00 AM\n12:00 PM\nSetup and 10X and Cellranger\nDeepak Tanwar\npdf\n\n\n\n12:00 PM\n1:00 PM\nBREAK\n\n\n\n\nblock 3\n1:00 PM\n2:30 PM\nAnalysis tools and QC\nDeepak Tanwar\npdf\n\n\n\n2:30 PM\n3:00 PM\nBREAK\n\n\n\n\nblock 4\n3:00 PM\n5:15 PM\nUsing AI and Group work\nGeert van Geest\npdf, project1, project2, project3, project4"
   },
   {
     "objectID": "course_schedule.html#day-2",
     "href": "course_schedule.html#day-2",
     "title": "Course schedule",
     "section": "Day 2",
-    "text": "Day 2\n\n\n\nblock\nstart\nend\nsubject\nlecturer\npresentation\n\n\n\n\nblock 1\n9:00 AM\n10:00 AM\nNormalization and scaling\nDeepak Tanwar\npdf\n\n\n\n10:00 AM\n10:30 AM\nBREAK\n\n\n\n\nblock 2\n10:30 AM\n12:00 PM\nDimensionality reduction and Integration\nLuciano Cascione\npdf, pdf\n\n\n\n12:00 PM\n1:00 PM\nBREAK\n\n\n\n\nblock 3\n1:00 PM\n2:30 PM\nClustering\nLuciano Cascione\npdf\n\n\n\n2:30 PM\n3:00 PM\nBREAK\n\n\n\n\nblock 4\n3:00 PM\n5:15 PM\ngroup work"
+    "text": "Day 2\n\n\n\nblock\nstart\nend\nsubject\nlecturer\npresentation\n\n\n\n\nblock 1\n9:00 AM\n10:00 AM\nNormalization and scaling\nDeepak Tanwar\npdf\n\n\n\n10:00 AM\n10:30 AM\nBREAK\n\n\n\n\nblock 2\n10:30 AM\n12:30 PM\nUsing AI and Group work\nGeert van Geest\n\n\n\n\n12:30 PM\n1:30 PM\nBREAK\n\n\n\n\nblock 3\n1:30 PM\n3:00 PM\nDimensionality reduction, Integration, and Trajectory analysis\nLuciano Cascione\npdf, pdf\n\n\n\n3:00 PM\n3:30 PM\nBREAK\n\n\n\n\nblock 4\n3:30 PM\n5:00 PM\nClustering\nLuciano Cascione\npdf"
   },
   {
     "objectID": "course_schedule.html#day-3",
