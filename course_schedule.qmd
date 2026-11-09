@@ -29,7 +29,7 @@ title: "Course schedule"
 |         	    | 12:30 PM 	| 1:30 PM  	| BREAK                               	| |
 | block 3 	    | 1:30 PM 	| 3:00 PM 	| [Dimensionality reduction](day2/day2-2_dimensionality_reduction.qmd) & [Integration](day2/day2-3_integration.qmd)  | Luciano Cascione |  [pdf](assets/pdf/07_DimensionalityReduction.pdf), [pdf](assets/pdf/08_Integration.pdf) |
 |         	    | 3:00 PM 	| 3:30 PM 	| BREAK                               	| |
-| block 4 	    | 3:30 PM  	| 5:00 PM 	| [Clustering](day2/day2-4_clustering.qmd) & [Pseudotime analysis (Advanced)](day2/day2-5_pseudotime.qmd)     	|  Luciano Cascione |  [pdf](assets/pdf/09_Clustering.pdf) |
+| block 4 	    | 3:30 PM  	| 5:00 PM 	| [Clustering](day2/day2-4_clustering.qmd) & [Trajectory and pseudotime analysis (Advanced)](day2/day2-5_trajectory_analysis.qmd)     	|  Luciano Cascione |  [pdf](assets/pdf/09_Clustering.pdf) |
 
 ## Day 3
 
