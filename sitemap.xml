@@ -21,11 +21,35 @@
     <lastmod>2026-11-09T07:45:57.497Z</lastmod>
   </url>
   <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-4_clustering.html</loc>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-5_trajectory_analysis.html</loc>
+    <lastmod>2026-11-09T16:30:14.933Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-3_integration.html</loc>
     <lastmod>2026-11-09T07:45:57.497Z</lastmod>
   </url>
   <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-2_dimensionality_reduction.html</loc>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-1_normalization_scaling.html</loc>
+    <lastmod>2026-11-09T07:45:57.496Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/day1/day1-3_analysis_tools_qc.html</loc>
+    <lastmod>2026-11-09T07:45:57.496Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/day1/day1-1_setup.html</loc>
+    <lastmod>2026-11-09T13:29:01.706Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/about.html</loc>
+    <lastmod>2026-11-09T07:45:57.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/course_schedule.html</loc>
+    <lastmod>2026-11-09T16:33:13.083Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/day1/day1-2_cellranger.html</loc>
     <lastmod>2026-11-09T07:45:57.496Z</lastmod>
   </url>
   <url>
@@ -33,31 +57,11 @@
     <lastmod>2026-11-09T07:45:57.496Z</lastmod>
   </url>
   <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/day1/day1-2_cellranger.html</loc>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-2_dimensionality_reduction.html</loc>
     <lastmod>2026-11-09T07:45:57.496Z</lastmod>
   </url>
   <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/course_schedule.html</loc>
-    <lastmod>2026-11-09T15:02:50.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/about.html</loc>
-    <lastmod>2026-11-09T07:45:57.399Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/day1/day1-1_setup.html</loc>
-    <lastmod>2026-11-09T13:29:01.706Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/day1/day1-3_analysis_tools_qc.html</loc>
-    <lastmod>2026-11-09T07:45:57.496Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-1_normalization_scaling.html</loc>
-    <lastmod>2026-11-09T07:45:57.496Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-3_integration.html</loc>
+    <loc>https://sib-swiss.github.io/single-cell-r-training/day2/day2-4_clustering.html</loc>
     <lastmod>2026-11-09T07:45:57.497Z</lastmod>
   </url>
   <url>
