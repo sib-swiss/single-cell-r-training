@@ -71,9 +71,11 @@ Accounts and passwords are in `infra/credentials.csv`.
    denied, and that `cat /run/course/users.tsv` is denied.
 3. Check that `curl -s -m 5 http://169.254.169.254/` from the RStudio terminal
    times out or fails.
-4. As `user01`, save a file in `~/group_work/group1`; as `user02`, edit and save
+4. As `user01`, open Posit Assistant and check that the LiteLLM provider and
+   the course model are available without entering a key.
+5. As `user01`, save a file in `~/group_work/group1`; as `user02`, edit and save
    the same file.
-5. Run part of the Seurat workflow in a few accounts at once and watch `htop`
+6. Run part of the Seurat workflow in a few accounts at once and watch `htop`
    on the host.
 
 ### During the course
@@ -135,6 +137,10 @@ OpenRouter key.
   participant's own `~/.config/goose/config.yaml` overrides them. Each account
   also gets `~/.config/goose/.goosehints` (short replies, no wide tables, code in
   files, no package installs); it is written once, so participants can edit it.
+- **Posit Assistant** (RStudio's own assistant) gets the same proxy key and
+  address through a marked block in each account's `~/.Renviron`
+  (`LITELLM_API_KEY`, `LITELLM_BASE_URL`), which it reads as its LiteLLM
+  provider. goose and Posit Assistant share the account's budget.
 - **Group work** happens in `/group_work`, with `group1` ... `group<group_count>`
   created up front. Every course account can read, write and delete everything
   in it, so trainers have nothing to manage when groups form; participants can
