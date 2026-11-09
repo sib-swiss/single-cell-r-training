@@ -16,9 +16,8 @@ title: "Course schedule"
 | block 2 	    | 11:00 AM 	| 12:00 PM 	| [Setup](day1/day1-1_setup.qmd) and [10X and Cellranger](day1/day1-2_cellranger.qmd)   | Deepak Tanwar                    |  [pdf](assets/pdf/03_10x_genomics_single_cell.pdf) |
 |         	    | 12:00 PM 	| 1:00 PM  	| BREAK                          	                                                      |                                  |
 | block 3 	    | 1:00 PM  	| 2:30 PM  	| [Analysis tools and QC](day1/day1-3_analysis_tools_qc.qmd)                            | Deepak Tanwar                    | [pdf](assets/pdf/04_analysis_tools_qc.pdf)  |
-| block 4 	    | 2:30 PM  	| 2:35 PM  	| Project pitch                                                                         | Deepak Tanwar                    |  [pdf](assets/pdf/05_introduction_project_work.pdf) |
-|         	    | 2:35 PM  	| 3:00 PM  	| BREAK                                                                         	      |                                  |
-| block 5 	    | 3:00 PM  	| 5:15 PM  	| [Using AI and Group work](projects/introduction.qmd)                                  | Geert van Geest                  |  [project1](projects/project1.qmd), [project2](projects/project2.qmd), [project3](projects/project3.qmd), [project4](projects/project4.qmd) |
+|         	    | 2:30 PM  	| 3:00 PM  	| BREAK                                                                         	      |                                  |
+| block 5 	    | 3:00 PM  	| 5:15 PM  	| [Using AI and Group work](projects/introduction.qmd)                                  | Geert van Geest                  | [pdf](assets/pdf/05_introduction_project_work.pdf), [project1](projects/project1.qmd), [project2](projects/project2.qmd), [project3](projects/project3.qmd), [project4](projects/project4.qmd) |
 
 ## Day 2
 
