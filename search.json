@@ -179,7 +179,7 @@
     "href": "day2/day2-5_trajectory_analysis.html",
     "title": "Trajectory and pseudotime analysis",
     "section": "",
-    "text": "NoteLearning outcomes\n\n\n\nAfter having completed this chapter you will be able to: - Understand the biological rationale and concepts behind trajectory inference and pseudotime analysis. - Convert a clustered Seurat object into a Monocle3 cell_data_set object. - Pre-process, reduce dimensions, and learn a principal graph trajectory from single-cell RNA-seq data. - Order cells along pseudotime starting from progenitor/root populations based on cluster annotations. - Identify and plot genes whose expression changes dynamically along a developmental or differentiation trajectory."
+    "text": "NoteLearning outcomes\n\n\n\nAfter having completed this chapter you will be able to:\n\nUnderstand the biological rationale and concepts behind trajectory inference and pseudotime analysis.\nConvert a clustered Seurat object into a Monocle3 cell_data_set object.\nPre-process, reduce dimensions, and learn a principal graph trajectory from single-cell RNA-seq data.\nOrder cells along pseudotime starting from progenitor/root populations based on cluster annotations.\nIdentify and plot genes whose expression changes dynamically along a developmental or differentiation trajectory."
   },
   {
     "objectID": "day2/day2-5_trajectory_analysis.html#introduction-to-trajectory-and-pseudotime-analysis",
