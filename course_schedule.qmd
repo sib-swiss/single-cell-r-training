@@ -28,8 +28,8 @@ title: "Course schedule"
 | block 2 	    | 10:30 AM 	| 12:00 PM 	| [Dimensionality reduction](day2/day2-2_dimensionality_reduction.qmd) and [Integration](day2/day2-3_integration.qmd)  | Luciano Cascione |  [pdf](assets/pdf/07_DimensionalityReduction.pdf), [pdf](assets/pdf/08_Integration.pdf) |
 |         	    | 12:00 PM 	| 1:00 PM  	| BREAK                               	| |
 | block 3 	    | 1:00 PM  	| 2:30 PM  	| [Clustering](day2/day2-4_clustering.qmd)     	|  Luciano Cascione |  [pdf](assets/pdf/09_Clustering.pdf) |
-|         	    | 2:30 PM  	| 2:45 PM  	| BREAK                               	| |
-| block 4 	    | 2:45 PM  	| 5:15 PM  	| group work 	| |
+|         	    | 2:30 PM  	| 3:00 PM  	| BREAK                               	| |
+| block 4 	    | 3:00 PM  	| 5:15 PM  	| group work 	| |
 
 ## Day 3
 
@@ -40,7 +40,7 @@ title: "Course schedule"
 | block 2 	    | 11:00 AM 	| 12:30 PM 	| [Differential gene expression](day3/day3-2_differential_gene_expression.qmd) and [Enrichment analysis](day3/day3-3_enrichment_analysis.qmd)            	| Luciano Cascione | [pdf](assets/pdf/11_DEGs_and_Enrichment.pdf) |
 |         	    | 12:30 PM 	| 1:30 PM  	| BREAK                               	| |
 | block 3 	    | 1:30 PM  	| 3:00 PM  	| group work | |
-|         	    | 3:00 PM  	| 3:15 PM  	| BREAK                         |       	|
-| block 4 	    | 3:15 PM  	| 4:00 PM  	| group work presentation preparation | |
+|         	    | 3:00 PM  	| 3:30 PM  	| BREAK                         |       	|
+| block 4 	    | 3:30 PM  	| 4:00 PM  	| group work presentation preparation | |
 | block 5 	    | 4:00 PM  	| 5:00 PM  	| project presentation | |
 | post-course 	| 5:00 PM  	| 5:05 PM  	| Post-course information	| Deepak Tanwar |  [pdf](assets/pdf/12_post_course.pdf) |
