@@ -414,19 +414,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p>The course server comes with an AI coding assistant already set up for you: <a href="https://github.com/aaif-goose/goose">goose</a>, connected to a language model (DeepSeek V4.1 Flash) through the course. You don’t need an account or an API key, and all R packages for the course are already installed.</p>
+<p>The course server comes with two AI coding assistants already set up for you, both connected to a language model (DeepSeek V4.1 Flash) through the course:</p>
 <ul>
-<li>Your access has a fixed budget for the whole course. If goose reports that the budget is exceeded, ask a trainer.</li>
-<li>It only works on the course server, and stops when the server is shut down after the course.</li>
-<li>What you type, and the files goose reads, are sent to the model provider. Use it for the course and project data, not for your own unpublished or sensitive data.</li>
+<li>
+<strong>Posit Assistant</strong>, built into RStudio. This is the one we recommend.</li>
+<li>
+<a href="https://github.com/aaif-goose/goose">goose</a>, which runs in the Terminal (see below).</li>
 </ul>
-<section id="start-goose-in-your-project-directory" class="level4"><h4 class="anchored" data-anchor-id="start-goose-in-your-project-directory">1. Start goose in your project directory</h4>
-<p>Open the <strong>Terminal</strong> tab next to the Console (if there is none: <strong>Tools</strong> → <strong>Terminal</strong> → <strong>New Terminal</strong>), go to the directory you work in for your project, and start goose:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/my_project   <span class="co"># replace with your project directory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">goose</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Type your request at the prompt; type <code>exit</code> to leave goose. Before goose runs a command or changes a file that could do damage, it asks for your approval — read what it wants to do before you approve it.</p>
-</section><section id="ask-goose-to-fetch-the-packs" class="level4"><h4 class="anchored" data-anchor-id="ask-goose-to-fetch-the-packs">2. Ask goose to fetch the packs</h4>
-<p>goose looks for skills in the <code>.agents/skills/</code> directory of the project you start it in. Paste in this prompt:</p>
+<p>You don’t need an account or an API key, and all R packages for the course are already installed.</p>
+<ul>
+<li>Your access has a fixed budget for the whole course, shared between both assistants. If an assistant reports that the budget is exceeded, ask a trainer.</li>
+<li>It only works on the course server, and stops when the server is shut down after the course.</li>
+<li>What you type, and the files the assistant reads, are sent to the model provider. Use it for the course and project data, not for your own unpublished or sensitive data.</li>
+</ul>
+<section id="open-your-project" class="level4"><h4 class="anchored" data-anchor-id="open-your-project">1. Open your project</h4>
+<p>The assistant looks for the packs in the <code>.agents/skills/</code> directory of the RStudio project you have open. So first open (or create) the RStudio project you work in for the project work: <strong>File</strong> → <strong>Open Project…</strong> or <strong>New Project…</strong>.</p>
+</section><section id="open-posit-assistant" class="level4"><h4 class="anchored" data-anchor-id="open-posit-assistant">2. Open Posit Assistant</h4>
+<p>Open the <strong>Posit Assistant</strong> pane in RStudio. If it asks which model to use, choose the <strong>LiteLLM</strong> provider and the model <code>deepseek-v4.1-flash</code>; both are already configured for your account.</p>
+<p>Type your request in the chat box. Before the assistant runs code or changes your files, read what it wants to do before you approve it.</p>
+</section><section id="ask-the-assistant-to-fetch-the-packs" class="level4"><h4 class="anchored" data-anchor-id="ask-the-assistant-to-fetch-the-packs">3. Ask the assistant to fetch the packs</h4>
+<p>Paste in this prompt:</p>
 <pre><code>Set up all of the LLM packs from the SIB single-cell transcriptomics course
 (https://github.com/sib-swiss/single-cell-r-training) in this project,
 without downloading the whole course repository:
@@ -444,19 +451,24 @@ without downloading the whole course repository:
      (../ENVIRONMENT.md) that only resolves correctly if it lands there.
 3. Remove the temporary clone.
 4. Confirm the packs and ENVIRONMENT.md are in place by listing .agents/skills/.</code></pre>
-<div class="callout callout-style-default callout-tip callout-titled" title="Making goose's output easier to read">
+<p>When it is done, start a new chat, so that the assistant picks up the packs.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Using goose instead">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Making goose’s output easier to read
+<span class="screen-reader-only">Note</span>Using goose instead
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>goose answers in Markdown, which can be hard to read in the narrow Terminal pane — especially tables.</p>
+<p>goose works in the <strong>Terminal</strong> tab next to the Console (if there is none: <strong>Tools</strong> → <strong>Terminal</strong> → <strong>New Terminal</strong>). Go to your project directory and start it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/my_project   <span class="co"># replace with your project directory</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">goose</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Type your request at the prompt; type <code>exit</code> to leave goose. Before goose runs a command or changes a file that could do damage, it asks for your approval. goose uses the same <code>.agents/skills/</code> directory, so the prompt above works the same way, and packs you fetched with Posit Assistant are available to goose too.</p>
+<p>goose answers in Markdown, which can be hard to read in the narrow Terminal pane, especially tables:</p>
 <ul>
 <li>Make the Terminal pane larger, or zoom out in your browser.</li>
 <li>goose uses a light colour theme, to match RStudio’s default. If you use a dark RStudio theme, type <code>/t</code> in goose to switch to its dark theme; goose remembers your choice.</li>
@@ -469,7 +481,7 @@ without downloading the whole course repository:
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <section id="install-an-ai-coding-assistant" class="level4"><h4 class="anchored" data-anchor-id="install-an-ai-coding-assistant">1. Install an AI coding assistant</h4>
-<p>Follow the official installation instructions for whichever AI coding assistant you choose to use — goose, which the course server uses, is one free and open-source option. You will also need access to a language model for it, usually an API key or subscription from a model provider, and you pay for what you use. What you type, and the files the assistant reads, are sent to that provider, so check its terms before you use it on unpublished or sensitive data. You do not need anything beyond what the course already uses on top of that — your own R/Seurat setup (see <a href="../day1/day1-1_setup.html">Setup</a>) and your own data.</p>
+<p>Follow the official installation instructions for whichever AI coding assistant you choose to use. The two assistants on the course server are both options: Posit Assistant comes with recent versions of RStudio, and goose is free and open-source. You will also need access to a language model for it, usually an API key or subscription from a model provider, and you pay for what you use. What you type, and the files the assistant reads, are sent to that provider, so check its terms before you use it on unpublished or sensitive data. You do not need anything beyond what the course already uses on top of that — your own R/Seurat setup (see <a href="../day1/day1-1_setup.html">Setup</a>) and your own data.</p>
 <p>Check that assistant’s own documentation for how it discovers reusable skills/tools/context packs, and where it expects to find them in a project — look for terms like “skills”, “custom tools”, “project rules” or “context packs”. You’ll need that answer for the next step.</p>
 </section><section id="install-the-packages-yourself-before-involving-your-assistant" class="level4"><h4 class="anchored" data-anchor-id="install-the-packages-yourself-before-involving-your-assistant">2. Install the packages yourself, before involving your assistant</h4>
 <p>Do this yourself, in your own R console, rather than asking your assistant to do it — the same command from <a href="../day1/day1-1_setup.html">Setup</a>:</p>
