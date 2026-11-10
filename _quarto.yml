@@ -34,6 +34,7 @@ website:
           - href: "day2/day2-2_dimensionality_reduction.qmd"
           - href: "day2/day2-3_integration.qmd"
           - href: "day2/day2-4_clustering.qmd"
+          - href: "day2/day2-5_trajectory_analysis.qmd"
       - text: "day 3"
         menu:
           - href: "day3/day3-1_cell_annotation.qmd"
