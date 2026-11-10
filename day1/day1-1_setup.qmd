@@ -197,6 +197,24 @@ This data comes from:
 
 Caron M, St-Onge P, Sontag T, Wang YC, Richer C, Ragoussis I, et al. **Single-cell analysis of childhood leukemia reveals a link between developmental states and ribosomal protein expression as a source of intra-individual heterogeneity.** Scientific Reports. 2020;10:1–12. Available from: http://dx.doi.org/10.1038/s41598-020-64929-x
 
+::: {.callout-note}
+## About the Course Dataset & How It Was Generated
+
+To understand the data you are about to analyze in R, here is a quick overview of its origin and processing:
+
+1. **Biological Source:** 
+   The dataset comprises human peripheral blood mononuclear cells (PBMCs) and bone marrow samples from healthy donors and pediatric patients with **ETV6-RUNX1 acute lymphoblastic leukemia**. 
+
+2. **Wet-Lab Generation (10x Genomics):**
+   * **Single-Cell Partitioning:** Cell suspensions were captured using 10x Genomics Chromium microfluidic chips, encapsulating single cells into oil droplets (**GEMs**) along with barcoded gel beads.
+   * **Barcoding & UMIs:** Each cell received a unique 16-base cell barcode, and individual mRNA molecules were tagged with a Unique Molecular Identifier (UMI) to eliminate PCR amplification bias.
+   * **Sequencing:** Libraries were sequenced on Illumina platforms, producing raw FASTQ read files (found in `course_data/reads/`).
+
+3. **Computational Processing & Course Subsetting:**
+   * Raw reads were aligned to the human reference genome using **Cell Ranger**, generating count matrices.
+   * *Curious how the course data was prepared?* You can inspect the automated pipeline scripts in the course repository under [`scripts/generate_dataset/`](https://github.com/sib-swiss/single-cell-r-training/tree/main/scripts/generate_dataset).
+:::
+
 We will use the reads to showcase the use of `cellranger count`. The directory contains only reads from chromosome 21 and 22 of one sample (`ETV6-RUNX1_1`). The count matrices are output of `cellranger count`, and we will use those for the other exercises in `R`.
 
 Clear your environment:
