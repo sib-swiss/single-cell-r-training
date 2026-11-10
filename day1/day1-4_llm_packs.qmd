@@ -105,38 +105,44 @@ Choose the tab that matches how you follow the course:
 
 ### Enrolled in the course
 
-The course server comes with an AI coding assistant already set up for you:
-[goose](https://github.com/aaif-goose/goose), connected to a language model
-(DeepSeek V4.1 Flash) through the course. You don't need an account or an API
-key, and all R packages for the course are already installed.
+The course server comes with two AI coding assistants already set up for you,
+both connected to a language model (DeepSeek V4.1 Flash) through the course:
 
-- Your access has a fixed budget for the whole course. If goose reports that
-  the budget is exceeded, ask a trainer.
+- **Posit Assistant**, built into RStudio. This is the one we recommend.
+- [goose](https://github.com/aaif-goose/goose), which runs in the Terminal
+  (see below).
+
+You don't need an account or an API key, and all R packages for the course
+are already installed.
+
+- Your access has a fixed budget for the whole course, shared between both
+  assistants. If an assistant reports that the budget is exceeded, ask a
+  trainer.
 - It only works on the course server, and stops when the server is shut down
   after the course.
-- What you type, and the files goose reads, are sent to the model provider.
-  Use it for the course and project data, not for your own unpublished or
-  sensitive data.
+- What you type, and the files the assistant reads, are sent to the model
+  provider. Use it for the course and project data, not for your own
+  unpublished or sensitive data.
 
-#### 1. Start goose in your project directory
+#### 1. Open your project
 
-Open the **Terminal** tab next to the Console (if there is none: **Tools** →
-**Terminal** → **New Terminal**), go to the directory you work in for your
-project, and start goose:
+The assistant looks for the packs in the `.agents/skills/` directory of the
+RStudio project you have open. So first open (or create) the RStudio project
+you work in for the project work: **File** → **Open Project...** or
+**New Project...**.
 
-```bash
-cd ~/my_project   # replace with your project directory
-goose
-```
+#### 2. Open Posit Assistant
 
-Type your request at the prompt; type `exit` to leave goose. Before goose
-runs a command or changes a file that could do damage, it asks for your
-approval — read what it wants to do before you approve it.
+Open the **Posit Assistant** pane in RStudio. If it asks which model to use,
+choose the **LiteLLM** provider and the model `deepseek-v4.1-flash`; both are
+already configured for your account.
 
-#### 2. Ask goose to fetch the packs
+Type your request in the chat box. Before the assistant runs code or changes
+your files, read what it wants to do before you approve it.
 
-goose looks for skills in the `.agents/skills/` directory of the project you
-start it in. Paste in this prompt:
+#### 3. Ask the assistant to fetch the packs
+
+Paste in this prompt:
 
 ```
 Set up all of the LLM packs from the SIB single-cell transcriptomics course
@@ -158,10 +164,27 @@ without downloading the whole course repository:
 4. Confirm the packs and ENVIRONMENT.md are in place by listing .agents/skills/.
 ```
 
-::: {.callout-tip collapse="true" title="Making goose's output easier to read"}
+When it is done, start a new chat, so that the assistant picks up the packs.
+
+::: {.callout-note collapse="true" title="Using goose instead"}
+
+goose works in the **Terminal** tab next to the Console (if there is none:
+**Tools** → **Terminal** → **New Terminal**). Go to your project directory and
+start it:
+
+```bash
+cd ~/my_project   # replace with your project directory
+goose
+```
+
+Type your request at the prompt; type `exit` to leave goose. Before goose runs
+a command or changes a file that could do damage, it asks for your approval.
+goose uses the same `.agents/skills/` directory, so the prompt above works the
+same way, and packs you fetched with Posit Assistant are available to goose
+too.
 
 goose answers in Markdown, which can be hard to read in the narrow Terminal
-pane — especially tables.
+pane, especially tables:
 
 - Make the Terminal pane larger, or zoom out in your browser.
 - goose uses a light colour theme, to match RStudio's default. If you use a
@@ -176,8 +199,9 @@ pane — especially tables.
 #### 1. Install an AI coding assistant
 
 Follow the official installation instructions for whichever AI coding
-assistant you choose to use — goose, which the course server uses, is one
-free and open-source option. You will also need access to a language model
+assistant you choose to use. The two assistants on the course server are both
+options: Posit Assistant comes with recent versions of RStudio, and goose is
+free and open-source. You will also need access to a language model
 for it, usually an API key or subscription from a model provider, and you pay
 for what you use. What you type, and the files the assistant reads, are sent
 to that provider, so check its terms before you use it on unpublished or
