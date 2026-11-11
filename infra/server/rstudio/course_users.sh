@@ -86,6 +86,21 @@ EOF
     chown "$username:$username" "$home/.config/goose/secrets.yaml"
     chmod 600 "$home/.config/goose/secrets.yaml"
 
+    # Same key for Posit Assistant (built-in LiteLLM provider), through the
+    # environment of the account's R sessions. Only the marked block is
+    # managed here; anything else in ~/.Renviron is left alone.
+    renviron="$home/.Renviron"
+    touch "$renviron"
+    sed -i '/^# >>> course llm >>>$/,/^# <<< course llm <<<$/d' "$renviron"
+    cat >>"$renviron" <<EOF
+# >>> course llm >>>
+LITELLM_BASE_URL=${COURSE_LLM_HOST}
+LITELLM_API_KEY=${llm_key}
+# <<< course llm <<<
+EOF
+    chown "$username:$username" "$renviron"
+    chmod 600 "$renviron"
+
     # default instructions for goose; written once, so participants can edit them
     hints="$home/.config/goose/.goosehints"
     if [ ! -e "$hints" ]; then

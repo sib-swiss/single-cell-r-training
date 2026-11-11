@@ -40,7 +40,7 @@ Choose one of the following:
 Log in to Rstudio server with the provided link, username and password.
 
 - The account is yours for the duration of the course: the files in your home directory are only visible to you, and all R packages for the course are already installed.
-- For the project work, groups share files in `/group_work` (see [Projects](../projects/introduction.qmd#working-directories)), and you can use the AI coding assistant goose (see [Using AI assistants with LLM packs](day1-4_llm_packs.qmd)). Do the course exercises without it.
+- For the project work, groups share files in `/group_work` (see [Projects](../projects/introduction.qmd#working-directories)), and you can use an AI coding assistant: Posit Assistant in RStudio, or goose in the Terminal (see [Using AI assistants with LLM packs](day1-4_llm_packs.qmd)). Do the course exercises without it.
 - The server, including your files, is removed after the course. Download anything you want to keep before then (in the Files pane: select files, **More** → **Export...**).
 
 ## Own installation
@@ -56,7 +56,7 @@ renv::restore(lockfile = "https://raw.githubusercontent.com/sib-swiss/single-cel
 
 ## Docker
 
-With docker, you can use exactly the same R environment as we use in the enrolled course, but than running locally. The AI coding assistant on the course server is not part of the image; see [Using AI assistants with LLM packs](day1-4_llm_packs.qmd) to set one up yourself.
+With docker, you can use exactly the same R environment as we use in the enrolled course, but than running locally. The AI coding assistants on the course server are not set up in the image (goose is not included, and Posit Assistant needs a connection to a language model of your own); see [Using AI assistants with LLM packs](day1-4_llm_packs.qmd) to set one up yourself.
 
 In the video below there's a short tutorial on how to set up a docker container for this course. Note that you will need administrator rights, and that if you are using Windows, you need the latest version of Windows 10.
 
@@ -196,6 +196,24 @@ course_data
 This data comes from:
 
 Caron M, St-Onge P, Sontag T, Wang YC, Richer C, Ragoussis I, et al. **Single-cell analysis of childhood leukemia reveals a link between developmental states and ribosomal protein expression as a source of intra-individual heterogeneity.** Scientific Reports. 2020;10:1–12. Available from: http://dx.doi.org/10.1038/s41598-020-64929-x
+
+::: {.callout-note}
+## About the Course Dataset & How It Was Generated
+
+To understand the data you are about to analyze in R, here is a quick overview of its origin and processing:
+
+1. **Biological Source:** 
+   The dataset comprises human peripheral blood mononuclear cells (PBMCs) and bone marrow samples from healthy donors and pediatric patients with **ETV6-RUNX1 acute lymphoblastic leukemia**. 
+
+2. **Wet-Lab Generation (10x Genomics):**
+   * **Single-Cell Partitioning:** Cell suspensions were captured using 10x Genomics Chromium microfluidic chips, encapsulating single cells into oil droplets (**GEMs**) along with barcoded gel beads.
+   * **Barcoding & UMIs:** Each cell received a unique 16-base cell barcode, and individual mRNA molecules were tagged with a Unique Molecular Identifier (UMI) to eliminate PCR amplification bias.
+   * **Sequencing:** Libraries were sequenced on Illumina platforms, producing raw FASTQ read files (found in `course_data/reads/`).
+
+3. **Computational Processing & Course Subsetting:**
+   * Raw reads were aligned to the human reference genome using **Cell Ranger**, generating count matrices.
+   * *Curious how the course data was prepared?* You can inspect the automated pipeline scripts in the course repository under [`scripts/generate_dataset/`](https://github.com/sib-swiss/single-cell-r-training/tree/main/scripts/generate_dataset).
+:::
 
 We will use the reads to showcase the use of `cellranger count`. The directory contains only reads from chromosome 21 and 22 of one sample (`ETV6-RUNX1_1`). The count matrices are output of `cellranger count`, and we will use those for the other exercises in `R`.
 
