@@ -125,6 +125,12 @@ seu <- Seurat::CreateSeuratObject(counts = sparse_matrix,
 
 ```
 
+::: {.callout-note}
+## Note on downsampling
+
+The number of cells in the data may be too much for analyzing in a short time. If you would like to downsample your Seurat object, you can check how to subset Seurat objects at [Seurat Essential Commands](https://satijalab.org/seurat/articles/essential_commands#subset-seurat-objects).
+:::
+
 
 ::: {.callout-important}
 ## Project exercise
