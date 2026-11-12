@@ -18,8 +18,8 @@ provenance:
   course: "SIB: Single-cell transcriptomics with R"
   dataset: "Caron et al. 2020, paediatric B-ALL and PBMMC bone marrow (10x 3' GEX)"
   maintainer:
-    name: "TODO: named individual, not a team alias"
-    email: "TODO@sib.swiss"
+    name: "Geert van Geest"
+    email: "geert.vangeest@sib.swiss"
   license: CC-BY-4.0
 
 # The validity contract. CI enforces this; see .github/workflows/validate-llm-packs.yml
