@@ -76,7 +76,7 @@ docker run \
 -p 8787:8787 \
 -e PASSWORD=test \
 -v $PWD:/home/rstudio \
-sibswiss/training-singlecell-rstudio:2026.3
+sibswiss/training-singlecell-rstudio:2026.11
 ```
 
 If this command has run successfully, approach Rstudio server like this:
